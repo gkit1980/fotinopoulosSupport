@@ -53,6 +53,9 @@ const RelativeSchema = new mongoose.Schema({
     taxisCodeUser: {
         type: String
     },
+    taxisCodePassword: {
+        type: String
+    },
     funeral: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Funeral'

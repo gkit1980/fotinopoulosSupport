@@ -160,7 +160,8 @@ const useStyles = makeStyles({
       phone: formData.rel_phone,
       email: formData.rel_email,
       iban: formData.rel_iban,
-      taxisCodeUser: formData.rel_taxisCodeUser 
+      taxisCodeUser: formData.rel_taxisCodeUser,
+      taxisCodePassword: formData.rel_taxisCodePassword
     }
   
   

@@ -80,6 +80,7 @@ router.post('/', async (req, res) => {
             email: "",
             iban: "",
             taxisCodeUser: "",
+            taxisCodePassword: ""
 
         }
         const newAnnouncement = await anouncementDAO.createAnouncement(bodyAnouncement);

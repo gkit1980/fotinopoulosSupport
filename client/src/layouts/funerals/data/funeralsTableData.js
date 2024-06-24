@@ -1,5 +1,7 @@
 
 // Material Dashboard 2 React components
+/* eslint-disable */
+
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
@@ -12,9 +14,6 @@ import fotinopoulos from "assets/images/fotinopoulos.png";
 import { useEffect, useState,useRef } from "react";
 import DialogFuneral from "components/DialogFuneral";
 import { makeStyles } from '@mui/styles'
-import { id } from "date-fns/locale";
-
-
 
 
 
@@ -35,10 +34,11 @@ export default function data(text,open,create,setIsLoading) {
 
   const FuneralHeaders=['Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου']
   const AnouncementHeaders=['Αδέλφια','Τέκνα','Εγγόνια','Ανίψια','Λοιποί συγγενείς','Σύζυγος','Στεφάνια'];
-  const RelativeHeaders=['Βαθμός συγγένειας','Ονοματεπώνυμο','Ονομα/Επώνυμο πατέρα','Ονομα/Επώνυμο μητέρας','Ημερομηνία Γέννησης','Τόπος Γέννησης','ΑΔΤ','Ημερομηνία Έκδοσης ΑΔΤ','Αρχή Έκδοσης ΑΔΤ','ΔΟΥ','ΑΜΚΑ','Τηλέφωνο Επικοινωνίας','Email','IBAN','Κωδικός Φορολογικού Φορέα'];
+  const RelativeHeaders=['Βαθμός συγγένειας','Ονοματεπώνυμο','Ονομα/Επώνυμο πατέρα','Ονομα/Επώνυμο μητέρας','Ημερομηνία Γέννησης','Τόπος Γέννησης','ΑΔΤ','Ημερομηνία Έκδοσης ΑΔΤ','Αρχή Έκδοσης ΑΔΤ','ΔΟΥ','ΑΜΚΑ','Τηλέφωνο Επικοινωνίας','Email','IBAN','Κωδικός Φορολογικού Φορέα','Συνθηματικό Φορολογικού Φορέα'];
 
 // Create a ref for the dialog content
    const dialogRef = useRef(null);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [mappedData, setMappedData] = useState([]);
   const classes = useStyles();
 
@@ -142,7 +142,8 @@ useEffect(() => {
             phone: dataRelative.phone,
             email: dataRelative.email,
             iban: dataRelative.iban,
-            taxisCodeUser: dataRelative.taxisCodeUser 
+            taxisCodeUser: dataRelative.taxisCodeUser,
+            taxisCodePassword: dataRelative.taxisCodePassword
           };
 
           setExistingRelativeData(existingRelativeData);
@@ -233,7 +234,8 @@ const handleCreate = (formData) => {
     phone: formData.rel_phone,
     email: formData.rel_email,
     iban: formData.rel_iban,
-    taxisCodeUser: formData.rel_taxisCodeUser 
+    taxisCodeUser: formData.rel_taxisCodeUser,
+    taxisCodePassword: formData.rel_taxisCodePassword
   }
 
 
@@ -405,7 +407,8 @@ setIsLoading(true);
     phone: formData.rel_phone,
     email: formData.rel_email,
     iban: formData.rel_iban,
-    taxisCodeUser: formData.rel_taxisCodeUser 
+    taxisCodeUser: formData.rel_taxisCodeUser,
+    taxisCodePassword: formData.rel_taxisCodePassword
   }
 
   //compare the existing data with the new data
@@ -740,7 +743,8 @@ const mapRelativeValuesToHeaders=(headers, obj)=> {
     'Τηλέφωνο Επικοινωνίας':"phone",
     'Email':"email",
     'IBAN':"iban",
-    'Κωδικός Φορολογικού Φορέα':"taxisCodeUser"
+    'Κωδικός Φορολογικού Φορέα':"taxisCodeUser",
+    'Συνθηματικό Φορολογικού Φορέα':"taxisCodePassword"
   
   }
 

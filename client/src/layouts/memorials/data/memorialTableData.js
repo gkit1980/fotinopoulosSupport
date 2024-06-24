@@ -1,8 +1,7 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/function-component-definition */
+/* eslint-disable */
+
+
 /**
-
-
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 

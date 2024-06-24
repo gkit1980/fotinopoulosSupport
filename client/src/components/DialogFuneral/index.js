@@ -1161,6 +1161,29 @@ const handleADTDateChange=(event)=>
 
                 </Grid>
 
+                <Grid item xs={6}>
+
+                    {selectedRowRelative &&  (<TextField
+                          autoFocus
+                          margin="dense"
+                          id="rel_taxisCodePassword"
+                          name="rel_taxisCodePassword"
+                          InputProps={{
+                            readOnly: isReadOnly,
+                          }}
+                          label="Συνθηματικό Φορολογικού Φορέα"
+                          type="text"
+                          defaultValue={selectedRowRelative ? selectedRowRelative.taxisCodePassword: ""}
+                          fullWidth
+                          variant="standard"
+                        />
+                        )}
+  
+
+
+
+                 </Grid>
+
         
 
 
