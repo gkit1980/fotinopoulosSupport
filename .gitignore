@@ -1,0 +1,6 @@
+client/node_modules/*
+server/node_modules/*
+
+# Ignore the build directory
+client/build/*
+client/.DS_Store
