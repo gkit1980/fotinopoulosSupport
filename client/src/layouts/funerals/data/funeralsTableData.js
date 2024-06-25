@@ -81,6 +81,8 @@ useEffect(() => {
 
 
    let existingFuneralData = {
+    burialDate: item.burialDate,
+    burialLocation: item.burialLocation,
     afm: item.afm,
     age: item.age,
     amka: item.amka,
@@ -193,6 +195,8 @@ const handleCreate = (formData) => {
    setIsLoading(true);
  
   const createdFuneralFormData = {
+    burialDate: formData.burialDate,
+    burialLocation: formData.burialLocation,
     afm: formData.afm,
     age: parseInt(formData.age, 10),
     amka: formData.amka,
@@ -366,6 +370,8 @@ setIsLoading(true);
 
   // Handle update logic...
   const updatedFuneralFormData = {
+    burialDate: formData.burialDate,
+    burialLocation: formData.burialLocation,
     afm: formData.afm,
     age: parseInt(formData.age, 10),
     amka: formData.amka,

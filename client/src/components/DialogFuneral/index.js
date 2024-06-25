@@ -1,16 +1,20 @@
-import React, { useState, useEffect, forwardRef  } from 'react';
+
+import React,{ useState, useEffect, forwardRef} from 'react';
 import Dialog from '@mui/material/Dialog';
 import PropTypes from 'prop-types';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import Grid from '@mui/material/Grid';     
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import LoadingSpinner  from  '../../shared/UIElements/LoadingSpinner';
-import Draggable from 'react-draggable';
+import Draggable from 'react-draggable';  
 import Paper from '@mui/material/Paper';
+
+import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import { el } from "date-fns/locale";
 
 
 
@@ -36,6 +40,8 @@ const DialogFuneral=forwardRef(( {selectedRowDeath,logo,className,open,handleClo
 
   const [ADTDate, setADTDate] = useState(selectedRowDeath ? selectedRowDeath.idPublicationDate : "");
   const [ADTDateError, setADTDateError] = useState("");
+
+  const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.burialdate : new Date());
 
 
 
@@ -223,6 +229,11 @@ const handleADTDateChange=(event)=>
   };
 
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+
 
 
   return (
@@ -254,8 +265,58 @@ const handleADTDateChange=(event)=>
     
       <DialogTitle id="draggable-dialog-title" align="center"> ΕΝΤΥΠΟ ΘΑΝΟΝΤΟΣ Η ΘΑΝΟΥΣΗΣ</DialogTitle>
 
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',gap:'40px' }}>
       <DialogTitle id="draggable-dialog-title"> <img src={logo} className={className} alt="Logo"/>  ΣΤΟΙΧΕΙΑ ΘΑΝΟΝΤΟΣ Η ΘΑΝΟΥΣΗΣ</DialogTitle>
+     
+      <Grid container spacing={8}>
+          <Grid item xs={5} >
+
+
+          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={el}>
+                  <DateTimePicker
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="burialDate"
+                    name="burialDate"
+                    label="Ημερομηνία Ταφής"
+                    InputProps={{
+                      readOnly: isReadOnly,
+                    }}
+                    format="dd/MM/yyyy HH:mm"
+                    value= {selectedDate}
+                    onChange={handleDateChange}
+                    fullWidth
+                    variant="standard"
+                   />
+          </MuiPickersUtilsProvider>
+        
+          </Grid>
+          <Grid item xs={5}>
+            <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="burialLocation"
+              name="burialLocation"
+              InputProps={{
+                readOnly: isReadOnly,
+              }}
+              label="Ταφή"
+              type="text"
+              defaultValue={selectedRowDeath ? selectedRowDeath.buriallocation : ""}
+              fullWidth
+              variant="standard"
+            />
+          </Grid>
+      </Grid>
+      </div>
+
+
+
       <DialogContent>
+
+
       <Grid container spacing={6}>
           <Grid item xs={6}>
             <TextField 
