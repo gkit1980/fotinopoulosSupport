@@ -77,6 +77,7 @@ router.post('/', async (req, res) => {
             doy: "",
             amka: "",
             phone: "",
+            phone2: "",
             email: "",
             iban: "",
             taxisCodeUser: "",

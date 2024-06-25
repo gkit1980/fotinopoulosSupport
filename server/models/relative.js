@@ -44,6 +44,9 @@ const RelativeSchema = new mongoose.Schema({
     phone: {
         type: String
     },
+    phone2: {
+        type: String
+    },
     email: {
         type: String
     },

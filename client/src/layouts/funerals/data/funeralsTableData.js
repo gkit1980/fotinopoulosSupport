@@ -34,7 +34,7 @@ export default function data(text,open,create,setIsLoading) {
 
   const FuneralHeaders=['Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου']
   const AnouncementHeaders=['Αδέλφια','Τέκνα','Εγγόνια','Ανίψια','Λοιποί συγγενείς','Σύζυγος','Στεφάνια'];
-  const RelativeHeaders=['Βαθμός συγγένειας','Ονοματεπώνυμο','Ονομα/Επώνυμο πατέρα','Ονομα/Επώνυμο μητέρας','Ημερομηνία Γέννησης','Τόπος Γέννησης','ΑΔΤ','Ημερομηνία Έκδοσης ΑΔΤ','Αρχή Έκδοσης ΑΔΤ','ΔΟΥ','ΑΜΚΑ','Τηλέφωνο Επικοινωνίας','Email','IBAN','Κωδικός Φορολογικού Φορέα','Συνθηματικό Φορολογικού Φορέα'];
+  const RelativeHeaders=['Βαθμός συγγένειας','Ονοματεπώνυμο','Ονομα/Επώνυμο πατέρα','Ονομα/Επώνυμο μητέρας','Ημερομηνία Γέννησης','Τόπος Γέννησης','ΑΔΤ','Ημερομηνία Έκδοσης ΑΔΤ','Αρχή Έκδοσης ΑΔΤ','ΔΟΥ','ΑΜΚΑ','Τηλέφωνο Επικοινωνίας','Τηλέφωνο Επικοινωνίας 2','Email','IBAN','Κωδικός Φορολογικού Φορέα','Συνθηματικό Φορολογικού Φορέα'];
 
 // Create a ref for the dialog content
    const dialogRef = useRef(null);
@@ -140,6 +140,7 @@ useEffect(() => {
             doy: dataRelative.doy,
             amka: dataRelative.amka,
             phone: dataRelative.phone,
+            phone2: dataRelative.phone2,
             email: dataRelative.email,
             iban: dataRelative.iban,
             taxisCodeUser: dataRelative.taxisCodeUser,
@@ -157,6 +158,8 @@ useEffect(() => {
  }
 
  const handleClickOpenForView = (item) => { 
+
+  item.idPublicationDate=formatDate(item.idPublicationDate)
     
   setSelectedRowId(item._id); // Assuming `id` is the unique identifier for each row
   setSelectedRow(item);
@@ -232,6 +235,7 @@ const handleCreate = (formData) => {
     doy: formData.rel_doy,
     amka: formData.rel_amka,
     phone: formData.rel_phone,
+    phone2: formData.rel_phone2,
     email: formData.rel_email,
     iban: formData.rel_iban,
     taxisCodeUser: formData.rel_taxisCodeUser,
@@ -405,6 +409,7 @@ setIsLoading(true);
     doy: formData.rel_doy,
     amka: formData.rel_amka,
     phone: formData.rel_phone,
+    phone2: formData.rel_phone2,
     email: formData.rel_email,
     iban: formData.rel_iban,
     taxisCodeUser: formData.rel_taxisCodeUser,
@@ -741,6 +746,7 @@ const mapRelativeValuesToHeaders=(headers, obj)=> {
     'ΔΟΥ':"doy",
     'ΑΜΚΑ':"amka",
     'Τηλέφωνο Επικοινωνίας':"phone",
+    'Τηλέφωνο Επικοινωνίας 2':"phone2",
     'Email':"email",
     'IBAN':"iban",
     'Κωδικός Φορολογικού Φορέα':"taxisCodeUser",
@@ -759,6 +765,7 @@ const mapRelativeValuesToHeaders=(headers, obj)=> {
 }
 
 
+// Format the date to a string
 const formatDate = (isoString) => {
   const date = new Date(isoString);
   const day = String(date.getDate()).padStart(2, '0');
@@ -768,6 +775,7 @@ const formatDate = (isoString) => {
   return `${day}/${month}/${year}`;
 };
 
+//convert the date string to date object
 const stringToDateFormat = (dateString) => {
    /////Fetch existing anouncement data and relative data
    const parts = dateString.split("/");

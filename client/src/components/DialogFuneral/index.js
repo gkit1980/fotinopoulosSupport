@@ -1064,7 +1064,7 @@ const handleADTDateChange=(event)=>
 
                   </Grid>
 
-                  <Grid item xs={6}>
+                  <Grid item xs={3}>
 
                       {selectedRowRelative &&  (<TextField
                             autoFocus
@@ -1083,6 +1083,26 @@ const handleADTDateChange=(event)=>
                           )}
 
                   </Grid>
+
+                    <Grid item xs={3}>
+
+                      {selectedRowRelative &&  (<TextField
+                            autoFocus
+                            margin="dense"
+                            id="rel_phone2"
+                            name="rel_phone2"
+                            InputProps={{
+                              readOnly: isReadOnly,
+                            }}
+                            label="Τηλέφωνο Επικοινωνίας 2" 
+                            type="text"
+                            defaultValue={selectedRowRelative ? selectedRowRelative.phone2 : ""}
+                            fullWidth
+                            variant="standard"
+                          />
+                          )}
+
+                    </Grid>
 
 
               </Grid>
@@ -1134,6 +1154,8 @@ const handleADTDateChange=(event)=>
 
 
               </Grid>
+
+
 
 
               <Grid container spacing={6}>
