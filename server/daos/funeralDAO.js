@@ -47,6 +47,11 @@ class FuneralDAO {
     // Update a funeral by ID
     static async updateFuneralById(id, data) {
         try {
+
+            const dateObject = moment(data.burialDate, "DD/MM/YYYY HH:mm").toDate();
+        
+            data.burialDate = dateObject;
+
             const updatedFuneral = await Funeral.findByIdAndUpdate(id, data, { new: true });
             return updatedFuneral;
         } catch (error) {

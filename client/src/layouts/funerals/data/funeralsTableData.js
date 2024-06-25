@@ -687,6 +687,8 @@ const mapFuneralValuesToHeaders=(headers, obj)=> {
    
   
   const headerMapping = {
+    "Ημερομηνία Ταφής": "burialDate",
+    "Ταφή": "burialLocation",
     "Ονοματεπώνυμο": "fullname",
     "Ηλικία": "age",
     "Ονομα πατερα & μητέρας": "fatherMotherName",
