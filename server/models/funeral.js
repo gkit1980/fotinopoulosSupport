@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const funeralSchema = new mongoose.Schema({
   burialDate: Date,
-  buriallocation: String,
+  burialLocation: String,
   fullname: String,
   age: Number,
   fatherMotherName: String,
