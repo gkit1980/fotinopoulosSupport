@@ -142,6 +142,7 @@ const useStyles = makeStyles({
       nieces:formData.an_nieces,
       others:formData.an_others,
       spouse:formData.an_spouse,
+      address:formData.an_address,
       wreaths:formData.an_wreaths
     };
   

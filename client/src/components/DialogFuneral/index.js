@@ -41,7 +41,7 @@ const DialogFuneral=forwardRef(( {selectedRowDeath,logo,className,open,handleClo
   const [ADTDate, setADTDate] = useState(selectedRowDeath ? selectedRowDeath.idPublicationDate : "");
   const [ADTDateError, setADTDateError] = useState("");
 
-  const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.burialdate : new Date());
+  const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.burialDate : new Date());
 
 
 
@@ -304,7 +304,7 @@ const handleADTDateChange=(event)=>
               }}
               label="Ταφή"
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.buriallocation : ""}
+              defaultValue={selectedRowDeath ? selectedRowDeath.burialLocation : ""}
               fullWidth
               variant="standard"
             />
@@ -805,6 +805,33 @@ const handleADTDateChange=(event)=>
                   </Grid>
             </Grid>
 
+            <Grid container spacing={0}>
+
+            <Grid item xs={12}>
+                
+            {selectedRowAnouncement &&  (<TextField
+                    rows={4}
+                    maxRows={10}
+                    multiline
+                    autoFocus
+                    margin="dense"
+                    id="an_address"
+                    name="an_address"
+                    InputProps={{
+                      readOnly: isReadOnly,
+                    }}
+                    label="Στεφάνια"
+                    type="text"
+                    defaultValue={selectedRowAnouncement ? selectedRowAnouncement.address : ""}
+                    fullWidth
+                    variant="standard"
+                  />
+            )}
+
+
+            </Grid>
+
+            </Grid>
 
             <Grid container spacing={0}>
 

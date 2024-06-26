@@ -113,6 +113,7 @@ useEffect(() => {
             nieces:dataAnouncement.nieces,
             others:dataAnouncement.others,
             spouse:dataAnouncement.spouse,
+            address:dataAnouncement.address,
             wreaths:dataAnouncement.wreaths
           };
 
@@ -221,6 +222,7 @@ const handleCreate = (formData) => {
     nieces:formData.an_nieces,
     others:formData.an_others,
     spouse:formData.an_spouse,
+    address:formData.an_address,
     wreaths:formData.an_wreaths
   };
 
@@ -397,6 +399,7 @@ setIsLoading(true);
     nieces:formData.an_nieces,
     others:formData.an_others,
     spouse:formData.an_spouse,
+    address:formData.an_address,
     wreaths:formData.an_wreaths
   };
 
@@ -725,6 +728,7 @@ const mapAnouncementValuesToHeaders=(headers, obj)=> {
     "Ανίψια": "nieces",
     "Λοιποί συγγενείς":"others",
     "Σύζυγος":"spouse",
+    "Διεύθυνση":"address",
     "Στεφάνια":"wreaths"
   }
 

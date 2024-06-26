@@ -55,6 +55,7 @@ router.post('/', async (req, res) => {
         console.log(body);
         let bodyAnouncement = {
             spouse: "",
+            address: "",
             childs: "",
             grandchilds: "",
             nieces: "",

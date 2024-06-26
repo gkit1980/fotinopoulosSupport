@@ -19,6 +19,9 @@ const anouncementSchema = new mongoose.Schema({
     others: {
         type: String
     },
+    address: {
+        type: String
+    },
     wreaths: {
         type: String
     },
