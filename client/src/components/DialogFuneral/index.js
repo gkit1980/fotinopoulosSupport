@@ -16,6 +16,13 @@ import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { el } from "date-fns/locale";
 
+// import { InputAdornment } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { FormControl,FormLabel } from '@mui/material';
+import Box from '@mui/material/Box';
+
 
 
 function PaperComponent(props) {
@@ -43,9 +50,12 @@ const DialogFuneral=forwardRef(( {selectedRowDeath,logo,className,open,handleClo
 
   const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.burialDate : new Date());
 
+  const [textFieldValue, setTextFieldValue] = useState(selectedRowAnouncement ? selectedRowAnouncement.wreaths : "");
 
-
-
+const labelStyle = {
+  flexGrow: 1,
+  fontSize: '16px' // Example additional style
+};
 
 
 
@@ -72,6 +82,7 @@ const DialogFuneral=forwardRef(( {selectedRowDeath,logo,className,open,handleClo
             .then(dataAnouncement => {
         
               setSelectedRowAnouncement(dataAnouncement);
+              setTextFieldValue(dataAnouncement.wreaths);
 
             })
           .catch(error => console.error('Error:', error));
@@ -232,6 +243,18 @@ const handleADTDateChange=(event)=>
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+
+  const handleCrossButtonClick = () => {
+    // Your button click handler logic
+    const newText = "Στεφάνι Σταυρός:"; // Example text to add
+    setTextFieldValue(prevValue => prevValue + newText); // Concatenate the new text to the existing value
+  };
+
+   const  handleFavoriteClick = () => {
+    // Your favorite icon click handler logic
+    const newText = "Στεφάνι Καρδιά:"; // Example text to add
+    setTextFieldValue(prevValue => prevValue + newText); // Concatenate the new text to the existing value
+  }
 
 
 
@@ -810,9 +833,6 @@ const handleADTDateChange=(event)=>
             <Grid item xs={12}>
                 
             {selectedRowAnouncement &&  (<TextField
-                    rows={4}
-                    maxRows={10}
-                    multiline
                     autoFocus
                     margin="dense"
                     id="an_address"
@@ -820,7 +840,7 @@ const handleADTDateChange=(event)=>
                     InputProps={{
                       readOnly: isReadOnly,
                     }}
-                    label="Στεφάνια"
+                    label="Διεύθυνση"
                     type="text"
                     defaultValue={selectedRowAnouncement ? selectedRowAnouncement.address : ""}
                     fullWidth
@@ -834,10 +854,28 @@ const handleADTDateChange=(event)=>
             </Grid>
 
             <Grid container spacing={0}>
-
-            <Grid item xs={12}>
-                
-            {selectedRowAnouncement &&  (<TextField
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <Box display="flex" alignItems="center" marginBottom={1}>
+                    <FormLabel component="legend" style={labelStyle}>
+                      Στεφάνια
+                    </FormLabel>
+                    <IconButton
+                      aria-label="add"
+                      onClick={handleCrossButtonClick}
+                      edge="end"
+                    >
+                      <AddIcon />
+                    </IconButton>
+                    <IconButton
+                    aria-label="favorite"
+                    onClick={handleFavoriteClick} // Define this handler for the heart icon
+                    edge="end"
+                    >
+                    <FavoriteIcon />
+                    </IconButton>
+                  </Box>
+                  <TextField
                     rows={4}
                     maxRows={10}
                     multiline
@@ -848,17 +886,12 @@ const handleADTDateChange=(event)=>
                     InputProps={{
                       readOnly: isReadOnly,
                     }}
-                    label="Στεφάνια"
                     type="text"
-                    defaultValue={selectedRowAnouncement ? selectedRowAnouncement.wreaths : ""}
-                    fullWidth
-                    variant="standard"
+                    value={textFieldValue}
+                    onChange={(e) => setTextFieldValue(e.target.value)}
                   />
-            )}
-
-
-            </Grid>
-
+                </FormControl>
+              </Grid>
             </Grid>
 
 

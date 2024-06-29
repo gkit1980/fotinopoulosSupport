@@ -13,7 +13,8 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState,useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 // react-router-dom components
 import { Link } from "react-router-dom";
@@ -41,14 +42,19 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 // Images
 import bgImage from "assets/images/rsz_shutterstock.jpg";
 import logo_fotinopoulos from 'assets/images/Fotinopoulos_logo_name.png';
+import { AuthContext } from 'context/auth-context';
 
 
 function Basic() {
+
+  const auth = useContext(AuthContext);
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+
+  const navigate = useNavigate(); // Step 2: Call useNavigate to get the navigate function
 
   const handleSignIn = async (username,password) => {
     try {
@@ -70,9 +76,9 @@ function Basic() {
       });
 
       if (response.ok) {
+        auth.login();
         // Redirect to dashboard
-      
-        window.location.href = '/dashboard';
+        navigate("/dashboard"); 
       } else {
         // Display client error
         console.error('Authentication failed');
@@ -111,11 +117,7 @@ function Basic() {
                 <LanguageIcon color="inherit" />
               </MDTypography>
             </Grid>
-            {/* <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <GoogleIcon color="inherit" />
-              </MDTypography>
-            </Grid> */}
+     
           </Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
@@ -143,21 +145,7 @@ function Basic() {
                 Είσοδος
               </MDButton>
             </MDBox>
-            {/* <MDBox mt={3} mb={1} textAlign="center">
-              <MDTypography variant="button" color="text">
-                Don&apos;t have an account?{" "}
-                <MDTypography
-                  component={Link}
-                  to="/authentication/sign-up"
-                  variant="button"
-                  color="info"
-                  fontWeight="medium"
-                  textGradient
-                >
-                  Sign up
-                </MDTypography>
-              </MDTypography>
-            </MDBox> */}
+           
           </MDBox>
         </MDBox>
       </Card>

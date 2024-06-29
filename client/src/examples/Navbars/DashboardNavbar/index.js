@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 
 // react-router components
 import { useLocation, Link } from "react-router-dom";
@@ -54,6 +54,8 @@ import {
   setOpenConfigurator,
 } from "context";
 
+import { AuthContext } from 'context/auth-context';
+
 
 import routes from "routes";
 
@@ -63,7 +65,6 @@ function DashboardNavbar({ absolute, light, isMini, onSearchChange }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-
   const currentRoute = routes.find((routeItem) => routeItem.route === `/${route[route.length - 1]}`);
 
   useEffect(() => {
@@ -96,6 +97,7 @@ function DashboardNavbar({ absolute, light, isMini, onSearchChange }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const auth = useContext(AuthContext);
 
 
   const handleSearchChange = (event) => {
@@ -134,6 +136,12 @@ function DashboardNavbar({ absolute, light, isMini, onSearchChange }) {
     },
   });
 
+ 
+  const handleLogout = () => {
+    auth.logout(); // This calls the logout method
+    // Optionally, redirect the user to the login page or elsewhere
+  };
+
   return (
     <AppBar
       position={absolute ? "absolute" : navbarType}
@@ -150,7 +158,7 @@ function DashboardNavbar({ absolute, light, isMini, onSearchChange }) {
               <MDInput label="Search here"  onChange={handleSearchChange} />
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
+              <Link to="/authentication/sign-in/basic" onClick={handleLogout}>
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
                   <Icon sx={iconsStyle}>account_circle</Icon>
                 </IconButton>

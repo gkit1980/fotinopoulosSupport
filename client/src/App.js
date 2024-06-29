@@ -9,10 +9,11 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 
 // react-router components
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, Redirect,Switch } from "react-router-dom";
+
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -34,16 +35,32 @@ import themeDark from "assets/theme-dark";
 
 // Material Dashboard 2 React routes
 import routes from "routes";
-import withAuthCheck from "auth";
+
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import { AuthContext } from 'context/auth-context';
 
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
 export default function App() {
+
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+  }, []);
+
+
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+   
+  }, []);
+
+
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -83,18 +100,38 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const getRoutes = (allRoutes,isLoggedIn) =>
-    allRoutes.map((route) => {
-        if (route.collapse) {
-          return getRoutes(route.collapse);
-        }
-
+  const getRoutes = (allRoutes, isLoggedIn) => {
+    if (!isLoggedIn) {
+      const filteredRoutes = allRoutes.filter((route) => route.key === "sign-in");
+      return (
+        <Route 
+          exact 
+          path={filteredRoutes[0].route} 
+          element={filteredRoutes[0].component} 
+          key={filteredRoutes[0].key} 
+        />
+      );
+    } else {
+      return allRoutes.map((route) => {
         if (route.route) {
-          return <Route exact path={route.route} element={isLoggedIn ? route.component : <Navigate to="/authentication/sign-in" />} key={route.key} />;
+          return (
+            <Route 
+              exact 
+              path={route.route} 
+              element={route.component} 
+              key={route.key} 
+            />
+          );
         }
-
         return null;
       });
+    }
+  };
+
+
+  
+    
+
 
   const configsButton = (
     <MDBox
@@ -120,9 +157,16 @@ export default function App() {
     </MDBox>
   );
 
-  const isLoggedIn = true; // Replace with your logic to check if the user is logged in
+
 
   return (
+    <AuthContext.Provider
+        value={{
+          isLoggedIn: isLoggedIn,
+          login: login,
+          logout: logout
+        }}
+    >
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
       {layout === "dashboard" && (
@@ -141,9 +185,10 @@ export default function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes, isLoggedIn)}
+        {getRoutes(routes,isLoggedIn)}
         <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
       </Routes>
     </ThemeProvider>
-  );
+    </AuthContext.Provider>
+  )
 }

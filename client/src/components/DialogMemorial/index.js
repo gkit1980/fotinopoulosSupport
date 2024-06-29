@@ -524,9 +524,6 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
             <Grid item xs={12}>
                 
             {selectedRowAnouncement &&  (<TextField
-                    rows={4}
-                    maxRows={10}
-                    multiline
                     autoFocus
                     margin="dense"
                     id="an_address"
@@ -534,7 +531,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
                     InputProps={{
                       readOnly: isReadOnly,
                     }}
-                    label="Στεφάνια"
+                    label="Διεύθυνση"
                     type="text"
                     defaultValue={selectedRowAnouncement ? selectedRowAnouncement.address : ""}
                     fullWidth
