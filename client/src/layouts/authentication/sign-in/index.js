@@ -51,12 +51,17 @@ function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
+
+
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   const navigate = useNavigate(); // Step 2: Call useNavigate to get the navigate function
 
   const handleSignIn = async (username,password) => {
+    setIsLoading(true); // Start loading
     try {
 
        // Validate the inputs
@@ -82,9 +87,13 @@ function Basic() {
       } else {
         // Display client error
         console.error('Authentication failed');
+        setLoginError('Λάθος στοιχεία εισόδου. Παρακαλώ δοκιμάστε ξανά.');
       }
     } catch (error) {
       console.error('An error occurred', error);
+    }
+    finally {
+      setIsLoading(false); // Stop loading after sign-in attempt
     }
   };
 
@@ -140,9 +149,19 @@ function Basic() {
                 &nbsp;&nbsp;Να με θυμάσαι
               </MDTypography>
             </MDBox>
+             {/* Display error message if loginError is not empty */}
+         {loginError && (
+          <MDBox mt={2} mb={1}>
+            <MDTypography variant="caption" color="error">
+              {loginError}
+            </MDTypography>
+          </MDBox>
+        )}
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth onClick={()=>handleSignIn(email,password)}>
-                Είσοδος
+              <MDButton variant="gradient" color="info" fullWidth onClick={()=>handleSignIn(email,password)}
+                 disabled={isLoading} // Disable button when loading
+                >
+                 {isLoading ? 'ΦΟΡΤΩΣΗ...' : 'ΕΙΣΟΔΟΣ'} 
               </MDButton>
             </MDBox>
            

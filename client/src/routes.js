@@ -26,9 +26,6 @@
 import Dashboard from "layouts/dashboard";
 import Funerals from "layouts/funerals";
 import Memorials from "layouts/memorials";
-import RTL from "layouts/rtl";
-import Notifications from "layouts/notifications";
-import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
