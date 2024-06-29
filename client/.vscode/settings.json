@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/44caad4d-9fb6-4f6c-b6da-f09a520f0002/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/entypafotinopoulosclient",
+    "appService.deploySubpath": "client/build"
+}
