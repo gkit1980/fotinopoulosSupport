@@ -35,7 +35,7 @@ function PaperComponent(props) {
   );
 }
 
-const DialogFuneral=forwardRef(( {selectedRowDeath,logo,className,open,handleClose,handleSubmit,isReadOnly },ref) => {
+const DialogFuneral=forwardRef(( {selectedRowDeath,logo,className,open,handleClose,handleSubmit,isReadOnly }) => {
 
   const [selectedRowAnouncement, setSelectedRowAnouncement] = useState(null);
   const [selectedRowRelative, setselectedRowRelative] = useState(null);
@@ -66,11 +66,18 @@ const labelStyle = {
 
 
 
-    useEffect(() => {
-      if (selectedRowAnouncement !== undefined && selectedRowRelative !== undefined && selectedRowDeath !== undefined) {
-    //    setIsLoading(false);
-      }
-    }, [selectedRowAnouncement]);
+useEffect(() => {
+  if (selectedRowAnouncement !== undefined && selectedRowAnouncement !== null &&
+      selectedRowRelative !== undefined && selectedRowRelative !== null &&
+      selectedRowDeath !== undefined && selectedRowDeath !== null) {
+    
+  // Assuming the scrollable content is within the DialogContent component
+  const scrollableContent = dialogRef.current?.querySelector('.MuiDialogContent-root');
+  if (scrollableContent) {
+    scrollableContent.scrollTop = 0;
+  }
+  }
+}, [selectedRowAnouncement, selectedRowRelative, selectedRowDeath]);
 
 
     useEffect(() => {
@@ -120,11 +127,11 @@ const labelStyle = {
     }, [selectedRowDeath]);
 
 
-    useEffect(() => {
-      if (open && dialogRef.current) {
-        dialogRef.current.scrollTop = 0;
-      }
-    }, [open]);
+    // useEffect(() => {
+    //   if (open && dialogRef.current) {
+    //     dialogRef.current.scrollTop = 0;
+    //   }
+    // }, [open]);
   
    
 
@@ -1410,8 +1417,7 @@ DialogFuneral.propTypes = {
   logo: PropTypes.element,
   className: PropTypes.string,
   selectedRowDeath: PropTypes.object,
-  isReadOnly: PropTypes.bool,
-  dialogRef: PropTypes.object
+  isReadOnly: PropTypes.bool
 };
 
 export default DialogFuneral;

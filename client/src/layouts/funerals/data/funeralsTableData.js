@@ -37,7 +37,6 @@ export default function data(text,open,create,setIsLoading) {
   const RelativeHeaders=['Βαθμός συγγένειας','Ονοματεπώνυμο','Ονομα/Επώνυμο πατέρα','Ονομα/Επώνυμο μητέρας','Ημερομηνία Γέννησης','Τόπος Γέννησης','ΑΔΤ','Ημερομηνία Έκδοσης ΑΔΤ','Αρχή Έκδοσης ΑΔΤ','ΔΟΥ','ΑΜΚΑ','Τηλέφωνο Επικοινωνίας','Τηλέφωνο Επικοινωνίας 2','Email','IBAN','Κωδικός Φορολογικού Φορέα','Συνθηματικό Φορολογικού Φορέα'];
 
 // Create a ref for the dialog content
-   const dialogRef = useRef(null);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [mappedData, setMappedData] = useState([]);
   const classes = useStyles();
@@ -885,7 +884,6 @@ const stringToDateFormat = (dateString) => {
         {/* Render the specific Dialog for the selected row */}
          {selectedRowId === item._id && dialogType === 'view' && (
         <DialogFuneral
-          ref={dialogRef}
           selectedRowDeath={selectedRow}
           logo={fotinopoulos}
           className={classes.logo}
@@ -918,7 +916,6 @@ const stringToDateFormat = (dateString) => {
         {/* Render the specific Dialog for the selected row */}
       {selectedRowId === item._id && dialogType === 'edit' && (
         <DialogFuneral
-          ref={dialogRef}
           selectedRowDeath={selectedRow}
           logo={fotinopoulos}
           className={classes.logo}
