@@ -70,6 +70,7 @@ const useStyles = makeStyles({
 
   const handleClick = () => {
     setOpen(true);
+    setCreate(true);
   };
 
   const handleClose = () => {
@@ -212,7 +213,7 @@ const useStyles = makeStyles({
                 .then(response => response.json())
                 .then(data => {
                   console.log('Success:', data);
-                  setCreate(true);
+                 //setCreate(true);
 
                   notifyEvent(formData);
                   
@@ -273,6 +274,7 @@ const useStyles = makeStyles({
                        handleClose={handleClose}
                        className={classes.logo}
                        handleSubmit={handleSubmit}
+                       createMode={create}
                     />
                 </MDBox>
 

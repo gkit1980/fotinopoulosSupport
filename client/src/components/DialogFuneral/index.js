@@ -23,7 +23,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { FormControl,FormLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import Skeleton from 'react-loading-skeleton';
-import { set } from 'date-fns';
 
 
 
@@ -35,30 +34,27 @@ function PaperComponent(props) {
   );
 }
 
-const DialogFuneral=forwardRef(( {selectedRowDeath,logo,className,open,handleClose,handleSubmit,isReadOnly }) => {
+const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode,handleClose,handleSubmit,isReadOnly},ref) => {
 
   const [selectedRowAnouncement, setSelectedRowAnouncement] = useState(null);
   const [selectedRowRelative, setselectedRowRelative] = useState(null);
-  const  [isDialogLoading, setisDialogLoading] = useState(false);
-  const [isAnouncementLoading, setIsAnouncementLoading] = useState(true);
-  const [isRelativeLoading, setIsRelativeLoading] = useState(true);
-
+  const [isAnouncementLoading, setIsAnouncementLoading] = useState(createMode === true ? false : true);
+  const [isRelativeLoading, setIsRelativeLoading] = useState(createMode === true ? false : true);
   const [afm, setAfm] = useState(selectedRowDeath ? selectedRowDeath.afm : "");
   const [afmError, setAfmError] = useState("");
-
   const [amka, setAmka] = useState(selectedRowDeath ? selectedRowDeath.amka : "");
   const [amkaError, setAmkaError] = useState("");
-
   const [ADTDate, setADTDate] = useState(selectedRowDeath ? selectedRowDeath.idPublicationDate : "");
   const [ADTDateError, setADTDateError] = useState("");
-
   const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.burialDate : new Date());
-
   const [textFieldValue, setTextFieldValue] = useState(selectedRowAnouncement ? selectedRowAnouncement.wreaths : "");
 
 
+  // Create a ref for the Dialog component
   const dialogRef = useRef(null);
 
+
+// Example additional style
 const labelStyle = {
   flexGrow: 1,
   fontSize: '16px' // Example additional style
@@ -80,7 +76,8 @@ useEffect(() => {
 }, [selectedRowAnouncement, selectedRowRelative, selectedRowDeath]);
 
 
-    useEffect(() => {
+
+  useEffect(() => {
 
       if(selectedRowDeath!=undefined)
         {
@@ -124,16 +121,11 @@ useEffect(() => {
       setselectedRowRelative({});
     }
 
-    }, [selectedRowDeath]);
+  }, [selectedRowDeath]);
 
 
-    // useEffect(() => {
-    //   if (open && dialogRef.current) {
-    //     dialogRef.current.scrollTop = 0;
-    //   }
-    // }, [open]);
-  
    
+  
 
     //afm validation
     const validateAfm = (value) => {
@@ -226,12 +218,11 @@ useEffect(() => {
       );
     };
 
-    const handleAmkaChange = (event) => {
+  const handleAmkaChange = (event) => {
       const { value } = event.target;
       setAmka(value);
       validateAmka(value);
     }
-
 
 
 const handleADTDateChange=(event)=>
@@ -281,12 +272,9 @@ const handleADTDateChange=(event)=>
 
 
 
-
   return (
 
-    isDialogLoading ? <LoadingSpinner asOverlay /> : (
-    
-    
+
     <Dialog
       ref={dialogRef}
       open={open}
@@ -1406,7 +1394,7 @@ const handleADTDateChange=(event)=>
     </Dialog>
 
 
-    )
+    
   );
 });
 
@@ -1417,7 +1405,8 @@ DialogFuneral.propTypes = {
   logo: PropTypes.element,
   className: PropTypes.string,
   selectedRowDeath: PropTypes.object,
-  isReadOnly: PropTypes.bool
+  isReadOnly: PropTypes.bool,
+  createMode: PropTypes.bool,
 };
 
 export default DialogFuneral;

@@ -216,7 +216,7 @@ DashboardNavbar.propTypes = {
   absolute: PropTypes.bool,
   light: PropTypes.bool,
   isMini: PropTypes.bool,
-  onSearchChange: PropTypes.func.isRequired,
+  // onSearchChange: PropTypes.func.isRequired,
 };
 
 export default DashboardNavbar;
