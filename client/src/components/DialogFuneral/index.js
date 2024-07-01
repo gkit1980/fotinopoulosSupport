@@ -26,6 +26,7 @@ import Skeleton from 'react-loading-skeleton';
 
 
 
+
 function PaperComponent(props) {
   return (
     <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
@@ -38,8 +39,9 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
 
   const [selectedRowAnouncement, setSelectedRowAnouncement] = useState(null);
   const [selectedRowRelative, setselectedRowRelative] = useState(null);
-  const [isAnouncementLoading, setIsAnouncementLoading] = useState(createMode === true ? false : true);
-  const [isRelativeLoading, setIsRelativeLoading] = useState(createMode === true ? false : true);
+  const result = createMode === true ? false : true;
+  const [isAnouncementLoading, setIsAnouncementLoading] = useState(result);
+  const [isRelativeLoading, setIsRelativeLoading] = useState(result);
   const [afm, setAfm] = useState(selectedRowDeath ? selectedRowDeath.afm : "");
   const [afmError, setAfmError] = useState("");
   const [amka, setAmka] = useState(selectedRowDeath ? selectedRowDeath.amka : "");
@@ -47,7 +49,116 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
   const [ADTDate, setADTDate] = useState(selectedRowDeath ? selectedRowDeath.idPublicationDate : "");
   const [ADTDateError, setADTDateError] = useState("");
   const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.burialDate : new Date());
-  const [textFieldValue, setTextFieldValue] = useState(selectedRowAnouncement ? selectedRowAnouncement.wreaths : "");
+
+
+
+  const [wreathsTextFieldValue, setWreathsTextFieldValue] = useState(selectedRowAnouncement ? selectedRowAnouncement.wreaths : "");
+  const [burialLocation, setBurialLocation] = useState(selectedRowDeath ? selectedRowDeath.burialLocation : "");
+  const [fullname, setFullname] = useState(selectedRowDeath ? selectedRowDeath.fullname : "");
+  const [fatherMotherName, setFatherMotherName] = useState(selectedRowDeath ? selectedRowDeath.fatherMotherName : "");
+  const [foreas, setForeas] = useState(selectedRowDeath ? selectedRowDeath.foreas : "");
+  const [spouseName, setSpouseName] = useState(selectedRowDeath ? selectedRowDeath.spouseName : "");
+  const [profession, setProfession] = useState(selectedRowDeath ? selectedRowDeath.profession : "");
+  const [residence,setResidence] = useState(selectedRowDeath ? selectedRowDeath.residence : "");
+  const [placeOfDeath, setPlaceOfDeath] = useState(selectedRowDeath ? selectedRowDeath.placeOfDeath : "");
+
+  //aggeltiria
+
+  const [an_spouse, setAnSpouse] = useState(selectedRowAnouncement ? selectedRowAnouncement.spouse : "");
+  const [an_childs, setAnChilds] = useState(selectedRowAnouncement ? selectedRowAnouncement.childs : "");
+  const [an_grandchilds, setAnGrandchilds] = useState(selectedRowAnouncement ? selectedRowAnouncement.grandchilds : "");
+  const [an_brothers, setAnBrothers] = useState(selectedRowAnouncement ? selectedRowAnouncement.brothers : "");
+  const [an_nieces, setAnNieces] = useState(selectedRowAnouncement ? selectedRowAnouncement.nieces : "");
+  const [an_others, setAnOthers] = useState(selectedRowAnouncement ? selectedRowAnouncement.others : "");
+  const [an_address, setAnAddress] = useState(selectedRowAnouncement ? selectedRowAnouncement.address : "");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ///english to greek map
+  const englishToGreekMap = {
+    'A': 'Α', 'B': 'Β', 'C': 'Σ', 'D': 'Δ', 'E': 'Ε', 'F': 'Φ', 'G': 'Γ', 'H': 'Η', 'I': 'Ι', 'J': 'Ξ', 'K': 'Κ', 'L': 'Λ', 'M': 'Μ',
+    'N': 'Ν', 'O': 'Ο', 'P': 'Π', 'Q': 'Θ', 'R': 'Ρ', 'S': 'Σ', 'T': 'Τ', 'U': 'Υ', 'V': 'Β', 'W': 'Ω', 'X': 'Χ', 'Y': 'Υ', 'Z': 'Ζ',
+    'a': 'Α', 'b': 'Β', 'c': 'Σ', 'd': 'Δ', 'e': 'Ε', 'f': 'Φ', 'g': 'Γ', 'h': 'Η', 'i': 'Ι', 'j': 'Ξ', 'k': 'Κ', 'l': 'Λ', 'm': 'Μ',
+    'n': 'Ν', 'o': 'Ο', 'p': 'Π', 'q': 'Θ', 'r': 'Ρ', 's': 'Σ', 't': 'Τ', 'u': 'Υ', 'v': 'Β', 'w': 'Ω', 'x': 'Χ', 'y': 'Υ', 'z': 'Ζ',
+  };
+
+
+
+  const handleTextChange = (event) => {
+    const { name, value } = event.target; 
+
+    const convertedValue = value.split('').map(char => {
+      return englishToGreekMap[char] || char;
+    }).join('').toUpperCase();
+
+    switch (name) {
+      case 'burialLocation':
+        setBurialLocation(convertedValue);
+        break;
+      case 'fullname':
+        setFullname(convertedValue);
+        break;
+       case 'fatherMotherName':
+          setFatherMotherName(convertedValue);
+          break;
+      case 'foreas':
+        setForeas(convertedValue);
+        break;
+      case 'spouseName':
+        setSpouseName(convertedValue);
+        break;
+      case 'profession':
+         setProfession(convertedValue);
+         break;
+      case 'residence':
+          setResidence(convertedValue); 
+        break;
+      case 'placeOfDeath':
+        setPlaceOfDeath(convertedValue);
+        break;
+      case 'an_spouse':
+        setAnSpouse(convertedValue);
+        break;
+      case 'an_childs':
+        setAnChilds(convertedValue);
+          break;
+      case 'an_grandchilds':
+          setAnGrandchilds(convertedValue);
+          break;
+      case 'an_brothers':
+           setAnBrothers(convertedValue);
+            break;
+      case 'an_nieces':
+            setAnNieces(convertedValue);
+            break;
+      case 'an_others':
+            setAnOthers(convertedValue);
+            break;
+      case 'an_address':
+            setAnAddress(convertedValue);
+            break;    
+      // Add more cases as needed for other inputs
+      default:
+        console.warn(`Unknown field: ${name}`);
+    }
+
+
+   
+  };
+
+
+  //end
 
 
   // Create a ref for the Dialog component
@@ -93,7 +204,18 @@ useEffect(() => {
             .then(dataAnouncement => {
         
               setSelectedRowAnouncement(dataAnouncement);
-              setTextFieldValue(dataAnouncement.wreaths);
+
+              //all fields
+              setWreathsTextFieldValue(dataAnouncement.wreaths);
+              setAnSpouse(dataAnouncement.spouse);
+              setAnChilds(dataAnouncement.childs);
+              setAnGrandchilds(dataAnouncement.grandchilds);
+              setAnBrothers(dataAnouncement.brothers);
+              setAnNieces(dataAnouncement.nieces);
+              setAnOthers(dataAnouncement.others);
+              setAnAddress(dataAnouncement.address);
+
+
               setIsAnouncementLoading(false);
 
             })
@@ -260,14 +382,14 @@ const handleADTDateChange=(event)=>
 
   const handleCrossButtonClick = () => {
     // Your button click handler logic
-    const newText = "Στεφάνι Σταυρός:"; // Example text to add
-    setTextFieldValue(prevValue => prevValue + newText); // Concatenate the new text to the existing value
+    const newText = "ΣΤΕΦΑΝΙ ΣΤΑΥΡΟΣ:"; // Example text to add
+    setWreathsTextFieldValue(prevValue => prevValue + newText); // Concatenate the new text to the existing value
   };
 
    const  handleFavoriteClick = () => {
     // Your favorite icon click handler logic
-    const newText = "Στεφάνι Καρδιά:"; // Example text to add
-    setTextFieldValue(prevValue => prevValue + newText); // Concatenate the new text to the existing value
+    const newText = "ΣΤΕΦΑΝΙ ΚΑΡΔΙΑ:"; // Example text to add
+    setWreathsTextFieldValue(prevValue => prevValue + newText); // Concatenate the new text to the existing value
   }
 
 
@@ -340,9 +462,10 @@ const handleADTDateChange=(event)=>
               }}
               label="Ταφή"
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.burialLocation : ""}
+              value={burialLocation}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
           </Grid>
       </Grid>
@@ -366,9 +489,10 @@ const handleADTDateChange=(event)=>
                 readOnly: isReadOnly,
               }}
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.fullname : ""}
+              value={fullname}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
           </Grid>
           <Grid item xs={6}>
@@ -404,9 +528,10 @@ const handleADTDateChange=(event)=>
               }}
               label="Ονομα πατερα & μητέρας"
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.fatherMotherName : ""}
+              value={fatherMotherName}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
         </Grid>
          
@@ -533,9 +658,10 @@ const handleADTDateChange=(event)=>
               }}
               label="Φορέας Συντ/σης ή Ασφαλισης"
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.foreas : ""}
+              value={foreas}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
             </Grid>
         </Grid>
@@ -554,9 +680,10 @@ const handleADTDateChange=(event)=>
               }}
               label="Ονομ/νυμο συζύγου"
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.spouseName : ""}
+              value={spouseName}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
             </Grid>
             <Grid item xs={6}>
@@ -571,9 +698,10 @@ const handleADTDateChange=(event)=>
               }}
               label="Επάγγελμα"
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.profession : ""}
+              value={profession}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
         </Grid>
       </Grid>
@@ -592,9 +720,10 @@ const handleADTDateChange=(event)=>
               }}
               label="Τόπος Κατοικίας"
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.residence : ""}
+              value={residence}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
             </Grid>
 
@@ -610,9 +739,10 @@ const handleADTDateChange=(event)=>
               }}
               label="Τόπος Θανάτου"
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.placeOfDeath : ""}
+              value={placeOfDeath}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
             </Grid>
       </Grid>
@@ -726,9 +856,10 @@ const handleADTDateChange=(event)=>
                                     }}
                                     label="Σύζυγος"
                                     type="text"
-                                    defaultValue={selectedRowAnouncement ? selectedRowAnouncement.spouse : ""}
+                                    value={an_spouse}
                                     fullWidth
                                     variant="standard"
+                                    onChange={handleTextChange}
                                 />
                                 )}
 
@@ -748,9 +879,10 @@ const handleADTDateChange=(event)=>
                                       }}
                                       label="Τέκνα"
                                       type="text"
-                                      defaultValue={selectedRowAnouncement ? selectedRowAnouncement.childs : ""}
+                                      value={an_childs}
                                       fullWidth
                                       variant="standard"
+                                      onChange={handleTextChange}
                                     />
                                 )}
 
@@ -774,9 +906,10 @@ const handleADTDateChange=(event)=>
                                       }}
                                       label="Εγγόνια"
                                       type="text"
-                                      defaultValue={selectedRowAnouncement ? selectedRowAnouncement.grandchilds : ""}
+                                      value={an_grandchilds}
                                       fullWidth
                                       variant="standard"
+                                      onChange={handleTextChange}
                                     />
                                     )}
                                 
@@ -797,9 +930,10 @@ const handleADTDateChange=(event)=>
                                             }}
                                             label="Αδέλφια"
                                             type="text"
-                                            defaultValue={selectedRowAnouncement ? selectedRowAnouncement.brothers : ""}
+                                            value={an_brothers}
                                             fullWidth
                                             variant="standard"
+                                            onChange={handleTextChange}
                                           />
                                           )}
 
@@ -822,9 +956,10 @@ const handleADTDateChange=(event)=>
                                           }}
                                           label="Ανίψια"
                                           type="text"
-                                          defaultValue={selectedRowAnouncement ? selectedRowAnouncement.nieces : ""}
+                                          value={an_nieces}
                                           fullWidth
                                           variant="standard"
+                                          onChange={handleTextChange}
                                       />
                                     )}
                           
@@ -842,9 +977,10 @@ const handleADTDateChange=(event)=>
                                       }}
                                       label="Λοιποί συγγενείς"
                                       type="text"
-                                      defaultValue={selectedRowAnouncement ? selectedRowAnouncement.others : ""}
+                                      value={an_others}
                                       fullWidth
                                       variant="standard"
+                                      onChange={handleTextChange}
                                     />
                                     )}
 
@@ -866,9 +1002,10 @@ const handleADTDateChange=(event)=>
                                     }}
                                     label="Διεύθυνση"
                                     type="text"
-                                    defaultValue={selectedRowAnouncement ? selectedRowAnouncement.address : ""}
+                                    value={an_address}
                                     fullWidth
                                     variant="standard"
+                                    onChange={handleTextChange}
                                 />
                         )}
 
@@ -911,8 +1048,8 @@ const handleADTDateChange=(event)=>
                               readOnly: isReadOnly,
                             }}
                             type="text"
-                            value={textFieldValue}
-                            onChange={(e) => setTextFieldValue(e.target.value)}
+                            value={wreathsTextFieldValue}
+                            onChange={(e) => setWreathsTextFieldValue(e.target.value)}
                           />
                         </FormControl>
                       </Grid>
@@ -950,6 +1087,7 @@ const handleADTDateChange=(event)=>
                       defaultValue={selectedRowRelative ? selectedRowRelative.relationdegree : ""}
                       fullWidth
                       variant="standard"
+                      onChange={handleTextChange}
                     />
                     )}
         
@@ -974,6 +1112,7 @@ const handleADTDateChange=(event)=>
                     defaultValue={selectedRowRelative ? selectedRowRelative.fullname : ""}
                     fullWidth
                     variant="standard"
+                    onChange={handleTextChange}
                   />
                   )}
 
@@ -996,6 +1135,7 @@ const handleADTDateChange=(event)=>
                   defaultValue={selectedRowRelative ? selectedRowRelative.fatherfullname : ""}
                   fullWidth
                   variant="standard"
+                  onChange={handleTextChange}
                 />
               )}
 
@@ -1022,6 +1162,7 @@ const handleADTDateChange=(event)=>
                     defaultValue={selectedRowRelative ? selectedRowRelative.motherfullname : ""}
                     fullWidth
                     variant="standard"
+                    onChange={handleTextChange}
                   />
                   )}
                 
@@ -1071,6 +1212,7 @@ const handleADTDateChange=(event)=>
                           defaultValue={selectedRowRelative ? selectedRowRelative.birthlocation : ""}
                           fullWidth
                           variant="standard"
+                          onChange={handleTextChange}
                         />
                         )}
                       
@@ -1190,6 +1332,7 @@ const handleADTDateChange=(event)=>
                                 defaultValue={selectedRowRelative ? selectedRowRelative.doy : ""}
                                 fullWidth
                                 variant="standard"
+                                onChange={handleTextChange}
                               />
                               )}
 
