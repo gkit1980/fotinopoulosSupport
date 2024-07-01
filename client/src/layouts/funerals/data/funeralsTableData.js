@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
 
 
-export default function data(text,open,create,setIsLoading) {
+export default function data(text,open,setIsLoading) {
 
 
   const FuneralHeaders=['Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου']
@@ -66,7 +66,7 @@ useEffect(() => {
       setIsLoading(false);
      
     });
-}, [text,open,create]);
+}, [text,open]);
 
 
 
@@ -891,6 +891,7 @@ const stringToDateFormat = (dateString) => {
           handleClose={handleClose}
           handleSubmit={handleSubmit}
           isReadOnly={true}
+          createMode={false}
         />
       )}
         </>
@@ -923,6 +924,7 @@ const stringToDateFormat = (dateString) => {
           handleClose={handleClose}
           handleSubmit={handleSubmit}
           isReadOnly={false}
+          createMode={false}
         />
       )}
         </>

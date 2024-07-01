@@ -39,14 +39,14 @@ import { useEffect,useState } from "react";
 
 // Dashboard componentsimport Projects from "layouts/dashboard/components/Projects";
 import NotificationsOverview from "layouts/dashboard/components/NotificationsOverview";
-import { set } from "date-fns";
+
 
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
 
-  const [countFunerals,setCountFunerals] = useState(0);
-  const [countMemorials,setCountMemorials] = useState(0);
+  const [countFunerals,setCountFunerals] = useState(null);
+  const [countMemorials,setCountMemorials] = useState(null);
 
 
 
@@ -88,7 +88,7 @@ function Dashboard() {
               <ComplexStatisticsCard
                 icon="leaderboard"
                 title="Κηδείες"
-                count={countFunerals === 0 ? <Skeleton width={50} /> : countFunerals}
+                count={countFunerals === null ? <Skeleton width={50} /> : countFunerals}
                 percentage={{
                   color: "success",
                   amount: "+3%",
@@ -103,7 +103,7 @@ function Dashboard() {
                 color="success"
                 icon="store"
                 title="Μνημόσυνα"
-                count={countMemorials === 0 ? <Skeleton width={50} /> : countMemorials}
+                count={countMemorials === null ? <Skeleton width={50} /> : countMemorials}
                 percentage={{
                   color: "success",
                   amount: "+1%",

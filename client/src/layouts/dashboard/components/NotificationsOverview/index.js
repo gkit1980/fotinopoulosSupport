@@ -30,7 +30,7 @@ import TimelineItem from "examples/Timeline/TimelineItem";
 
 function NotificationsOverview() {
 
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState(null);
 
   useEffect(() => {
      
@@ -79,7 +79,7 @@ const formatDate = (isoString) => {
         </MDTypography>
         <MDBox mt={1} mb={2}>
        <div>
-              {notifications.length === 0 ? (
+              {notifications==null ? (
               <Skeleton width={1000} height={20}/>
           ) : (
             <ul>

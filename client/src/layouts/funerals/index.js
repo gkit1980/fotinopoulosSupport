@@ -57,20 +57,15 @@ const useStyles = makeStyles({
   const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState('');
   const [open, setOpen] = useState(false);
-  const [create, setCreate] = useState(false);
-
-  // const [create, setCreate] = useState(false); /
-  // const [columns, setColumns] = useState([]);
-  // const [rows, setRows] = useState([]);
 
 
   const classes = useStyles();
-  const {columns,rows} = funeralsTableData(searchValue, open,create,setIsLoading);
+  const {columns,rows} = funeralsTableData(searchValue,open,setIsLoading);
 
 
   const handleClick = () => {
     setOpen(true);
-    setCreate(true);
+    
   };
 
   const handleClose = () => {
@@ -213,7 +208,7 @@ const useStyles = makeStyles({
                 .then(response => response.json())
                 .then(data => {
                   console.log('Success:', data);
-                 //setCreate(true);
+                
 
                   notifyEvent(formData);
                   
@@ -274,7 +269,7 @@ const useStyles = makeStyles({
                        handleClose={handleClose}
                        className={classes.logo}
                        handleSubmit={handleSubmit}
-                       createMode={create}
+                       createMode={true}
                     />
                 </MDBox>
 
