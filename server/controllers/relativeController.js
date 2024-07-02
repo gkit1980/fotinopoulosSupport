@@ -44,6 +44,7 @@ router.put('/:id', async (req, res) => {
     const id = req.params.id;
     const relativeData = req.body;
     try {
+        console.log("Relative Data:"+relativeData);
         const updatedRelative = await RelativeDAO.updateRelativeById(id, relativeData);
         console.log("Updated Relative:"+updatedRelative);
         if (updatedRelative) {

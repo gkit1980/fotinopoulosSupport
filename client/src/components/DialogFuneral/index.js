@@ -23,6 +23,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { FormControl,FormLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import Skeleton from 'react-loading-skeleton';
+import { set } from 'date-fns';
 
 
 
@@ -73,14 +74,19 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
   const [an_address, setAnAddress] = useState(selectedRowAnouncement ? selectedRowAnouncement.address : "");
 
 
+  //Plhjesteros syggenis
 
-
-
-
-
-
-
-
+  const [rel_relationdegree, setRelRelationdegree] = useState(selectedRowRelative ? selectedRowRelative.relationdegree : "");
+  const [rel_fullname, setRelFullname] = useState(selectedRowRelative ? selectedRowRelative.fullname : "");
+  const [rel_fatherfullname, setRelFatherFullname] = useState(selectedRowRelative ? selectedRowRelative.fatherfullname : "");
+  const [rel_motherfullname, setRelMotherFullname] = useState(selectedRowRelative ? selectedRowRelative.motherfullname : "");
+  const [rel_birthlocation, setRelBirthLocation] = useState(selectedRowRelative ? selectedRowRelative.birthlocation : "");
+  const [rel_doy, setRelDoy] = useState(selectedRowRelative ? selectedRowRelative.doy : "");
+  const [rel_idAuthority, setRelIdAuthority] = useState(selectedRowRelative ? selectedRowRelative.idAuthority : "");
+  const [rel_birthdate, setRelBirthDate] = useState(selectedRowRelative ? selectedRowRelative.birthdate : "");
+  const [rel_birthDateError,setRelBirthDateError] = useState("");
+  const [rel_idPublicationDate, setRelIdPublicationDate] = useState(selectedRowRelative ? selectedRowRelative.idPublicationDate : "");
+  const [rel_idPublicationDateError,setRelIdPublicationDateError] = useState("");
 
 
 
@@ -129,13 +135,13 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
         break;
       case 'an_spouse':
         setAnSpouse(convertedValue);
-        break;
+           break;
       case 'an_childs':
         setAnChilds(convertedValue);
-          break;
+           break;
       case 'an_grandchilds':
           setAnGrandchilds(convertedValue);
-          break;
+           break;
       case 'an_brothers':
            setAnBrothers(convertedValue);
             break;
@@ -147,7 +153,28 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
             break;
       case 'an_address':
             setAnAddress(convertedValue);
-            break;    
+            break;
+      case 'rel_relationdegree':
+            setRelRelationdegree(convertedValue);
+            break;         
+      case 'rel_fullname':
+            setRelFullname(convertedValue);
+            break;      
+      case 'rel_fatherfullname':
+            setRelFatherFullname(convertedValue);
+            break;
+      case 'rel_motherfullname':
+            setRelMotherFullname(convertedValue);
+            break;
+      case 'rel_birthlocation':
+            setRelBirthLocation(convertedValue);
+            break;
+      case 'rel_doy':
+            setRelDoy(convertedValue);
+            break;
+      case 'rel_idAuthority':
+            setRelIdAuthority(convertedValue);
+            break;
       // Add more cases as needed for other inputs
       default:
         console.warn(`Unknown field: ${name}`);
@@ -227,6 +254,17 @@ useEffect(() => {
           .then(dataRelative => {
         
               setselectedRowRelative(dataRelative);
+              
+              setRelRelationdegree(dataRelative.relationdegree);
+              setRelFullname(dataRelative.fullname);
+              setRelFatherFullname(dataRelative.fatherfullname);
+              setRelMotherFullname(dataRelative.motherfullname);
+              setRelBirthLocation(dataRelative.birthlocation);
+              setRelDoy(dataRelative.doy);
+              setRelIdAuthority(dataRelative.idAuthority);
+              setRelIdPublicationDate(dataRelative.idPublicationDate);
+              
+
               setIsRelativeLoading(false);
           
 
@@ -298,7 +336,7 @@ useEffect(() => {
 
     //amka validation
 
-    const validateAmka = (amka) => {
+ const validateAmka = (amka) => {
 
       // Ensure the AMKA is exactly 11 digits long
       if (amka.length !== 11) {
@@ -327,7 +365,7 @@ useEffect(() => {
      
     };
 
-    const isValidDate = (day, month, year) => {
+ const isValidDate = (day, month, year) => {
       // Adjust year for two-digit format (assuming AMKA covers people born from 1900 to 2099)
       const fullYear = year + (year >= 0 && year <= 99 ? (year <= 23 ? 2000 : 1900) : 0);
       
@@ -340,20 +378,20 @@ useEffect(() => {
       );
     };
 
-  const handleAmkaChange = (event) => {
+const handleAmkaChange = (event) => {
       const { value } = event.target;
       setAmka(value);
       validateAmka(value);
     }
 
 
-const handleADTDateChange=(event)=>
-  {
-    const { value } = event.target;
-    setADTDate(value);
-    validateADTDate(value);
-  }
-  
+  const handleADTDateChange=(event)=>
+    {
+      const { value } = event.target;
+      setADTDate(value);
+      validateADTDate(value);
+    }
+   
 
   const validateADTDate = (dateStr) => {
     const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
@@ -391,6 +429,64 @@ const handleADTDateChange=(event)=>
     const newText = "ΣΤΕΦΑΝΙ ΚΑΡΔΙΑ:"; // Example text to add
     setWreathsTextFieldValue(prevValue => prevValue + newText); // Concatenate the new text to the existing value
   }
+
+  //Relative Validations
+  const handleRelBirthDateChange=(event)=>
+    {
+      const {value} = event.target;
+      setRelBirthDate(value);
+      validateRelBirthDate(value);
+    }
+
+  const validateRelBirthDate = (dateStr) => {
+    const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
+  
+    if (!datePattern.test(dateStr)) {
+      setRelBirthDateError("Η ημερομηνία πρέπει νά έχει τήν μορφή DD/MM/YYYY");
+    }
+   else
+   {
+    const [day, month, year] = dateStr.split('/').map(Number);
+  
+    const dateObject = new Date(year, month - 1, day);
+  
+    if (dateObject.getFullYear() !== year || dateObject.getMonth() + 1 !== month || dateObject.getDate() !== day) {
+      setRelBirthDateError("Η ημερομηνία δέν είναι έγκυρη.");
+    }
+    else
+    setRelBirthDateError("");
+  }
+  };
+
+
+  const handleRelIdPublicationDateChange=(event)=>
+    {
+      const {value} = event.target;
+      setRelIdPublicationDate(value);
+      validateRelIdPublicationDate(value);
+    }
+
+  const validateRelIdPublicationDate = (dateStr) => {
+    const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
+  
+    if (!datePattern.test(dateStr)) {
+      setRelIdPublicationDateError("Η ημερομηνία πρέπει νά έχει τήν μορφή DD/MM/YYYY");
+    }
+   else
+   {
+    const [day, month, year] = dateStr.split('/').map(Number);
+  
+    const dateObject = new Date(year, month - 1, day);
+  
+    if (dateObject.getFullYear() !== year || dateObject.getMonth() + 1 !== month || dateObject.getDate() !== day) {
+      setRelIdPublicationDateError("Η ημερομηνία δέν είναι έγκυρη.");
+    }
+    else
+    setRelIdPublicationDateError("");
+  }
+  };
+
+
 
 
 
@@ -1084,7 +1180,7 @@ const handleADTDateChange=(event)=>
                       }}
                       label="Βαθμός συγγένειας"
                       type="text"
-                      defaultValue={selectedRowRelative ? selectedRowRelative.relationdegree : ""}
+                      value={rel_relationdegree}
                       fullWidth
                       variant="standard"
                       onChange={handleTextChange}
@@ -1109,7 +1205,7 @@ const handleADTDateChange=(event)=>
                     }}
                     label="Ονοματεπώνυμο"
                     type="text"
-                    defaultValue={selectedRowRelative ? selectedRowRelative.fullname : ""}
+                    value={rel_fullname}
                     fullWidth
                     variant="standard"
                     onChange={handleTextChange}
@@ -1132,7 +1228,7 @@ const handleADTDateChange=(event)=>
                   }}
                   label="Ονομα/Επώνυμο πατέρα"
                   type="text"
-                  defaultValue={selectedRowRelative ? selectedRowRelative.fatherfullname : ""}
+                  value={rel_fatherfullname}
                   fullWidth
                   variant="standard"
                   onChange={handleTextChange}
@@ -1159,7 +1255,7 @@ const handleADTDateChange=(event)=>
                     }}
                     label="Ονομα/Επώνυμο μητέρας"
                     type="text"
-                    defaultValue={selectedRowRelative ? selectedRowRelative.motherfullname : ""}
+                    value={rel_motherfullname}
                     fullWidth
                     variant="standard"
                     onChange={handleTextChange}
@@ -1182,10 +1278,14 @@ const handleADTDateChange=(event)=>
                           readOnly: isReadOnly,
                         }}
                         label="Ημερομηνία γέννησης"
+                        placeholder="DD/MM/YYYY"
                         type="text"
-                        defaultValue={selectedRowRelative ? selectedRowRelative.birthdate : ""}
+                        value={rel_birthdate}
                         fullWidth
                         variant="standard"
+                        onChange={handleRelBirthDateChange}
+                        error={!!rel_birthDateError}
+                        helperText={rel_birthDateError}
                       />
                       )}
 
@@ -1209,7 +1309,7 @@ const handleADTDateChange=(event)=>
                           }}
                           label="Τόπος γέννησης"
                           type="text"
-                          defaultValue={selectedRowRelative ? selectedRowRelative.birthlocation : ""}
+                          value={rel_birthlocation}
                           fullWidth
                           variant="standard"
                           onChange={handleTextChange}
@@ -1258,9 +1358,13 @@ const handleADTDateChange=(event)=>
                         }}
                         label="Ημερομηνία έκδοσης AΔΤ"
                         type="text"
-                        defaultValue={selectedRowRelative ? selectedRowRelative.idPublicationDate : ""}
+                        placeholder='DD/MM/YYYY'
+                        value={rel_idPublicationDate}
                         fullWidth
                         variant="standard"
+                        onChange={handleRelIdPublicationDateChange}
+                        error={!!rel_idPublicationDateError}
+                        helperText={rel_idPublicationDateError}
                       />
                       )}
                     
@@ -1281,9 +1385,10 @@ const handleADTDateChange=(event)=>
                             }}
                             label="Aρχή έκδοσης AΔΤ"
                             type="text"
-                            defaultValue={selectedRowRelative ? selectedRowRelative.idAuthority : ""}
+                            value={rel_idAuthority}
                             fullWidth
                             variant="standard"
+                            onChange={handleTextChange}
                           />
                           )}
 
@@ -1329,7 +1434,7 @@ const handleADTDateChange=(event)=>
                                 }}
                                 label="ΔΟΥ" 
                                 type="text"
-                                defaultValue={selectedRowRelative ? selectedRowRelative.doy : ""}
+                                value={rel_doy}
                                 fullWidth
                                 variant="standard"
                                 onChange={handleTextChange}
@@ -1378,7 +1483,7 @@ const handleADTDateChange=(event)=>
                             }}
                             label="Τηλέφωνο Επικοινωνίας" 
                             type="text"
-                            defaultValue={selectedRowRelative ? selectedRowRelative.phone : ""}
+                            value={selectedRowRelative ? selectedRowRelative.phone : ""}
                             fullWidth
                             variant="standard"
                           />
@@ -1398,7 +1503,7 @@ const handleADTDateChange=(event)=>
                             }}
                             label="Τηλέφωνο Επικοινωνίας 2" 
                             type="text"
-                            defaultValue={selectedRowRelative ? selectedRowRelative.phone2 : ""}
+                            value={selectedRowRelative ? selectedRowRelative.phone2 : ""}
                             fullWidth
                             variant="standard"
                           />
@@ -1423,7 +1528,7 @@ const handleADTDateChange=(event)=>
                           }}
                           label="Email"
                           type="text"
-                          defaultValue={selectedRowRelative ? selectedRowRelative.email : ""}
+                          value={selectedRowRelative ? selectedRowRelative.email : ""}
                           fullWidth
                           variant="standard"
                         />
@@ -1446,7 +1551,7 @@ const handleADTDateChange=(event)=>
                               }}
                               label="IBAN" 
                               type="text"
-                              defaultValue={selectedRowRelative ? selectedRowRelative.iban : ""}
+                              value={selectedRowRelative ? selectedRowRelative.iban : ""}
                               fullWidth
                               variant="standard"
                             />
@@ -1471,7 +1576,7 @@ const handleADTDateChange=(event)=>
                       }}
                       label="Κωδικός Φορολογικού Φορέα"
                       type="text"
-                      defaultValue={selectedRowRelative ? selectedRowRelative.taxisCodeUser : ""}
+                      value={selectedRowRelative ? selectedRowRelative.taxisCodeUser : ""}
                       fullWidth
                       variant="standard"
                     />
@@ -1494,7 +1599,7 @@ const handleADTDateChange=(event)=>
                           }}
                           label="Συνθηματικό Φορολογικού Φορέα"
                           type="text"
-                          defaultValue={selectedRowRelative ? selectedRowRelative.taxisCodePassword: ""}
+                          value={selectedRowRelative ? selectedRowRelative.taxisCodePassword: ""}
                           fullWidth
                           variant="standard"
                         />
@@ -1530,7 +1635,7 @@ const handleADTDateChange=(event)=>
                   >
                     Ακύρωση
                   </Button>
-                {!isReadOnly && <Button type="submit" disabled={!!afmError || !!amkaError}>Αποθήκευση</Button>}
+                {!isReadOnly && <Button type="submit" disabled={!!afmError || !!amkaError || !!ADTDateError || rel_birthDateError || rel_idPublicationDateError}>Αποθήκευση</Button>}
       </DialogActions>
   
     

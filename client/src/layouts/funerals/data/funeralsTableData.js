@@ -432,6 +432,8 @@ setIsLoading(true);
 
   //convert the date string to date object--SOS!!!
   updatedFuneralFormData.idPublicationDate=stringToDateFormat(updatedFuneralFormData.idPublicationDate);
+  updatedRelativeFormData.birthDate=stringToDateFormat(updatedRelativeFormData.birthDate);
+  updatedRelativeFormData.idPublicationDate=stringToDateFormat(updatedRelativeFormData.idPublicationDate);
 
 
    // Send a PUT request to the server
@@ -788,6 +790,9 @@ const formatDate = (isoString) => {
 
 //convert the date string to date object
 const stringToDateFormat = (dateString) => {
+
+  if(dateString==null)
+    return null;
    /////Fetch existing anouncement data and relative data
    const parts = dateString.split("/");
    const year = parseInt(parts[2], 10);
