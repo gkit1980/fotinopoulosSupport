@@ -87,6 +87,11 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
   const [rel_birthDateError,setRelBirthDateError] = useState("");
   const [rel_idPublicationDate, setRelIdPublicationDate] = useState(selectedRowRelative ? selectedRowRelative.idPublicationDate : "");
   const [rel_idPublicationDateError,setRelIdPublicationDateError] = useState("");
+  const [rel_amka, setRelAmka] = useState(selectedRowRelative ? selectedRowRelative.amka : "");
+  const [rel_amkaError, setRelAmkaError] = useState("");
+  const [rel_afm, setRelAfm] = useState(selectedRowRelative ? selectedRowRelative.afm : "");
+  const [rel_afmError, setRelAfmError] = useState("");
+
 
 
 
@@ -243,6 +248,7 @@ useEffect(() => {
               setAnAddress(dataAnouncement.address);
 
 
+
               setIsAnouncementLoading(false);
 
             })
@@ -263,6 +269,9 @@ useEffect(() => {
               setRelDoy(dataRelative.doy);
               setRelIdAuthority(dataRelative.idAuthority);
               setRelIdPublicationDate(dataRelative.idPublicationDate);
+              setRelAmka(dataRelative.amka);
+              setRelAfm(dataRelative.afm);
+              setRelBirthDate(dataRelative.birthdate);
               
 
               setIsRelativeLoading(false);
@@ -289,6 +298,15 @@ useEffect(() => {
 
     //afm validation
     const validateAfm = (value) => {
+       
+
+      if(value=="")
+        {
+        setAfmError("");
+       return;
+        }
+
+
       if (value.length !== 9) {
         setAfmError("ΑΦΜ πρέπει να αποτελείται από 9 ψηφία.");
       } 
@@ -304,6 +322,34 @@ useEffect(() => {
         }
       else {
         setAfmError("");
+      }
+    };
+
+    const validateRelAfm = (value) => {
+       
+
+      if(value=="")
+        {
+       setRelAfmError("");
+       return;
+        }
+
+
+      if (value.length !== 9) {
+        setRelAfmError("ΑΦΜ πρέπει να αποτελείται από 9 ψηφία.");
+      } 
+      else if(typeof afm !== 'string') {
+        setRelAfmError("ΑΦΜ πρέπει να αποτελείται από ψηφία και όχι χαρακτήρες.");
+      }
+      else if(typeof afm !== 'string') {
+        setRelAfmError("ΑΦΜ πρέπει να αποτελείται από ψηφία και όχι χαρακτήρες.");
+      }
+      else if(!isValidAfm)
+        {
+        setRelAfmError("Το ΑΦΜ δεν είναι έγκυρο.");
+        }
+      else {
+        setRelAfmError("");
       }
     };
 
@@ -327,16 +373,32 @@ useEffect(() => {
 
   
     const handleAfmChange = (event) => {
-      const { value } = event.target;
-      setAfm(value);
-      validateAfm(value);
+      const { name,value } = event.target;
+      switch (name) {
+        case 'afm':
+          setAfm(value);
+          validateAfm(value);
+          break;
+        case 'rel_afm':
+          setRelAfm(value)
+          validateRelAfm(value);
+          break
+        default:
+          console.warn(`Unknown field: ${name}`);
+      }
+    
     }
-
-
 
     //amka validation
 
  const validateAmka = (amka) => {
+
+      
+      if(amka=="")
+        {
+        setRelAmkaError("");
+      return;
+        }
 
       // Ensure the AMKA is exactly 11 digits long
       if (amka.length !== 11) {
@@ -365,6 +427,41 @@ useEffect(() => {
      
     };
 
+  const validateRelAmka = (amka) => {
+
+      if(amka=="")
+        {
+        setRelAmkaError("");
+       return;
+        }
+  
+      // Ensure the AMKA is exactly 11 digits long
+      if (amka.length !== 11) {
+        setRelAmkaError("To AMKA πρέπει να αποτελείται από 11 ψηφία.");
+      }
+      // Ensure all characters are digits
+      else if (!/^\d+$/.test(amka)) {
+        setRelAmkaError("To AMKA πρέπει να αποτελείται από ψηφία.");
+      }
+      else
+      {
+      // Extract birthdate from the first 6 digits
+      const day = parseInt(amka.substring(0, 2), 10);
+      const month = parseInt(amka.substring(2, 4), 10);
+      const year = parseInt(amka.substring(4, 6), 10);
+      
+      // Validate the birthdate
+      if (!isValidDate(day, month, year)) {
+        setRelAmkaError("To AMKA δεν περιέχει έγκυρη ημερομηνία γέννησης.");
+      }
+      else {
+        setRelAmkaError("");
+      }
+    }
+    
+     
+    };
+
  const isValidDate = (day, month, year) => {
       // Adjust year for two-digit format (assuming AMKA covers people born from 1900 to 2099)
       const fullYear = year + (year >= 0 && year <= 99 ? (year <= 23 ? 2000 : 1900) : 0);
@@ -378,10 +475,20 @@ useEffect(() => {
       );
     };
 
-const handleAmkaChange = (event) => {
-      const { value } = event.target;
-      setAmka(value);
-      validateAmka(value);
+ const handleAmkaChange = (event) => {
+      const { name,value } = event.target;
+      switch (name) {
+          case 'amka':
+              setAmka(value);
+              validateAmka(value);
+                break;
+          case 'rel_amka':
+                setRelAmka(value);
+                validateRelAmka(value);
+                break;  
+          default:
+           console.warn(`Unknown field: ${name}`);
+      }
     }
 
 
@@ -468,6 +575,12 @@ const handleAmkaChange = (event) => {
 
   const validateRelIdPublicationDate = (dateStr) => {
     const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
+
+    if(dateStr=="")
+      {
+      setRelIdPublicationDateError("");
+      return ;
+      }
   
     if (!datePattern.test(dateStr)) {
       setRelIdPublicationDateError("Η ημερομηνία πρέπει νά έχει τήν μορφή DD/MM/YYYY");
@@ -693,7 +806,7 @@ const handleAmkaChange = (event) => {
               label="Ημερομηνία έκδοσης AΔΤ"
               type="text"
               placeholder="DD/MM/YYYY"
-              defaultValue={selectedRowDeath ? selectedRowDeath.idPublicationDate : ""}
+              value={ADTDate}
               fullWidth
               variant="standard"
             />
@@ -1282,6 +1395,7 @@ const handleAmkaChange = (event) => {
                         type="text"
                         value={rel_birthdate}
                         fullWidth
+                        format="dd/MM/yyyy"
                         variant="standard"
                         onChange={handleRelBirthDateChange}
                         error={!!rel_birthDateError}
@@ -1358,6 +1472,7 @@ const handleAmkaChange = (event) => {
                         }}
                         label="Ημερομηνία έκδοσης AΔΤ"
                         type="text"
+                        format="dd/MM/yyyy"
                         placeholder='DD/MM/YYYY'
                         value={rel_idPublicationDate}
                         fullWidth
@@ -1411,11 +1526,14 @@ const handleAmkaChange = (event) => {
                             }}
                             label="ΑΦΜ"
                             type="text"
-                            defaultValue={selectedRowRelative ? selectedRowRelative.afm : ""}
+                            value={rel_afm}
                             fullWidth
                             variant="standard"
+                            onChange={handleAfmChange}
+                            error={!!rel_afmError}
+                            helperText={rel_afmError}
                           />
-                          )}
+                       )}
                         
 
 
@@ -1460,9 +1578,12 @@ const handleAmkaChange = (event) => {
                         }}
                         label="AMKA"
                         type="text"
-                        defaultValue={selectedRowRelative ? selectedRowRelative.amka : ""}
+                        value={rel_amka}
                         fullWidth
                         variant="standard"
+                        onChange={handleAmkaChange}
+                        error={!!rel_amkaError}
+                        helperText={rel_amkaError}
                       />
                       )}
                     

@@ -39,6 +39,24 @@ class RelativeDAO {
     // Method to update a specific Relative by ID
     async updateRelativeById(id, data) {
         try {
+         
+            // Convert the birthDate string to a Date object
+            console.log("Before Relative Birthdate"+data.birthDate);
+            const dateObject1 = moment(data.birthDate, "DD/MM/YYYY HH:mm").toDate();
+        
+            data.birthDate = dateObject1;
+            console.log("After Relative Birthdate"+ data.birthDate);
+
+
+            // Convert the idPublicationDate string to a Date object
+            console.log("Before Relative idPublicationDate"+data.idPublicationDate);
+            const dateObject2 = moment(data.idPublicationDate, "DD/MM/YYYY HH:mm").toDate();
+        
+            data.idPublicationDate = dateObject2;
+            console.log("After Relative idPublicationDate"+ data.idPublicationDate);
+
+
+
             const updatedNRelative = await Relative.findByIdAndUpdate(id, data, { new: true });
             return updatedNRelative;
         } catch (error) {
