@@ -102,6 +102,16 @@ const useStyles = makeStyles({
       setIsLoading(true);
       setOpen(false);
 
+       
+      //funeral Dates
+
+      const partsBurialDate = formData.burialDate.split("/");
+      const yearBurialDate = parseInt(partsBurialDate[2], 10);
+      const monthBurialDate = parseInt(partsBurialDate[1], 10) - 1; // Month is 0-indexed in JavaScript Date
+      const dayBurialDate = parseInt(partsBurialDate[0], 10);
+
+      const dateObjectBurialDate = new Date(yearBurialDate, monthBurialDate, dayBurialDate);
+
 
       const parts = formData.idPublicationDate.split("/");
       const year = parseInt(parts[2], 10);
@@ -109,10 +119,29 @@ const useStyles = makeStyles({
       const day = parseInt(parts[0], 10);
 
       const dateObject = new Date(year, month, day);
+
+
+      ///Relative Dates
+      const partsRel = formData.rel_birthdate.split("/");
+      const yearRel = parseInt(partsRel[2], 10);
+      const monthRel = parseInt(partsRel[1], 10) - 1; // Month is 0-indexed in JavaScript Date
+      const dayRel = parseInt(partsRel[0], 10);
+
+      const dateObjectRelBirthDate = new Date(yearRel, monthRel, dayRel);
+
+
+      const partsRelIdPublicationDate = formData.rel_idPublicationDate.split("/");
+      const yearRelIdPublicationDate = parseInt(partsRelIdPublicationDate[2], 10);
+      const monthRelIdPublicationDate = parseInt(partsRelIdPublicationDate[1], 10) - 1; // Month is 0-indexed in JavaScript Date
+      const dayRelIdPublicationDate = parseInt(partsRelIdPublicationDate[0], 10);
+
+      const dateObjectRelIdPublicationDate = new Date(yearRelIdPublicationDate, monthRelIdPublicationDate, dayRelIdPublicationDate);
+
+      //end
      
 
     const createdFuneralFormData = {
-      burialDate: formData.burialDate,
+      burialDate: dateObjectBurialDate,
       burialLocation: formData.burialLocation,
       afm: formData.afm,
       age: parseInt(formData.age, 10),
@@ -147,16 +176,17 @@ const useStyles = makeStyles({
       fullname: formData.rel_fullname,
       fatherfullname: formData.rel_fatherfullname,
       motherfullname: formData.rel_motherfullname,
-      birthDate: formData.rel_birthdate,
+      birthDate: dateObjectRelBirthDate,
       birthlocation: formData.rel_birthlocation,
       residence: formData.rel_residence,
       idNumber: formData.rel_idNumber,
-      idPublicationDate: formData.rel_idPublicationDate,
+      idPublicationDate: dateObjectRelIdPublicationDate,
       idAuthority: formData.rel_idAuthority,
       afm: formData.rel_afm,
       doy: formData.rel_doy,
       amka: formData.rel_amka,
       phone: formData.rel_phone,
+      phone2: formData.rel_phone2,
       email: formData.rel_email,
       iban: formData.rel_iban,
       taxisCodeUser: formData.rel_taxisCodeUser,

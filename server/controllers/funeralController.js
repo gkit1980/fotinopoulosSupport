@@ -9,6 +9,7 @@ const router = express.Router();
 // Get all funerals
 router.get('/', async (req, res) => {
     try {
+        
         const funerals = await funeralDAO.getAllFunerals();
         res.json(funerals);
     } catch (error) {

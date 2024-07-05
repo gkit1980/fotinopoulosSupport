@@ -127,6 +127,8 @@ useEffect(() => {
   .then(response => response.json())
   .then(dataRelative => {
 
+        
+
           const existingRelativeData = {
             relationdegree: dataRelative.relationdegree,
             fullname: dataRelative.fullname,

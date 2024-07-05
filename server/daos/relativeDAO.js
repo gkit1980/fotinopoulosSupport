@@ -1,4 +1,5 @@
 const Relative = require('../models/relative');
+const moment = require('moment');
 
 // Import the necessary modules and dependencies
 
@@ -41,25 +42,20 @@ class RelativeDAO {
         try {
          
             // Convert the birthDate string to a Date object
-            console.log("Before Relative Birthdate"+data.birthDate);
-            const dateObject1 = moment(data.birthDate, "DD/MM/YYYY HH:mm").toDate();
-        
-            data.birthDate = dateObject1;
-            console.log("After Relative Birthdate"+ data.birthDate);
+            console.log("Before Relative Birthdate:"+data.birthDate);
+            if(data.birthDate=="")
+                 data.birthDate=null
 
 
             // Convert the idPublicationDate string to a Date object
-            console.log("Before Relative idPublicationDate"+data.idPublicationDate);
-            const dateObject2 = moment(data.idPublicationDate, "DD/MM/YYYY HH:mm").toDate();
-        
-            data.idPublicationDate = dateObject2;
-            console.log("After Relative idPublicationDate"+ data.idPublicationDate);
-
-
-
+            console.log("Before Relative idPublicationDate:"+data.idPublicationDate);
+            if(data.idPublicationDate=="")
+                data.idPublicationDate=null
+            
             const updatedNRelative = await Relative.findByIdAndUpdate(id, data, { new: true });
             return updatedNRelative;
         } catch (error) {
+            console.log("Error:"+error);
             throw error;
         }
     }

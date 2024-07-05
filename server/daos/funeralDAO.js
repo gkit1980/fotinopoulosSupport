@@ -7,6 +7,7 @@ class FuneralDAO {
     // Create a new funeral
     static async createFuneral(data) {
         try {
+          
             const funeral = new Funeral(data);
             const savedFuneral = await funeral.save();
             return savedFuneral;
@@ -48,11 +49,11 @@ class FuneralDAO {
     // Update a funeral by ID
     static async updateFuneralById(id, data) {
         try {
-             console.log("Before"+data.burialDate);
+             console.log("Before:"+data.burialDate);
             const dateObject = moment(data.burialDate, "DD/MM/YYYY HH:mm").toDate();
         
             data.burialDate = dateObject;
-            console.log("After"+data.burialDate);
+            console.log("After:"+data.burialDate);
 
             const updatedFuneral = await Funeral.findByIdAndUpdate(id, data, { new: true });
             return updatedFuneral;

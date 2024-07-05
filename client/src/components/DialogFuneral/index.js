@@ -23,7 +23,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { FormControl,FormLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import Skeleton from 'react-loading-skeleton';
-import { set } from 'date-fns';
+import { format } from 'date-fns';
+
 
 
 
@@ -83,7 +84,7 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
   const [rel_birthlocation, setRelBirthLocation] = useState(selectedRowRelative ? selectedRowRelative.birthlocation : "");
   const [rel_doy, setRelDoy] = useState(selectedRowRelative ? selectedRowRelative.doy : "");
   const [rel_idAuthority, setRelIdAuthority] = useState(selectedRowRelative ? selectedRowRelative.idAuthority : "");
-  const [rel_birthdate, setRelBirthDate] = useState(selectedRowRelative ? selectedRowRelative.birthdate : "");
+  const [rel_birthdate, setRelBirthDate] = useState(selectedRowRelative ? selectedRowRelative.birthDate : "");
   const [rel_birthDateError,setRelBirthDateError] = useState("");
   const [rel_idPublicationDate, setRelIdPublicationDate] = useState(selectedRowRelative ? selectedRowRelative.idPublicationDate : "");
   const [rel_idPublicationDateError,setRelIdPublicationDateError] = useState("");
@@ -258,6 +259,10 @@ useEffect(() => {
           fetch(`https://entypafotinopoulosserver.azurewebsites.net/relative/${relativeId}`)
           .then(response => response.json())
           .then(dataRelative => {
+
+
+            dataRelative.idPublicationDate=formatDate(dataRelative.idPublicationDate);
+            dataRelative.birthDate=formatDate(dataRelative.birthDate);
         
               setselectedRowRelative(dataRelative);
               
@@ -271,7 +276,7 @@ useEffect(() => {
               setRelIdPublicationDate(dataRelative.idPublicationDate);
               setRelAmka(dataRelative.amka);
               setRelAfm(dataRelative.afm);
-              setRelBirthDate(dataRelative.birthdate);
+              setRelBirthDate(dataRelative.birthDate);
               
 
               setIsRelativeLoading(false);
@@ -294,6 +299,18 @@ useEffect(() => {
 
 
    
+  const formatDate = (date) => {
+    try {
+      const parsedDate = new Date(date);
+      if (isNaN(parsedDate)) {
+        throw new RangeError('Invalid time value');
+      }
+      return format(parsedDate, 'dd/MM/yyyy');
+    } catch (error) {
+      console.error('Date formatting error:', error);
+      return 'Invalid date';
+    }
+  };
   
 
     //afm validation
@@ -501,6 +518,14 @@ useEffect(() => {
    
 
   const validateADTDate = (dateStr) => {
+
+    if(dateStr=="")
+      {
+      setADTDateError("");
+      return;
+      }
+
+    
     const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
   
     if (!datePattern.test(dateStr)) {
@@ -797,7 +822,7 @@ useEffect(() => {
               error={!!ADTDateError}
               helperText={ADTDateError}
               margin="dense"
-              format="dd/MM/yyyy"
+              format="dd/MM/yyyy HH:mm"
               id="idPublicationDate"
               name="idPublicationDate"
               InputProps={{
@@ -1395,7 +1420,7 @@ useEffect(() => {
                         type="text"
                         value={rel_birthdate}
                         fullWidth
-                        format="dd/MM/yyyy"
+                        format="dd/MM/yyyy HH:mm"
                         variant="standard"
                         onChange={handleRelBirthDateChange}
                         error={!!rel_birthDateError}
