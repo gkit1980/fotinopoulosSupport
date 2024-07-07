@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
 
 
-export default function data(text,open,setIsLoading) {
+export default function data(text,open,setIsLoading,createFuneral) {
 
 
   const FuneralHeaders=['Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου']
@@ -63,10 +63,13 @@ useEffect(() => {
     .then(data => {
       console.log('Success:', data);
       setMappedData(data);
+
+      if(!createFuneral)
       setIsLoading(false);
+
      
     });
-}, [text,open]);
+}, [text,open,createFuneral]);
 
 
 

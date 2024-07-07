@@ -57,10 +57,11 @@ const useStyles = makeStyles({
   const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState('');
   const [open, setOpen] = useState(false);
+  const [createFuneral, setCreateFuneral] = useState(false);
 
 
   const classes = useStyles();
-  const {columns,rows} = funeralsTableData(searchValue,open,setIsLoading);
+  const {columns,rows} = funeralsTableData(searchValue,open,setIsLoading,createFuneral)
 
 
   const handleClick = () => {
@@ -101,6 +102,9 @@ const useStyles = makeStyles({
     {
       setIsLoading(true);
       setOpen(false);
+
+
+      setCreateFuneral(true);
 
        
       //funeral Dates
@@ -209,6 +213,7 @@ const useStyles = makeStyles({
 
                 let anouncementId = data.anouncement;
                 let relativeId = data.relative;
+                setIsLoading(false);
 
                 fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${anouncementId}`, {
                   method: 'PUT',
@@ -240,6 +245,8 @@ const useStyles = makeStyles({
                   console.log('Success:', data);
                 
 
+
+                  setCreateFuneral(false);
                   notifyEvent(formData);
                   
                 })

@@ -92,6 +92,13 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
   const [rel_amkaError, setRelAmkaError] = useState("");
   const [rel_afm, setRelAfm] = useState(selectedRowRelative ? selectedRowRelative.afm : "");
   const [rel_afmError, setRelAfmError] = useState("");
+  const [rel_phone, setRelPhone] = useState(selectedRowRelative ? selectedRowRelative.phone : "");
+  const [rel_phone2, setRelPhone2] = useState(selectedRowRelative ? selectedRowRelative.phone2 : "");
+  const [rel_email, setRelEmail] = useState(selectedRowRelative ? selectedRowRelative.email : "");
+  const [rel_iban, setRelIban] = useState(selectedRowRelative ? selectedRowRelative.iban : "");
+  const [rel_taxisCodeUser, setRelTaxisCodeUser] = useState(selectedRowRelative ? selectedRowRelative.taxisCodeUser : "");
+  const [rel_taxisCodePassword, setRelTaxisCodePassword] = useState(selectedRowRelative ? selectedRowRelative.taxisCodePassword : "");
+
 
 
 
@@ -277,6 +284,13 @@ useEffect(() => {
               setRelAmka(dataRelative.amka);
               setRelAfm(dataRelative.afm);
               setRelBirthDate(dataRelative.birthDate);
+              setRelPhone(dataRelative.phone);
+              setRelPhone2(dataRelative.phone2);
+              setRelEmail(dataRelative.email);
+              setRelIban(dataRelative.iban);
+              setRelTaxisCodeUser(dataRelative.taxisCodeUser);
+              setRelTaxisCodePassword(dataRelative.taxisCodePassword);
+
               
 
               setIsRelativeLoading(false);
@@ -1629,9 +1643,10 @@ useEffect(() => {
                             }}
                             label="Τηλέφωνο Επικοινωνίας" 
                             type="text"
-                            value={selectedRowRelative ? selectedRowRelative.phone : ""}
+                            defaultValue={rel_phone}
                             fullWidth
                             variant="standard"
+                            onChange={handleTextChange}
                           />
                           )}
 
@@ -1649,9 +1664,10 @@ useEffect(() => {
                             }}
                             label="Τηλέφωνο Επικοινωνίας 2" 
                             type="text"
-                            value={selectedRowRelative ? selectedRowRelative.phone2 : ""}
+                            defaultValue={rel_phone2}
                             fullWidth
                             variant="standard"
+                            onChange={handleTextChange}
                           />
                           )}
 
@@ -1674,7 +1690,7 @@ useEffect(() => {
                           }}
                           label="Email"
                           type="text"
-                          value={selectedRowRelative ? selectedRowRelative.email : ""}
+                          defaultValue={rel_email}
                           fullWidth
                           variant="standard"
                         />
@@ -1697,7 +1713,7 @@ useEffect(() => {
                               }}
                               label="IBAN" 
                               type="text"
-                              value={selectedRowRelative ? selectedRowRelative.iban : ""}
+                              defaultValue={rel_iban}
                               fullWidth
                               variant="standard"
                             />
@@ -1722,7 +1738,7 @@ useEffect(() => {
                       }}
                       label="Κωδικός Φορολογικού Φορέα"
                       type="text"
-                      value={selectedRowRelative ? selectedRowRelative.taxisCodeUser : ""}
+                      defaultValue={rel_taxisCodeUser}
                       fullWidth
                       variant="standard"
                     />
@@ -1745,7 +1761,7 @@ useEffect(() => {
                           }}
                           label="Συνθηματικό Φορολογικού Φορέα"
                           type="text"
-                          value={selectedRowRelative ? selectedRowRelative.taxisCodePassword: ""}
+                          defaultValue={rel_taxisCodePassword}
                           fullWidth
                           variant="standard"
                         />
