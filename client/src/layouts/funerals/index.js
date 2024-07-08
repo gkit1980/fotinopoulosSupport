@@ -27,13 +27,14 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 
-import { useState,useEffect,useMemo, memo } from "react";
+import { useState,useContext} from "react";
 
 import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
 // Images
 import fotinopoulos from "assets/images/fotinopoulos.png";
 import DialogFuneral from "components/DialogFuneral";
 import { makeStyles } from '@mui/styles'
+import { AuthContext } from "../../context/auth-context";
 
 // Data
 
@@ -53,6 +54,8 @@ const useStyles = makeStyles({
      
 
  function Funerals() {
+
+  const auth = useContext(AuthContext);
 
   const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState('');
@@ -82,8 +85,8 @@ const useStyles = makeStyles({
 
     const createdNotificationFormData = {
       title: 'Νέα Κηδεία',
-      message: `Η κηδεία του ${formData.fullname} έχει δημιουργηθεί απο τον χρήστη gkit1980@yahoo.com`,
-      user: 'gkit1980@yahoo.com',
+      message: `Η κηδεία του ${formData.fullname} έχει δημιουργηθεί`,
+      user: `${auth.username}`,
       createdAt: Date.now(),
     }
   

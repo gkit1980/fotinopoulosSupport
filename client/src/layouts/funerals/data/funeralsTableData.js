@@ -11,9 +11,10 @@ import { Dialog,DialogContent,DialogTitle,DialogActions,DialogContentText,Button
 // Images
 import fotinopoulos from "assets/images/fotinopoulos.png";
 
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState,useRef,useContext } from "react";
 import DialogFuneral from "components/DialogFuneral";
 import { makeStyles } from '@mui/styles'
+import { AuthContext } from "../../../context/auth-context";
 
 
 
@@ -30,6 +31,8 @@ const useStyles = makeStyles({
 
 
 export default function data(text,open,setIsLoading,createFuneral) {
+
+  const auth = useContext(AuthContext);
 
 
   const FuneralHeaders=['Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου']
@@ -139,7 +142,6 @@ useEffect(() => {
             motherfullname: dataRelative.motherfullname,
             birthDate: dataRelative.birthDate,
             birthlocation: dataRelative.birthlocation,
-            residence: dataRelative.residence,
             idNumber: dataRelative.idNumber,
             idPublicationDate: dataRelative.idPublicationDate,
             idAuthority: dataRelative.idAuthority,
@@ -528,8 +530,8 @@ const notifyCreateEvent = (formData) => {
 
   const createdNotificationFormData = {
     title: 'Νέα Κηδεία',
-    message: `Η κηδεία του ${formData.fullname} εχει δημιουργηθει`,
-    user: 'gkit1990@yahoo.com',
+    message: `Η κηδεία του ${formData.fullname} έχει δημιουργηθεί`,
+    user: `${auth.username}`,
     createdAt: Date.now(),
   }
 
@@ -560,7 +562,7 @@ const notifyUpdateEvent = (changes,fullname,category) => {
   const updatedNotificationFormData = {
     title: `Διόρθωση Κηδεία ${category} του ${fullname}`,
     message: propertyStrings,
-    user: 'gkit1990@yahoo.com',
+    user: `${auth.username}`,
     createdAt: Date.now(),
   }
 

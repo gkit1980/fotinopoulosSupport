@@ -93,6 +93,7 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
   const [rel_afm, setRelAfm] = useState(selectedRowRelative ? selectedRowRelative.afm : "");
   const [rel_afmError, setRelAfmError] = useState("");
   const [rel_phone, setRelPhone] = useState(selectedRowRelative ? selectedRowRelative.phone : "");
+  const [rel_residence, setRelResidence] = useState(selectedRowRelative ? selectedRowRelative.residence : "");
   const [rel_phone2, setRelPhone2] = useState(selectedRowRelative ? selectedRowRelative.phone2 : "");
   const [rel_email, setRelEmail] = useState(selectedRowRelative ? selectedRowRelative.email : "");
   const [rel_iban, setRelIban] = useState(selectedRowRelative ? selectedRowRelative.iban : "");
@@ -184,6 +185,9 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
             break;
       case 'rel_doy':
             setRelDoy(convertedValue);
+            break;
+      case 'rel_residence': 
+            setRelResidence(convertedValue);
             break;
       case 'rel_idAuthority':
             setRelIdAuthority(convertedValue);
@@ -279,6 +283,7 @@ useEffect(() => {
               setRelMotherFullname(dataRelative.motherfullname);
               setRelBirthLocation(dataRelative.birthlocation);
               setRelDoy(dataRelative.doy);
+              setRelResidence(dataRelative.residence);
               setRelIdAuthority(dataRelative.idAuthority);
               setRelIdPublicationDate(dataRelative.idPublicationDate);
               setRelAmka(dataRelative.amka);
@@ -1511,7 +1516,7 @@ useEffect(() => {
                         }}
                         label="Ημερομηνία έκδοσης AΔΤ"
                         type="text"
-                        format="dd/MM/yyyy"
+                        format="dd/MM/yyyy HH:mm"
                         placeholder='DD/MM/YYYY'
                         value={rel_idPublicationDate}
                         fullWidth
@@ -1631,48 +1636,76 @@ useEffect(() => {
 
                   </Grid>
 
-                  <Grid item xs={3}>
 
-                      {selectedRowRelative &&  (<TextField
-                            autoFocus
-                            margin="dense"
-                            id="rel_phone"
-                            name="rel_phone"
-                            InputProps={{
-                              readOnly: isReadOnly,
-                            }}
-                            label="Τηλέφωνο Επικοινωνίας" 
-                            type="text"
-                            defaultValue={rel_phone}
-                            fullWidth
-                            variant="standard"
-                            onChange={handleTextChange}
-                          />
-                          )}
+
+                  <Grid item xs={6}>
+
+                    {selectedRowRelative &&  (<TextField
+                          autoFocus
+                          margin="dense"
+                          id="rel_phone"
+                          name="rel_phone"
+                          InputProps={{
+                            readOnly: isReadOnly,
+                          }}
+                          label="Τηλέφωνο Επικοινωνίας" 
+                          type="text"
+                          defaultValue={rel_phone}
+                          fullWidth
+                          variant="standard"
+                          onChange={handleTextChange}
+                        />
+                        )}
+
+                </Grid>
+
+
+              </Grid>
+
+              <Grid container spacing={6}>
+
+
+                  <Grid item xs={6}>
+
+                    {selectedRowRelative &&  (<TextField
+                          autoFocus
+                          margin="dense"
+                          id="rel_residence"
+                          name="rel_residence"
+                          InputProps={{
+                            readOnly: isReadOnly,
+                          }}
+                          label="Τόπος Κατοικίας" 
+                          type="text"
+                          defaultValue={rel_residence}
+                          fullWidth
+                          variant="standard"
+                          onChange={handleTextChange}
+                        />
+                        )}
 
                   </Grid>
 
-                    <Grid item xs={3}>
+                  <Grid item xs={6}>
 
-                      {selectedRowRelative &&  (<TextField
-                            autoFocus
-                            margin="dense"
-                            id="rel_phone2"
-                            name="rel_phone2"
-                            InputProps={{
-                              readOnly: isReadOnly,
-                            }}
-                            label="Τηλέφωνο Επικοινωνίας 2" 
-                            type="text"
-                            defaultValue={rel_phone2}
-                            fullWidth
-                            variant="standard"
-                            onChange={handleTextChange}
-                          />
-                          )}
+              {selectedRowRelative &&  (<TextField
+                    autoFocus
+                    margin="dense"
+                    id="rel_phone2"
+                    name="rel_phone2"
+                    InputProps={{
+                      readOnly: isReadOnly,
+                    }}
+                    label="Τηλέφωνο Επικοινωνίας 2" 
+                    type="text"
+                    defaultValue={rel_phone2}
+                    fullWidth
+                    variant="standard"
+                    onChange={handleTextChange}
+                  />
+                  )}
 
-                    </Grid>
-
+                  </Grid>
 
               </Grid>
 

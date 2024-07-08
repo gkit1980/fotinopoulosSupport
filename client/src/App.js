@@ -49,16 +49,21 @@ export default function App() {
 
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username,setUsername] = useState('');
 
-  const login = useCallback(() => {
+  const login = useCallback((username) => {
     setIsLoggedIn(true);
+    setUsername(username);
   }, []);
+
 
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
-   
+    setUsername('');
   }, []);
+
+
 
 
   const [controller, dispatch] = useMaterialUIController();
@@ -163,6 +168,7 @@ export default function App() {
     <AuthContext.Provider
         value={{
           isLoggedIn: isLoggedIn,
+          username: username,
           login: login,
           logout: logout
         }}

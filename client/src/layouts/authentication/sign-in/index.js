@@ -42,12 +42,13 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 // Images
 import bgImage from "assets/images/rsz_shutterstock.jpg";
 import logo_fotinopoulos from 'assets/images/Fotinopoulos_logo_name.png';
-import { AuthContext } from 'context/auth-context';
+import { AuthContext } from "../../../context/auth-context";
 
 
 function Basic() {
 
   const auth = useContext(AuthContext);
+
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -81,7 +82,7 @@ function Basic() {
       });
 
       if (response.ok) {
-        auth.login();
+        auth.login(username);
         // Redirect to dashboard
         navigate("/dashboard"); 
       } else {

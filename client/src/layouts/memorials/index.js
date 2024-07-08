@@ -27,7 +27,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 
-import { useState,useEffect } from "react";
+import { useState,useEffect,useContext } from "react";
 // Images
 import fotinopoulos from "assets/images/fotinopoulos.png";
 import DialogMemorial from "components/DialogMemorial";
@@ -37,7 +37,7 @@ import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
 // Data
 
 import memorialTableData from "layouts/memorials/data/memorialTableData";
-
+import { AuthContext } from "../../context/auth-context";
 
 
 
@@ -52,6 +52,9 @@ const useStyles = makeStyles({
      
 
 function Memorials() {
+
+  const auth = useContext(AuthContext);
+
 
   const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState('');
@@ -141,8 +144,8 @@ function Memorials() {
 
       const createdNotificationFormData = {
         title: 'Νέο Μνημόσυνο',
-        message: `Το Μνημόσυνο του ${formData.fullname} έχει δημιουργηθεί απο τον χρήστη gkit1980@yahoo.com`,
-        user: 'gkit1990@yahoo.com',
+        message: `Το Μνημόσυνο του ${formData.fullname} έχει δημιουργηθεί απο τον χρήστη ${auth.username}`,
+        user: `${auth.username}`,
         createdAt: Date.now(),
       }
     
