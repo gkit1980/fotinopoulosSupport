@@ -63,40 +63,37 @@ function Basic() {
 
   const handleSignIn = async (username,password) => {
     setIsLoading(true); // Start loading
+
     try {
-
-       // Validate the inputs
-      if (!username || !password) {
-        console.error('Username and password are required');
-        return;
-      }
-
-      // Fetch username and password from the database
       const response = await fetch('https://entypafotinopoulosserver.azurewebsites.net/authenticate/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
         headers: {
           'Content-Type': 'application/json',
-           'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': '*'
         }
       });
-
-      if (response.ok) {
-        auth.login(username);
-        // Redirect to dashboard
-        navigate("/dashboard"); 
-      } else {
-        // Display client error
-        console.error('Authentication failed');
+  
+      if (!response.ok) {
         setLoginError('Λάθος στοιχεία εισόδου. Παρακαλώ δοκιμάστε ξανά.');
+        return; // Exit the function early if response is not OK
       }
+  
+      const data = await response.json();
+
+      auth.login(data.user);
+      navigate("/dashboard");
     } catch (error) {
-      console.error('An error occurred', error);
+      console.error('There has been a problem with your fetch operation:', error);
     }
     finally {
       setIsLoading(false); // Stop loading after sign-in attempt
     }
   };
+
+
+
+
 
   return (
     <BasicLayout image={bgImage} >

@@ -34,7 +34,7 @@ app.use(morgan('dev'));
 
 const funeralRoutes = require('./controllers/funeralController.js');
 const memorialRoutes = require('./controllers/memorialController.js');
-const nrelativeRoutes = require('./controllers/nrelativeController.js');
+const relativeRoutes = require('./controllers/relativeController.js');
 const anouncementRoutes = require('./controllers/anouncementController.js');
 const authenticationRoutes = require('./controllers/userController.js');
 const notificationRoutes = require('./controllers/notificationController.js');
@@ -53,7 +53,7 @@ try {
 
 app.use('/funeral', funeralRoutes);
 app.use('/memorial', memorialRoutes);
-app.use('/relative', nrelativeRoutes);
+app.use('/relative', relativeRoutes);
 app.use('/authenticate', authenticationRoutes);
 app.use('/anouncement', anouncementRoutes);
 app.use('/notification', notificationRoutes);
