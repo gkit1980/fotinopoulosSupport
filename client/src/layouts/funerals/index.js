@@ -81,11 +81,11 @@ const useStyles = makeStyles({
     setSearchValue(value);
   };
 
-  const notifyEvent = (formData) => {
+  const notifyCreateEvent = (formData) => {
 
     const createdNotificationFormData = {
       title: 'Νέα Κηδεία',
-      message: `Η κηδεία του ${formData.fullname} έχει δημιουργηθεί`,
+      message: `Η κηδεία του ${formData.fullname} έχει δημιουργηθεί απο τον χρήστη ${auth.username}`,
       user: `${auth.username}`,
       createdAt: Date.now(),
     }
@@ -250,7 +250,7 @@ const useStyles = makeStyles({
 
 
                   setCreateFuneral(false);
-                  notifyEvent(formData);
+                  notifyCreateEvent(formData);
                   
                 })
                 .catch((error) => {

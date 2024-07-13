@@ -560,7 +560,7 @@ const notifyUpdateEvent = (changes,fullname,category) => {
 {
 
   const updatedNotificationFormData = {
-    title: `Διόρθωση Κηδεία ${category} του ${fullname}`,
+    title: `Διόρθωση Κηδεία ${category} του ${fullname} από τον χρήστη ${auth.username}`,
     message: propertyStrings,
     user: `${auth.username}`,
     createdAt: Date.now(),
