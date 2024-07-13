@@ -36,7 +36,7 @@ export default function data(text,open,setIsLoading,createFuneral) {
 
 
   const FuneralHeaders=['Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου']
-  const AnouncementHeaders=['Αδέλφια','Τέκνα','Εγγόνια','Ανίψια','Λοιποί συγγενείς','Σύζυγος','Διεύθυνση','Στεφάνια'];
+  const AnouncementHeaders=['Αδέλφια','Τέκνα','Εγγόνια','Ανίψια','Λοιποί συγγενείς','Σύζυγος','Διεύθυνση','Επιπλέον Πληροφορίες','Στεφάνια'];
   const RelativeHeaders=['Βαθμός συγγένειας','Ονοματεπώνυμο','Ονομα/Επώνυμο πατέρα','Ονομα/Επώνυμο μητέρας','Ημερομηνία Γέννησης','Τόπος Γέννησης','ΑΔΤ','Ημερομηνία Έκδοσης ΑΔΤ','Αρχή Έκδοσης ΑΔΤ','ΔΟΥ','ΑΜΚΑ','Τηλέφωνο Επικοινωνίας','Τηλέφωνο Επικοινωνίας 2','Email','IBAN','Κωδικός Φορολογικού Φορέα','Συνθηματικό Φορολογικού Φορέα'];
 
 // Create a ref for the dialog content
@@ -119,6 +119,7 @@ useEffect(() => {
             others:dataAnouncement.others,
             spouse:dataAnouncement.spouse,
             address:dataAnouncement.address,
+            additionalinfo:dataAnouncement.additionalinfo,
             wreaths:dataAnouncement.wreaths
           };
 
@@ -229,6 +230,7 @@ const handleCreate = (formData) => {
     others:formData.an_others,
     spouse:formData.an_spouse,
     address:formData.an_address,
+    additionalinfo:formData.an_additionalinfo,
     wreaths:formData.an_wreaths
   };
 
@@ -406,6 +408,7 @@ setIsLoading(true);
     others:formData.an_others,
     spouse:formData.an_spouse,
     address:formData.an_address,
+    additionalinfo:formData.an_additionalinfo,
     wreaths:formData.an_wreaths
   };
 
@@ -737,6 +740,7 @@ const mapAnouncementValuesToHeaders=(headers, obj)=> {
     "Λοιποί συγγενείς":"others",
     "Σύζυγος":"spouse",
     "Διεύθυνση":"address",
+    "Επιπλέον Πληροφορίες":"additionalinfo",
     "Στεφάνια":"wreaths"
   }
 

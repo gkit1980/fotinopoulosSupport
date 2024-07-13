@@ -61,6 +61,7 @@ router.post('/', async (req, res) => {
             grandchilds: "",
             nieces: "",
             others: "",
+            additionalinfo: "",
             wreaths: ""
         }
 

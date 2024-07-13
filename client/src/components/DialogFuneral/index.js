@@ -73,6 +73,7 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
   const [an_nieces, setAnNieces] = useState(selectedRowAnouncement ? selectedRowAnouncement.nieces : "");
   const [an_others, setAnOthers] = useState(selectedRowAnouncement ? selectedRowAnouncement.others : "");
   const [an_address, setAnAddress] = useState(selectedRowAnouncement ? selectedRowAnouncement.address : "");
+  const [an_additionalinfo, setAnAdditionalInfo] = useState(selectedRowAnouncement ? selectedRowAnouncement.additionalinfo : "");
 
 
   //Plhjesteros syggenis
@@ -102,25 +103,20 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
 
 
 
-
-
-
-  ///english to greek map
-  const englishToGreekMap = {
-    'A': 'Α', 'B': 'Β', 'C': 'Σ', 'D': 'Δ', 'E': 'Ε', 'F': 'Φ', 'G': 'Γ', 'H': 'Η', 'I': 'Ι', 'J': 'Ξ', 'K': 'Κ', 'L': 'Λ', 'M': 'Μ',
-    'N': 'Ν', 'O': 'Ο', 'P': 'Π', 'Q': 'Θ', 'R': 'Ρ', 'S': 'Σ', 'T': 'Τ', 'U': 'Υ', 'V': 'Β', 'W': 'Ω', 'X': 'Χ', 'Y': 'Υ', 'Z': 'Ζ',
-    'a': 'Α', 'b': 'Β', 'c': 'Σ', 'd': 'Δ', 'e': 'Ε', 'f': 'Φ', 'g': 'Γ', 'h': 'Η', 'i': 'Ι', 'j': 'Ξ', 'k': 'Κ', 'l': 'Λ', 'm': 'Μ',
-    'n': 'Ν', 'o': 'Ο', 'p': 'Π', 'q': 'Θ', 'r': 'Ρ', 's': 'Σ', 't': 'Τ', 'u': 'Υ', 'v': 'Β', 'w': 'Ω', 'x': 'Χ', 'y': 'Υ', 'z': 'Ζ',
-  };
+  // ///english to greek map
+  // const englishToGreekMap = {
+  //   'A': 'Α', 'B': 'Β', 'C': 'Σ', 'D': 'Δ', 'E': 'Ε', 'F': 'Φ', 'G': 'Γ', 'H': 'Η', 'I': 'Ι', 'J': 'Ξ', 'K': 'Κ', 'L': 'Λ', 'M': 'Μ',
+  //   'N': 'Ν', 'O': 'Ο', 'P': 'Π', 'Q': 'Θ', 'R': 'Ρ', 'S': 'Σ', 'T': 'Τ', 'U': 'Υ', 'V': 'Β', 'W': 'Ω', 'X': 'Χ', 'Y': 'Υ', 'Z': 'Ζ',
+  //   'a': 'Α', 'b': 'Β', 'c': 'Σ', 'd': 'Δ', 'e': 'Ε', 'f': 'Φ', 'g': 'Γ', 'h': 'Η', 'i': 'Ι', 'j': 'Ξ', 'k': 'Κ', 'l': 'Λ', 'm': 'Μ',
+  //   'n': 'Ν', 'o': 'Ο', 'p': 'Π', 'q': 'Θ', 'r': 'Ρ', 's': 'Σ', 't': 'Τ', 'u': 'Υ', 'v': 'Β', 'w': 'Ω', 'x': 'Χ', 'y': 'Υ', 'z': 'Ζ',
+  // };
 
 
 
   const handleTextChange = (event) => {
     const { name, value } = event.target; 
 
-    const convertedValue = value.split('').map(char => {
-      return englishToGreekMap[char] || char;
-    }).join('').toUpperCase();
+    const convertedValue = value.toUpperCase();
 
     switch (name) {
       case 'burialLocation':
@@ -168,6 +164,9 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
       case 'an_address':
             setAnAddress(convertedValue);
             break;
+      case 'an_additionalInfo':
+              setAnAddress(convertedValue);
+              break;      
       case 'rel_relationdegree':
             setRelRelationdegree(convertedValue);
             break;         
@@ -258,6 +257,7 @@ useEffect(() => {
               setAnNieces(dataAnouncement.nieces);
               setAnOthers(dataAnouncement.others);
               setAnAddress(dataAnouncement.address);
+              setAnAdditionalInfo(dataAnouncement.additionalinfo);
 
 
 
@@ -686,7 +686,6 @@ useEffect(() => {
           <MuiPickersUtilsProvider utils={DateFnsUtils} locale={el}>
                   <DateTimePicker
                     autoFocus
-                    required
                     margin="dense"
                     id="burialDate"
                     name="burialDate"
@@ -706,7 +705,6 @@ useEffect(() => {
           <Grid item xs={5}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="burialLocation"
               name="burialLocation"
@@ -751,7 +749,6 @@ useEffect(() => {
           <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="age"
               name="age"
@@ -772,7 +769,6 @@ useEffect(() => {
        <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="fatherMotherName"
               name="fatherMotherName"
@@ -792,7 +788,6 @@ useEffect(() => {
         <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="afm"
               name="afm"
@@ -817,7 +812,6 @@ useEffect(() => {
        <Grid item xs={4}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="idNumber"
               name="idNumber"
@@ -836,7 +830,6 @@ useEffect(() => {
         <Grid item xs={4}>
             <TextField
               autoFocus
-              required
               onChange={handleADTDateChange}
               error={!!ADTDateError}
               helperText={ADTDateError}
@@ -860,7 +853,6 @@ useEffect(() => {
         <Grid item xs={4}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="idAuthority"
               name="idAuthority"
@@ -881,7 +873,6 @@ useEffect(() => {
             <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="amka"
               name="amka"
@@ -902,7 +893,6 @@ useEffect(() => {
             <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="foreas"
               name="foreas"
@@ -924,7 +914,6 @@ useEffect(() => {
            <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="spouseName"
               name="spouseName"
@@ -942,7 +931,6 @@ useEffect(() => {
             <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="profession"
               name="profession"
@@ -964,7 +952,6 @@ useEffect(() => {
             <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="residence"
               name="residence"
@@ -983,7 +970,6 @@ useEffect(() => {
             <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="placeOfDeath"
               name="placeOfDeath"
@@ -1119,10 +1105,41 @@ useEffect(() => {
 
                               </Grid>
 
-                                <Grid item xs={6}>
+                              <Grid item xs={6}>
+
+                                    {selectedRowAnouncement &&  (<TextField
+                                            autoFocus
+                                            margin="dense"
+                                            id="an_brothers"
+                                            name="an_brothers"
+                                            InputProps={{
+                                                readOnly: isReadOnly,
+                                            }}
+                                            label="Αδέλφια"
+                                            type="text"
+                                            value={an_brothers}
+                                            fullWidth
+                                            variant="standard"
+                                            onChange={handleTextChange}
+                                          />
+                                          )}
+
+                              </Grid>
+
+
+                           
+                        </Grid>
+                        
+
+                        <Grid container spacing={6}>
+
+                        <Grid item xs={6}>
                                 
 
                                 {selectedRowAnouncement &&  (<TextField
+                                      rows={4}
+                                      maxRows={10}
+                                      multiline
                                       autoFocus
                                       margin="dense"
                                       id="an_childs"
@@ -1142,14 +1159,13 @@ useEffect(() => {
                         
                         
                                 </Grid>
-                        </Grid>
-                        
-
-                        <Grid container spacing={6}>
 
                               <Grid item xs={6}>
 
                               {selectedRowAnouncement &&  (<TextField
+                                      rows={4}
+                                      maxRows={10}
+                                      multiline
                                       autoFocus
                                       margin="dense"
                                       id="an_grandchilds"
@@ -1171,26 +1187,7 @@ useEffect(() => {
 
                               </Grid>
 
-                              <Grid item xs={6}>
-
-                                    {selectedRowAnouncement &&  (<TextField
-                                            autoFocus
-                                            margin="dense"
-                                            id="an_brothers"
-                                            name="an_brothers"
-                                            InputProps={{
-                                                readOnly: isReadOnly,
-                                            }}
-                                            label="Αδέλφια"
-                                            type="text"
-                                            value={an_brothers}
-                                            fullWidth
-                                            variant="standard"
-                                            onChange={handleTextChange}
-                                          />
-                                          )}
-
-                              </Grid>
+                        
 
                   
                         </Grid>
@@ -1306,7 +1303,41 @@ useEffect(() => {
                           />
                         </FormControl>
                       </Grid>
-                    </Grid>
+                       </Grid>
+
+
+
+                       <Grid container spacing={0}>
+
+                       <Grid item xs={12}>
+                                
+
+                                {selectedRowAnouncement &&  (<TextField
+                                      rows={4}
+                                      maxRows={10}
+                                      multiline
+                                      autoFocus
+                                      margin="dense"
+                                      id="an_additionalinfo"
+                                      name="an_additionalinfo"
+                                      InputProps={{
+                                          readOnly: isReadOnly,
+                                      }}
+                                      label="Επιπλέον Πληροφορίες"
+                                      type="text"
+                                      value={an_additionalinfo}
+                                      fullWidth
+                                      variant="standard"
+                                      onChange={handleTextChange}
+                                    />
+                                )}
+
+                        
+                        
+                                </Grid>
+                           
+
+                       </Grid>
                     </>
             )
             }
