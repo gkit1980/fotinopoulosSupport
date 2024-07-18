@@ -35,7 +35,7 @@ export default function data(text,open,setIsLoading,createFuneral) {
   const auth = useContext(AuthContext);
 
 
-  const FuneralHeaders=['Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου']
+  const FuneralHeaders=['Ημερομηνία Ταφής','Ενορία','Ταφή','Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου','Λοιπές Πληροφορίες']
   const AnouncementHeaders=['Αδέλφια','Τέκνα','Εγγόνια','Ανίψια','Λοιποί συγγενείς','Σύζυγος','Διεύθυνση','Επιπλέον Πληροφορίες','Στεφάνια'];
   const RelativeHeaders=['Βαθμός συγγένειας','Ονοματεπώνυμο','Ονομα/Επώνυμο πατέρα','Ονομα/Επώνυμο μητέρας','Ημερομηνία Γέννησης','Τόπος Γέννησης','ΑΔΤ','Ημερομηνία Έκδοσης ΑΔΤ','Αρχή Έκδοσης ΑΔΤ','ΔΟΥ','ΑΜΚΑ','Τηλέφωνο Επικοινωνίας','Τηλέφωνο Επικοινωνίας 2','Email','IBAN','Κωδικός Φορολογικού Φορέα','Συνθηματικό Φορολογικού Φορέα'];
 
@@ -87,6 +87,7 @@ useEffect(() => {
 
    let existingFuneralData = {
     burialDate: item.burialDate,
+    church: item.church,
     burialLocation: item.burialLocation,
     afm: item.afm,
     age: item.age,
@@ -103,7 +104,8 @@ useEffect(() => {
     profession: item.profession,
     residence: item.residence,
     spouseName: item.spouseName,
-    relativeId: item.relative
+    relativeId: item.relative,
+    otherInfo: item.otherInfo
   };
   setExistingFuneralData(existingFuneralData);
 
@@ -204,6 +206,7 @@ const handleCreate = (formData) => {
  
   const createdFuneralFormData = {
     burialDate: formData.burialDate,
+    church: formData.church,
     burialLocation: formData.burialLocation,
     afm: formData.afm,
     age: parseInt(formData.age, 10),
@@ -220,6 +223,7 @@ const handleCreate = (formData) => {
     profession: formData.profession,
     residence: formData.residence,
     spouseName: formData.spouseName,
+    otherInfo: formData.otherInfo
   };
 
   const createdAnouncementFormData = {
@@ -381,6 +385,7 @@ setIsLoading(true);
   // Handle update logic...
   const updatedFuneralFormData = {
     burialDate: formData.burialDate,
+    church: formData.church,
     burialLocation: formData.burialLocation,
     afm: formData.afm,
     age: parseInt(formData.age, 10),
@@ -398,6 +403,8 @@ setIsLoading(true);
     profession: formData.profession,
     residence: formData.residence,
     spouseName: formData.spouseName,
+    otherInfo: formData.otherInfo,
+    otherInfo: formData.otherInfo
   };
 
   const updatedAnouncementFormData = {
@@ -702,6 +709,7 @@ const mapFuneralValuesToHeaders=(headers, obj)=> {
   
   const headerMapping = {
     "Ημερομηνία Ταφής": "burialDate",
+    "Ενορία": "church",
     "Ταφή": "burialLocation",
     "Ονοματεπώνυμο": "fullname",
     "Ηλικία": "age",
@@ -717,6 +725,7 @@ const mapFuneralValuesToHeaders=(headers, obj)=> {
     "Κατοικία": "residence",
     "Τόπος θανάτου": "placeOfDeath",
     "Πληροφορίες": "more",
+    "Λοιπές Πληροφορίες": "otherInfo"
   };
 
   return headers.reduce((acc, header) => {

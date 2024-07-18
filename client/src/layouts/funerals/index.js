@@ -43,6 +43,7 @@ import funeralsTableData from "layouts/funerals/data/funeralsTableData";
 
 
 
+
 const useStyles = makeStyles({
   logo: {
     width: '90px', // Or any other size
@@ -149,6 +150,7 @@ const useStyles = makeStyles({
 
     const createdFuneralFormData = {
       burialDate: dateObjectBurialDate,
+      church: formData.church,
       burialLocation: formData.burialLocation,
       afm: formData.afm,
       age: parseInt(formData.age, 10),
@@ -165,6 +167,7 @@ const useStyles = makeStyles({
       profession: formData.profession,
       residence: formData.residence,
       spouseName: formData.spouseName,
+      otherInfo: formData.otherInfo
     };
   
     const createdAnouncementFormData = {

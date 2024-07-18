@@ -56,6 +56,7 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
 
   const [wreathsTextFieldValue, setWreathsTextFieldValue] = useState(selectedRowAnouncement ? selectedRowAnouncement.wreaths : "");
   const [burialLocation, setBurialLocation] = useState(selectedRowDeath ? selectedRowDeath.burialLocation : "");
+  const [church, setChurch] = useState(selectedRowDeath ? selectedRowDeath.church : "");
   const [fullname, setFullname] = useState(selectedRowDeath ? selectedRowDeath.fullname : "");
   const [fatherMotherName, setFatherMotherName] = useState(selectedRowDeath ? selectedRowDeath.fatherMotherName : "");
   const [foreas, setForeas] = useState(selectedRowDeath ? selectedRowDeath.foreas : "");
@@ -63,6 +64,7 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
   const [profession, setProfession] = useState(selectedRowDeath ? selectedRowDeath.profession : "");
   const [residence,setResidence] = useState(selectedRowDeath ? selectedRowDeath.residence : "");
   const [placeOfDeath, setPlaceOfDeath] = useState(selectedRowDeath ? selectedRowDeath.placeOfDeath : "");
+  const [otherInfo, setOtherInfo] = useState(selectedRowDeath ? selectedRowDeath.otherInfo : "");
 
   //aggeltiria
 
@@ -122,6 +124,9 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
       case 'burialLocation':
         setBurialLocation(convertedValue);
         break;
+      case 'church':
+          setChurch(convertedValue);
+          break;
       case 'fullname':
         setFullname(convertedValue);
         break;
@@ -142,6 +147,9 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
         break;
       case 'placeOfDeath':
         setPlaceOfDeath(convertedValue);
+        break;
+      case 'otherInfo':
+        setOtherInfo(convertedValue);
         break;
       case 'an_spouse':
         setAnSpouse(convertedValue);
@@ -679,8 +687,8 @@ useEffect(() => {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',gap:'40px' }}>
       <DialogTitle id="draggable-dialog-title"> <img src={logo} className={className} alt="Logo"/>  ΣΤΟΙΧΕΙΑ ΘΑΝΟΝΤΟΣ Η ΘΑΝΟΥΣΗΣ</DialogTitle>
      
-      <Grid container spacing={8}>
-          <Grid item xs={5} >
+      <Grid container spacing={3}>
+          <Grid item xs={3} >
 
 
           <MuiPickersUtilsProvider utils={DateFnsUtils} locale={el}>
@@ -702,7 +710,28 @@ useEffect(() => {
           </MuiPickersUtilsProvider>
         
           </Grid>
+
           <Grid item xs={5}>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="church"
+              name="church"
+              InputProps={{
+                readOnly: isReadOnly,
+              }}
+              label="Ενορία"
+              type="text"
+              value={church}
+              fullWidth
+              variant="standard"
+              onChange={handleTextChange}
+            />
+          </Grid>
+           
+
+
+          <Grid item xs={8}>
             <TextField
               autoFocus
               margin="dense"
@@ -720,6 +749,7 @@ useEffect(() => {
             />
           </Grid>
       </Grid>
+
       </div>
 
 
@@ -985,6 +1015,40 @@ useEffect(() => {
             />
             </Grid>
       </Grid>
+
+
+
+      <Grid container spacing={0}>
+
+          <Grid item xs={12}>
+                            
+
+              {selectedRowAnouncement &&  (<TextField
+                    rows={4}
+                    maxRows={10}
+                    multiline
+                    autoFocus
+                    margin="dense"
+                    id="otherInfo"
+                    name="otherInfo"
+                    InputProps={{
+                        readOnly: isReadOnly,
+                    }}
+                    label="Λοιπές Πληροφορίες"
+                    type="text"
+                    value={otherInfo}
+                    fullWidth
+                    variant="standard"
+                    onChange={handleTextChange}
+                  />
+              )}
+
+                    
+                    
+          </Grid>
+
+       </Grid>
+
 
 
       <TextField
