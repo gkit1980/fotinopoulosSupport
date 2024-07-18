@@ -26,6 +26,9 @@ import { FormControl,FormLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import Skeleton from 'react-loading-skeleton';
 import { format } from 'date-fns';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
 
 
 
@@ -682,6 +685,33 @@ useEffect(() => {
       }
 
   
+  }
+
+  const handleCreatePdf = () => {
+    // Assuming the DialogFuneral component has a unique id 'dialog-funeral'
+    const input = dialogRef.current;
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        const imgWidth = 210;
+        const pageHeight = 295;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let heightLeft = imgHeight;
+        let position = 0;
+  
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+  
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+  
+        pdf.save('dialog-funeral.pdf');
+      });
   }
 
 
@@ -2024,6 +2054,14 @@ useEffect(() => {
 
 
       <DialogActions>
+                   <Button 
+                    onClick={handleCreatePdf}
+                    sx={{ 
+                      variant: 'outlined',
+                    }}
+                  >
+                    Δημιουργία PDF
+                  </Button>
                   <Button 
                     onClick={handleClose}
                     sx={{ 
