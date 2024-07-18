@@ -13,6 +13,8 @@ import Draggable from 'react-draggable';
 import Paper from '@mui/material/Paper';
 
 import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import DateFnsUtils from "@date-io/date-fns";
 import { el, se } from "date-fns/locale";
 
@@ -53,10 +55,15 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
   const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.burialDate : new Date());
 
 
-
-  const [wreathsTextFieldValue, setWreathsTextFieldValue] = useState(selectedRowAnouncement ? selectedRowAnouncement.wreaths : "");
   const [burialLocation, setBurialLocation] = useState(selectedRowDeath ? selectedRowDeath.burialLocation : "");
   const [church, setChurch] = useState(selectedRowDeath ? selectedRowDeath.church : "");
+
+  const [receiptNumber, setRequestNumber] = useState(selectedRowDeath ? selectedRowDeath.receiptNumber : "");
+  const [hasDocument, setHasDocument] = useState(selectedRowDeath ? selectedRowDeath.hasDocument : false);
+  const [hasRequest,setHasRequest ] = useState(selectedRowDeath ? selectedRowDeath.hasRequest : false);
+
+
+
   const [fullname, setFullname] = useState(selectedRowDeath ? selectedRowDeath.fullname : "");
   const [fatherMotherName, setFatherMotherName] = useState(selectedRowDeath ? selectedRowDeath.fatherMotherName : "");
   const [foreas, setForeas] = useState(selectedRowDeath ? selectedRowDeath.foreas : "");
@@ -66,8 +73,10 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
   const [placeOfDeath, setPlaceOfDeath] = useState(selectedRowDeath ? selectedRowDeath.placeOfDeath : "");
   const [otherInfo, setOtherInfo] = useState(selectedRowDeath ? selectedRowDeath.otherInfo : "");
 
+
   //aggeltiria
 
+  const [wreathsTextFieldValue, setWreathsTextFieldValue] = useState(selectedRowAnouncement ? selectedRowAnouncement.wreaths : "");
   const [an_spouse, setAnSpouse] = useState(selectedRowAnouncement ? selectedRowAnouncement.spouse : "");
   const [an_childs, setAnChilds] = useState(selectedRowAnouncement ? selectedRowAnouncement.childs : "");
   const [an_grandchilds, setAnGrandchilds] = useState(selectedRowAnouncement ? selectedRowAnouncement.grandchilds : "");
@@ -652,7 +661,28 @@ useEffect(() => {
   };
 
 
+  const handleDocumentChange = (event) => {
+    setHasDocument(event.target.checked);
+  };
 
+  const handleRequestChange = (event) => {
+    setHasRequest(event.target.checked);
+  };
+
+  const handleReceiptNumberChange = (event) => {
+    const { value } = event.target;
+    
+   // Check if the value is not a number
+  if (!/^\d*$/.test(value)) {
+    // If the value contains characters other than digits, set it to an empty string
+    setRequestNumber('');
+     } else {
+    // If the value is a number, set it to the entered value
+    setRequestNumber(value);
+      }
+
+  
+  }
 
 
   return (
@@ -675,16 +705,24 @@ useEffect(() => {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
-          handleSubmit(formJson);
+
+          const processedFormJson = {
+            ...formJson,
+            hasDocument: formJson.hasDocument === 'on' ? true : false,
+            hasRequest: formJson.hasRequest === 'on' ? true : false,
+          };
+
+
+          handleSubmit(processedFormJson);
         },
       }}
     >
      
      
     
-      <DialogTitle id="draggable-dialog-title" align="center"> ΕΝΤΥΠΟ ΘΑΝΟΝΤΟΣ Η ΘΑΝΟΥΣΗΣ</DialogTitle>
+      <DialogTitle id="draggable-dialog-title" align="center" style={{ marginTop: '30px' }}> ΕΝΤΥΠΟ ΘΑΝΟΝΤΟΣ Η ΘΑΝΟΥΣΗΣ</DialogTitle>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',gap:'40px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',gap:'40px',border:'2px solid black', marginTop:'30px' }}>
       <DialogTitle id="draggable-dialog-title"> <img src={logo} className={className} alt="Logo"/>  ΣΤΟΙΧΕΙΑ ΘΑΝΟΝΤΟΣ Η ΘΑΝΟΥΣΗΣ</DialogTitle>
      
       <Grid container spacing={3}>
@@ -748,12 +786,76 @@ useEffect(() => {
               onChange={handleTextChange}
             />
           </Grid>
+
+
+  
+
+          <Grid item xs={6}>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="receiptNumber"
+                  name="receiptNumber"
+                  InputProps={{
+                    readOnly: isReadOnly,
+                  }}
+                  label="Αριθμός Απόδειξης"
+                  type="text"
+                  value={receiptNumber}
+                  fullWidth
+                  variant="standard"
+                  onChange={handleReceiptNumberChange}
+                />
+          </Grid>
+
+
+            
+          <Grid item xs={3} >
+          
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        InputProps={{
+                        readOnly: isReadOnly,
+                      }}
+                         id="hasDocument"
+                         name="hasDocument"
+                        checked={hasDocument}
+                        onChange={handleDocumentChange}
+                      />
+                      }
+                    label="Παραστατικό"
+                  />
+           </Grid>
+
+          <Grid item xs={3} >
+          
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        InputProps={{
+                        readOnly: isReadOnly,
+                        }}
+                        id="hasRequest"
+                        name="hasRequest"
+                        checked={hasRequest}
+                        onChange={handleRequestChange}
+                      />
+                      }
+                    label="Aίτηση"
+                  />
+          </Grid>
+
+     
+
+
+
       </Grid>
 
       </div>
 
 
-
+      <div style={{ marginTop:'45px' }}> 
       <DialogContent>
 
 
@@ -1103,10 +1205,11 @@ useEffect(() => {
   
                      
                     
-
+            <div style={{border:'2px solid black', marginTop:'30px' }}>
             <DialogTitle><img src={logo} className={className} alt="Logo" /> ΑΓΓΕΛΤΗΡΙΑ </DialogTitle>
+            </div>
 
-            <div>
+            <div style={{ marginTop:'30px' }}>
                
             {isAnouncementLoading ?  (
               <>
@@ -1407,10 +1510,12 @@ useEffect(() => {
             }
 
             </div>
-
+           
+            <div style={{border:'2px solid black', marginTop:'30px' }}>
             <DialogTitle><img src={logo} className={className} alt="Logo" /> ΣΤΟΙΧΕΙΑ ΠΛΗΣΙΕΣΤΕΡΟΥ ΣΥΓΓΕΝΗ </DialogTitle>
+            </div>
 
-         <div>
+         <div style={{marginTop:'30px'}}>
             {isRelativeLoading ?  (
                    <>
                    <Skeleton variant="rectangular" width={1200} height={18} />
@@ -1914,6 +2019,8 @@ useEffect(() => {
 
 
       </DialogContent>
+
+      </div>
 
 
       <DialogActions>

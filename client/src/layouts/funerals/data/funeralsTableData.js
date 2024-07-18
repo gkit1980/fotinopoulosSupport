@@ -35,7 +35,7 @@ export default function data(text,open,setIsLoading,createFuneral) {
   const auth = useContext(AuthContext);
 
 
-  const FuneralHeaders=['Ημερομηνία Ταφής','Ενορία','Ταφή','Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου','Λοιπές Πληροφορίες']
+  const FuneralHeaders=['Ημερομηνία Ταφής','Ενορία','Ταφή','Αριθμός Απόδειξης','Παραστατικό','Αίτηση','Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου','Λοιπές Πληροφορίες']
   const AnouncementHeaders=['Αδέλφια','Τέκνα','Εγγόνια','Ανίψια','Λοιποί συγγενείς','Σύζυγος','Διεύθυνση','Επιπλέον Πληροφορίες','Στεφάνια'];
   const RelativeHeaders=['Βαθμός συγγένειας','Ονοματεπώνυμο','Ονομα/Επώνυμο πατέρα','Ονομα/Επώνυμο μητέρας','Ημερομηνία Γέννησης','Τόπος Γέννησης','ΑΔΤ','Ημερομηνία Έκδοσης ΑΔΤ','Αρχή Έκδοσης ΑΔΤ','ΔΟΥ','ΑΜΚΑ','Τηλέφωνο Επικοινωνίας','Τηλέφωνο Επικοινωνίας 2','Email','IBAN','Κωδικός Φορολογικού Φορέα','Συνθηματικό Φορολογικού Φορέα'];
 
@@ -89,6 +89,9 @@ useEffect(() => {
     burialDate: item.burialDate,
     church: item.church,
     burialLocation: item.burialLocation,
+    receiptNumber: item.receiptNumber,
+    hasDocument: item.hasDocument,
+    hasRequest: item.hasRequest,
     afm: item.afm,
     age: item.age,
     amka: item.amka,
@@ -208,6 +211,9 @@ const handleCreate = (formData) => {
     burialDate: formData.burialDate,
     church: formData.church,
     burialLocation: formData.burialLocation,
+    receiptNumber: formData.receiptNumber,
+    hasDocument: formData.hasDocument,
+    hasRequest: formData.hasRequest,
     afm: formData.afm,
     age: parseInt(formData.age, 10),
     amka: formData.amka,
@@ -387,6 +393,9 @@ setIsLoading(true);
     burialDate: formData.burialDate,
     church: formData.church,
     burialLocation: formData.burialLocation,
+    receiptNumber: formData.receiptNumber,
+    hasDocument: formData.hasDocument,
+    hasRequest: formData.hasRequest,
     afm: formData.afm,
     age: parseInt(formData.age, 10),
     amka: formData.amka,
@@ -403,7 +412,6 @@ setIsLoading(true);
     profession: formData.profession,
     residence: formData.residence,
     spouseName: formData.spouseName,
-    otherInfo: formData.otherInfo,
     otherInfo: formData.otherInfo
   };
 
@@ -711,6 +719,9 @@ const mapFuneralValuesToHeaders=(headers, obj)=> {
     "Ημερομηνία Ταφής": "burialDate",
     "Ενορία": "church",
     "Ταφή": "burialLocation",
+    "Aριθμός Απόδειξης": "receiptNumber",
+    "Παραστατικό": "hasDocument",
+    "Αίτηση": "hasRequest",
     "Ονοματεπώνυμο": "fullname",
     "Ηλικία": "age",
     "Ονομα πατερα & μητέρας": "fatherMotherName",

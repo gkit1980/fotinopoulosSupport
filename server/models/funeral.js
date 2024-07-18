@@ -6,6 +6,9 @@ const funeralSchema = new mongoose.Schema({
   burialDate: Date,
   church: String,
   burialLocation: String,
+  receiptNumber: String,
+  hasDocument: Boolean,
+  hasRequest: Boolean,
   fullname: String,
   age: Number,
   fatherMotherName: String,
@@ -42,12 +45,29 @@ const Funeral = mongoose.model('Funeral', funeralSchema);
 //     console.log('Connected to MongoDB');
 
 //     // Update all existing documents to add the new field with a default value
-//     const result = await Funeral.updateMany(
+//     const result1 = await Funeral.updateMany(
 //       {},
-//       { $set: { otherInfo: '' } }
+//       { $set: { hasDocument: false } }
 //     );
+//       console.log(`${result1.modifiedCount} documents were updated`);
 
-//     console.log(`${result.modifiedCount} documents were updated`);
+//     // Update all existing documents to add the new field with a default value
+//         const result2 = await Funeral.updateMany(
+//           {},
+//           { $set: { hasRequest: false } }
+//         );
+//          console.log(`${result2.modifiedCount} documents were updated`);
+
+//      // Update all existing documents to add the new field with a default value
+//     const result3 = await Funeral.updateMany(
+//       {},
+//       { $set: { receiptNumber: '' } }
+//     );
+//        console.log(`${result3.modifiedCount} documents were updated`);
+
+    
+
+
 //   } catch (error) {
 //     console.error('Error updating documents:', error);
 //   } finally {
