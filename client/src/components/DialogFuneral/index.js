@@ -688,6 +688,11 @@ useEffect(() => {
   }
 
   const handleCreatePdf = () => {
+
+    if (dialogRef && dialogRef.current) {
+      dialogRef.current.maximized = true; // Assuming the dialog supports a 'maximized' property
+  }
+  
     // Assuming the DialogFuneral component has a unique id 'dialog-funeral'
     const input = dialogRef.current;
 
@@ -696,7 +701,7 @@ useEffect(() => {
         style.type = 'text/css';
         style.innerHTML = `
           .html2canvas-container {
-            width: 3000px !important;
+            width: 2000px !important;
             height: 3000px !important;
           }
         `;
@@ -711,7 +716,9 @@ useEffect(() => {
 
 
 
+
     html2canvas(input).then((canvas) => {
+
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgWidth = 210; // A4 size in mm (210mm x 297mm)
@@ -723,12 +730,12 @@ useEffect(() => {
       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
 
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
+      // while (heightLeft > 0) {
+      //   position = heightLeft - imgHeight;
+      //   pdf.addPage();
+      //   pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      //   heightLeft -= pageHeight;
+      // }
 
       pdf.save('dialog-funeral.pdf');
     }).finally(() => {
@@ -737,6 +744,7 @@ useEffect(() => {
       document.head.removeChild(style);
     });
   }
+
 
 
   return (
