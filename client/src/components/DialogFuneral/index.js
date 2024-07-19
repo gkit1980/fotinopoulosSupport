@@ -690,28 +690,52 @@ useEffect(() => {
   const handleCreatePdf = () => {
     // Assuming the DialogFuneral component has a unique id 'dialog-funeral'
     const input = dialogRef.current;
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
-        const imgWidth = 210;
-        const pageHeight = 295;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        let heightLeft = imgHeight;
-        let position = 0;
-  
+
+    // Create a style element for html2canvas container size
+        const style = document.createElement('style');
+        style.type = 'text/css';
+        style.innerHTML = `
+          .html2canvas-container {
+            width: 3000px !important;
+            height: 3000px !important;
+          }
+        `;
+
+
+        // style.innerHTML = '* { -webkit-print-color-adjust: exact !important; color-adjust: exact !important; }';
+        document.head.appendChild(style);
+
+        //end
+
+      input.style.overflow = 'visible';
+
+
+
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210; // A4 size in mm (210mm x 297mm)
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
         pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
-  
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          pdf.addPage();
-          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
-        }
-  
-        pdf.save('dialog-funeral.pdf');
-      });
+      }
+
+      pdf.save('dialog-funeral.pdf');
+    }).finally(() => {
+      // Restore original overflow style
+      input.style.overflow = 'auto';
+      document.head.removeChild(style);
+    });
   }
 
 
