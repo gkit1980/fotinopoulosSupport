@@ -18,16 +18,18 @@ import Checkbox from '@mui/material/Checkbox';
 import DateFnsUtils from "@date-io/date-fns";
 import { el, se } from "date-fns/locale";
 
-// import { InputAdornment } from '@mui/material';
+import { InputAdornment } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { FormControl,FormLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import Skeleton from 'react-loading-skeleton';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import InputMask from 'react-input-mask';
+import dayjs from 'dayjs';
 
 
 
@@ -60,6 +62,8 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
 
   const [burialLocation, setBurialLocation] = useState(selectedRowDeath ? selectedRowDeath.burialLocation : "");
   const [church, setChurch] = useState(selectedRowDeath ? selectedRowDeath.church : "");
+  const [birthDate, setBirthDate] = useState('');
+  const [age, setAge] = useState(selectedRowDeath ? selectedRowDeath.age : "");
 
   const [receiptNumber, setRequestNumber] = useState(selectedRowDeath ? selectedRowDeath.receiptNumber : "");
   const [hasDocument, setHasDocument] = useState(selectedRowDeath ? selectedRowDeath.hasDocument : false);
@@ -589,6 +593,29 @@ useEffect(() => {
     setSelectedDate(date);
   };
 
+  const handleAgeDateChange = (event) => {
+    const value = event.target.value;
+    const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+    if (regex.test(value)) {
+      calculateAge(value);
+      setBirthDate(value);
+    } 
+    else {
+     setBirthDate(value);
+    }
+  };
+
+  const calculateAge = (date) => {
+    const birth = dayjs(date, "DD/MM/YYYY");
+    const today = dayjs();
+    const years = today.diff(birth, 'year');
+    setAge(years);
+  };
+
+
+
+
   const handleCrossButtonClick = () => {
     // Your button click handler logic
     const newText = "ΣΤΕΦΑΝΙ ΣΤΑΥΡΟΣ:"; // Example text to add
@@ -940,7 +967,7 @@ useEffect(() => {
               onChange={handleTextChange}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={3}>
             <TextField
               autoFocus
               margin="dense"
@@ -951,10 +978,40 @@ useEffect(() => {
               }}
               label="Ηλικία"
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.age : ""}
+              value={age}
               fullWidth
               variant="standard"
             />
+            </Grid>
+            <Grid item xs={3}>
+             <InputMask
+                mask="99/99/9999"
+                value={birthDate}
+                onChange={handleAgeDateChange}
+              >
+                {() => (
+                  <TextField
+                    margin="dense"
+                    id="birthDate"
+                    name="birthDate"
+                    label="Ημερομηνία γέννησης"
+                    type="text"
+                    placeholder="dd/mm/yyyy"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton>
+                            <span role="img" aria-label="calendar-icon">📅</span>
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    fullWidth
+                    variant="standard"
+                    value={birthDate}
+                  />
+                )}
+            </InputMask>
           </Grid>
       </Grid>
 
