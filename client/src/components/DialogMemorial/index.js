@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef  } from 'react';
+import React, { useState, useEffect, forwardRef, useRef  } from 'react';
 import Dialog from '@mui/material/Dialog';
 import PropTypes from 'prop-types';
 import DialogActions from '@mui/material/DialogActions';
@@ -7,9 +7,11 @@ import Grid from '@mui/material/Grid';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { el } from "date-fns/locale";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 
 
@@ -19,6 +21,9 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
 
   const [selectedRowAnouncement, setSelectedRowAnouncement] = useState(null);
   const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.date: null);
+
+  // Create a ref for the Dialog component
+  const dialogRef = useRef(null);
 
   useEffect(() => {
 
@@ -48,14 +53,65 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    // handleDateChange(date);  // Call the provided handleDateChange function
   };
   
 
 
+  const handleCreatePdf = () => {
+
+    if (dialogRef && dialogRef.current) {
+      dialogRef.current.maximized = true; // Assuming the dialog supports a 'maximized' property
+  }
+  
+    // Assuming the DialogFuneral component has a unique id 'dialog-funeral'
+    const input = dialogRef.current;
+
+    // Create a style element for html2canvas container size
+        const style = document.createElement('style');
+        style.type = 'text/css';
+        style.innerHTML = `
+          .html2canvas-container {
+            width: 2200px !important;
+            height: 2200px !important;
+          }
+        `;
+
+
+        // style.innerHTML = '* { -webkit-print-color-adjust: exact !important; color-adjust: exact !important; }';
+        document.head.appendChild(style);
+
+        //end
+
+      input.style.overflow = 'visible';
+
+
+
+
+    html2canvas(input).then((canvas) => {
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210; // A4 size in mm (210mm x 297mm)
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+      
+      pdf.save('dialog-funeral.pdf');
+    }).finally(() => {
+      // Restore original overflow style
+      input.style.overflow = 'auto';
+      document.head.removeChild(style);
+    });
+  }
+
 
   return (
     <Dialog
+      ref={dialogRef}
       open={open}
       maxWidth="lg"
       onClose={handleClose}
@@ -97,7 +153,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
           </Grid>
           <Grid item xs={6}>
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={el}>
-                  <DatePicker
+                  <DateTimePicker
                     autoFocus
                     required
                     margin="dense"
@@ -107,7 +163,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
                     InputProps={{
                       readOnly: isReadOnly,
                     }}
-                    format="dd/MM/yyyy"
+                    format="dd/MM/yyyy HH:mm"
                     value= {selectedDate}
                     onChange={handleDateChange}
                     fullWidth
@@ -577,6 +633,14 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
 
 
       <DialogActions>
+              <Button 
+                    onClick={handleCreatePdf}
+                    sx={{ 
+                      variant: 'outlined',
+                    }}
+                  >
+                    Δημιουργία PDF
+                  </Button>
             <Button 
               onClick={handleClose}
               sx={{ 

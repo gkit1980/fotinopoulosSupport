@@ -35,20 +35,11 @@ class MemorialDAO {
     static async updateMemorial(memorialId, memorialData) {
         try {
 
-            const [day, month, year] = memorialData.date.split('/');
-            console.log('day', day);
-            console.log('month', month);
-            console.log('year', year);
-            // memorialData.date = new Date(year, month, day);
-            // console.log('memorialData', memorialData);
 
-            const dateString =  year + "-" + month + "-" + day;
-            // return dd + "/" + mm + "/" + yyyy;
-           // const dateObject = parse(dateString, "dd/MMM/yyyy", new Date());
-           var dateObject = new Date(moment(dateString).format("YYYY-MM-DD"))
-        //    const dateObject = moment(memorialData.date, 'DD/MM/YYYY').toDate();
-        
-            memorialData.date = dateObject;
+        const dateObject = moment(memorialData.date, "DD/MM/YYYY HH:mm").toDate();
+    
+        memorialData.date = dateObject;
+        console.log(' memorial date:', dateObject);
 
 
             const updatedMemorial = await Memorial.findByIdAndUpdate(
