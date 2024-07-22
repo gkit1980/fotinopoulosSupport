@@ -188,8 +188,8 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
       case 'an_address':
             setAnAddress(convertedValue);
             break;
-      case 'an_additionalInfo':
-              setAnAddress(convertedValue);
+      case 'an_additionalinfo':
+              setAnAdditionalInfo(convertedValue);
               break;      
       case 'rel_relationdegree':
             setRelRelationdegree(convertedValue);
