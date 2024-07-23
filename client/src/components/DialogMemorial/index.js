@@ -98,6 +98,9 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
       case 'sakTsantKout':
         setSakTsantKout(convertedValue);
         break;
+      case 'phones':
+        setPhones(convertedValue);
+        break;
       case 'stolismos':
         setStolismos(convertedValue);
         break;
@@ -211,6 +214,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
               value={fullname}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
           </Grid>
           <Grid item xs={6}>
@@ -249,7 +253,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
                 readOnly: isReadOnly,
               }}
               type="text"
-              value={fortydOrYear}
+              defaultValue={fortydOrYear}
               fullWidth
               variant="standard"
             />
@@ -269,6 +273,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
               value={church}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
         </Grid>
        </Grid>
@@ -289,6 +294,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
               value={address}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
             </Grid>
 
@@ -307,6 +313,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
               value={phones}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
             </Grid>
         </Grid>
@@ -328,6 +335,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
               value={disc}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
             </Grid>
             <Grid item xs={6}>
@@ -342,6 +350,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
               value={cake}
               fullWidth
               variant="standard"
+              onChange={handleTextChange}
             />
           </Grid>
         </Grid>
@@ -363,6 +372,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
           value={sakTsantKout}
           fullWidth
           variant="standard"
+          onChange={handleTextChange}
         />
         </Grid>
 
@@ -381,6 +391,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
           value={stolismos}
           fullWidth
           variant="standard"
+          onChange={handleTextChange}
         />
         </Grid>
     </Grid>
@@ -398,6 +409,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
           value={schedules}
           fullWidth
           variant="standard"
+          onChange={handleTextChange}
         />
         </Grid>
 
@@ -413,7 +425,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
             readOnly: isReadOnly,
           }}
           type="text"
-          value={price}
+          defaultValue={price}
           fullWidth
           variant="standard"
         />
@@ -436,6 +448,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
           value={comment}
           fullWidth
           variant="standard"
+          onChange={handleTextChange}
         />
         </Grid>
 
