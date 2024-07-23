@@ -22,6 +22,24 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
   const [selectedRowAnouncement, setSelectedRowAnouncement] = useState(null);
   const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.date: null);
 
+  const [fullname, setFullname] = useState(selectedRowDeath ? selectedRowDeath.fullname : "");
+  const [fortydOrYear, setFortydOrYear] = useState(selectedRowDeath ? selectedRowDeath.fortydOrYear : "");
+  const [church, setChurch] = useState(selectedRowDeath ? selectedRowDeath.church : "");
+  const [address, setAddress] = useState(selectedRowDeath ? selectedRowDeath.address : "");
+  const [phones, setPhones] = useState(selectedRowDeath ? selectedRowDeath.phones : "");  
+  const [disc, setDisc] = useState(selectedRowDeath ? selectedRowDeath.disc : "");
+  const [cake, setCake] = useState(selectedRowDeath ? selectedRowDeath.cake : "");
+  const [sakTsantKout, setSakTsantKout] = useState(selectedRowDeath ? selectedRowDeath.sakTsantKout : "");
+  const [stolismos, setStolismos] = useState(selectedRowDeath ? selectedRowDeath.stolismos : "");
+  const [schedules, setSchedules] = useState(selectedRowDeath ? selectedRowDeath.schedules : "");
+  const [price, setPrice] = useState(selectedRowDeath ? selectedRowDeath.price : "");
+  const [comment, setComment] = useState(selectedRowDeath ? selectedRowDeath.comment : "");
+  
+
+
+
+
+
   // Create a ref for the Dialog component
   const dialogRef = useRef(null);
 
@@ -56,6 +74,48 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
   };
   
 
+  const handleTextChange = (event) => {
+    const { name, value } = event.target; 
+
+    const convertedValue = value.toUpperCase();
+
+    switch (name) {
+      case 'fullname':
+        setFullname(convertedValue);
+        break;
+      case 'church':
+        setChurch(convertedValue);
+        break;    
+      case 'address':
+          setAddress(convertedValue);
+          break;
+      case 'disc':
+        setDisc(convertedValue);
+        break;
+      case 'cake':
+        setCake(convertedValue);
+        break;
+      case 'sakTsantKout':
+        setSakTsantKout(convertedValue);
+        break;
+      case 'stolismos':
+        setStolismos(convertedValue);
+        break;
+      case 'schedules':
+        setSchedules(convertedValue);
+        break;
+        case  'comment':
+        setComment(convertedValue);
+        break;
+   
+      // Add more cases as needed for other inputs
+      default:
+        console.warn(`Unknown field: ${name}`);
+    }
+
+
+   
+  };
 
   const handleCreatePdf = () => {
 
@@ -109,6 +169,8 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
   }
 
 
+
+
   return (
     <Dialog
       ref={dialogRef}
@@ -146,7 +208,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
                 readOnly: isReadOnly,
               }}
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.fullname : ""}
+              value={fullname}
               fullWidth
               variant="standard"
             />
@@ -170,19 +232,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
                     variant="standard"
                    />
             </MuiPickersUtilsProvider>
-  
-            {/* <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="date"
-              name="date"
-              label="Ημερομηνία"
-              type="date" // Modified to use datepicker
-              defaultValue={selectedRowDeath ? selectedRowDeath.date : ""}
-              fullWidth
-              variant="standard"
-            /> */}
+
           </Grid>
       </Grid>
 
@@ -199,7 +249,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
                 readOnly: isReadOnly,
               }}
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.fortydOrYear : ""}
+              value={fortydOrYear}
               fullWidth
               variant="standard"
             />
@@ -216,7 +266,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
                 readOnly: isReadOnly,
               }}
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.church : ""}
+              value={church}
               fullWidth
               variant="standard"
             />
@@ -236,7 +286,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
                 readOnly: isReadOnly,
               }}
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.address : ""}
+              value={address}
               fullWidth
               variant="standard"
             />
@@ -254,7 +304,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
                 readOnly: isReadOnly,
               }}
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.phones : ""}
+              value={phones}
               fullWidth
               variant="standard"
             />
@@ -275,7 +325,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
                 readOnly: isReadOnly,
               }}
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.disc : ""}
+              value={disc}
               fullWidth
               variant="standard"
             />
@@ -289,7 +339,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
               name="cake"
               label="Κέικ"
               type="text"
-              defaultValue={selectedRowDeath ? selectedRowDeath.cake : ""}
+              value={cake}
               fullWidth
               variant="standard"
             />
@@ -310,7 +360,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
             readOnly: isReadOnly,
           }}
           type="text"
-          defaultValue={selectedRowDeath ? selectedRowDeath.sakTsantKout : ""}
+          value={sakTsantKout}
           fullWidth
           variant="standard"
         />
@@ -328,7 +378,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
             readOnly: isReadOnly,
           }}
           type="text"
-          defaultValue={selectedRowDeath ? selectedRowDeath.stolismos : ""}
+          value={stolismos}
           fullWidth
           variant="standard"
         />
@@ -345,7 +395,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
           name="schedules"
           label="Πρόγραμμα"
           type="text"
-          defaultValue={selectedRowDeath ? selectedRowDeath.schedules : ""}
+          value={schedules}
           fullWidth
           variant="standard"
         />
@@ -363,7 +413,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
             readOnly: isReadOnly,
           }}
           type="text"
-          defaultValue={selectedRowDeath ? selectedRowDeath.price : ""}
+          value={price}
           fullWidth
           variant="standard"
         />
@@ -383,7 +433,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
             readOnly: isReadOnly,
           }}
           type="text"
-          defaultValue={selectedRowDeath ? selectedRowDeath.comment : ""}
+          value={comment}
           fullWidth
           variant="standard"
         />
