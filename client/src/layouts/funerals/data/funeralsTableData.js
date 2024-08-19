@@ -79,6 +79,7 @@ useEffect(() => {
  const handleClickOpen = (item) => {
 
   item.idPublicationDate=formatDate(item.idPublicationDate)
+  item.birthDate=formatDate(item.birthDate);
    
    setSelectedRowId(item._id);
    setSelectedRow(item);
@@ -94,6 +95,7 @@ useEffect(() => {
     hasRequest: item.hasRequest,
     afm: item.afm,
     age: item.age,
+    birthDate: item.birthDate,
     amka: item.amka,
     anouncementId: item.anouncement,
     fatherMotherName: item.fatherMotherName,
@@ -175,6 +177,7 @@ useEffect(() => {
  const handleClickOpenForView = (item) => { 
 
   item.idPublicationDate=formatDate(item.idPublicationDate)
+  item.birthDate=formatDate(item.birthDate);
     
   setSelectedRowId(item._id); // Assuming `id` is the unique identifier for each row
   setSelectedRow(item);
@@ -216,6 +219,7 @@ const handleCreate = (formData) => {
     hasRequest: formData.hasRequest,
     afm: formData.afm,
     age: parseInt(formData.age, 10),
+    birthDate: formData.birthDate,
     amka: formData.amka,
     anouncementId: formData.anouncementId,
     fatherMotherName: formData.fatherMotherName,
@@ -398,6 +402,7 @@ setIsLoading(true);
     hasRequest: formData.hasRequest,
     afm: formData.afm,
     age: parseInt(formData.age, 10),
+    birthDate: formData.birthDate,
     amka: formData.amka,
     anouncementId: formData.anouncementId,
     relativeId: formData.relativeId,
@@ -457,6 +462,8 @@ setIsLoading(true);
 
   //convert the date string to date object--SOS!!!
   updatedFuneralFormData.idPublicationDate=stringToDateFormat(updatedFuneralFormData.idPublicationDate);
+  updatedFuneralFormData.birthDate=stringToDateFormat(updatedFuneralFormData.birthDate);
+  
   updatedRelativeFormData.birthDate=stringToDateFormat(updatedRelativeFormData.birthDate);
   updatedRelativeFormData.idPublicationDate=stringToDateFormat(updatedRelativeFormData.idPublicationDate);
 

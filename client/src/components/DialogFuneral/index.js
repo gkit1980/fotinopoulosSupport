@@ -30,6 +30,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import InputMask from 'react-input-mask';
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 
 
@@ -62,7 +63,7 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
 
   const [burialLocation, setBurialLocation] = useState(selectedRowDeath ? selectedRowDeath.burialLocation : "");
   const [church, setChurch] = useState(selectedRowDeath ? selectedRowDeath.church : "");
-  const [birthDate, setBirthDate] = useState('');
+  const [birthDate, setBirthDate] = useState(selectedRowDeath ? selectedRowDeath.birthDate : "");
   const [age, setAge] = useState(selectedRowDeath ? selectedRowDeath.age : "");
 
   const [receiptNumber, setRequestNumber] = useState(selectedRowDeath ? selectedRowDeath.receiptNumber : "");
@@ -120,6 +121,7 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
   const [rel_taxisCodePassword, setRelTaxisCodePassword] = useState(selectedRowRelative ? selectedRowRelative.taxisCodePassword : "");
 
 
+  dayjs.extend(customParseFormat);
 
   // ///english to greek map
   // const englishToGreekMap = {
@@ -983,6 +985,7 @@ useEffect(() => {
               variant="standard"
             />
             </Grid>
+            
             <Grid item xs={3}>
              <InputMask
                 mask="99/99/9999"

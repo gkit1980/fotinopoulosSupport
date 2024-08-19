@@ -19,6 +19,8 @@ import { makeStyles } from '@mui/styles'
 import DialogMemorial from "components/DialogMemorial";
 import { Dialog,DialogContent,DialogTitle,DialogActions,DialogContentText,Button } from '@mui/material';
 import { format,parseISO } from 'date-fns';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 
 
@@ -52,7 +54,7 @@ export default function data(text,open,create,setIsLoading) {
   const [openForDelete, setOpenForDelete] = useState(false);
   
 
-
+  dayjs.extend(customParseFormat);
 
 
 useEffect(() => {
@@ -69,6 +71,9 @@ useEffect(() => {
 
 
  const handleClickOpen = (item) => {
+
+  item.birthDate=formatDate(item.birthDate);
+
   setSelectedRowId(item._id);
    setSelectedRow(item);
    setDialogType('edit');
@@ -117,6 +122,7 @@ const dateObject = new Date(year, month, day);
   const createdMemorialFormData = {
      id: formData.id,
      date: dateObject,
+     birthDate: formData.birthDate,
      fortydOrYear: formData.fortydOrYear,
      church: formData.church,
      address: formData.address,
@@ -162,7 +168,8 @@ const handleUpdate = (formData) => {
   // Handle update logic...
   const updatedMemorialFormData = {
     id: formData.id,
-    date: formData.date,
+    date: formData.selectedDate,
+    birthDate: formData.birthDate,
     fortydOrYear: formData.fortydOrYear,
     church: formData.church,
     address: formData.address,
@@ -177,6 +184,11 @@ const handleUpdate = (formData) => {
     comment: formData.comment
   };
 
+
+     //convert the date string to date object--SOS!!!
+  
+  updatedMemorialFormData.birthDate=stringToDateFormat(updatedMemorialFormData.birthDate);
+  updatedMemorialFormData.date=dayjs(updatedMemorialFormData.date, "DD/MM/YYYY HH:mm", true);
 
 
 
@@ -258,18 +270,33 @@ const handleSubmit = (formData) => {
 
 
 
-const formatDate = (date) => {
-  try {
-    const parsedDate = new Date(date);
-    if (isNaN(parsedDate)) {
-      throw new RangeError('Invalid time value');
-    }
-    return format(parsedDate, 'dd/MM/yyyy');
-  } catch (error) {
-    console.error('Date formatting error:', error);
-    return 'Invalid date';
-  }
+// Format the date to a string
+const formatDate = (isoString) => {
+  const date = new Date(isoString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
 };
+
+
+//convert the date string to date object
+const stringToDateFormat = (dateString) => {
+
+  if(dateString==null)
+    return null;
+   /////Fetch existing anouncement data and relative data
+   const parts = dateString.split("/");
+   const year = parseInt(parts[2], 10);
+   const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed in JavaScript Date
+   const day = parseInt(parts[0], 10);
+
+   const dateObject = new Date(year, month, day);
+
+   return dateObject;
+
+}
 
 
 const notifyEvent = (formData) => {

@@ -35,11 +35,19 @@ class MemorialDAO {
     static async updateMemorial(memorialId, memorialData) {
         try {
 
+        // console.log(' memorial data:', memorialData);   
 
-        const dateObject = moment(memorialData.date, "DD/MM/YYYY HH:mm").toDate();
+        // const dateObject = moment(memorialData.date, "DD/MM/YYYY HH:mm").toDate();
     
-        memorialData.date = dateObject;
-        console.log(' memorial date:', dateObject);
+        // memorialData.date = dateObject;
+        // console.log(' memorial date:', dateObject);
+
+       
+        // const birthdateObject = moment(memorialData.birthDate, "DD/MM/YYYY HH:mm").toDate();
+    
+        // memorialData.birthDate = birthdateObject;
+        // console.log(' memorial birthdate:', birthdateObject);
+
 
 
             const updatedMemorial = await Memorial.findByIdAndUpdate(

@@ -12,6 +12,11 @@ import DateFnsUtils from "@date-io/date-fns";
 import { el } from "date-fns/locale";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import IconButton from '@mui/material/IconButton';
+import { InputAdornment } from '@mui/material';
+import InputMask from 'react-input-mask';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 
 
@@ -21,7 +26,10 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
 
   const [selectedRowAnouncement, setSelectedRowAnouncement] = useState(null);
   const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.date: null);
+  const [birthDate, setBirthDate] = useState(selectedRowDeath ? selectedRowDeath.birthDate : "");
+  const [birthDateError, setBirthDateError] = useState("");
 
+  
   const [fullname, setFullname] = useState(selectedRowDeath ? selectedRowDeath.fullname : "");
   const [fortydOrYear, setFortydOrYear] = useState(selectedRowDeath ? selectedRowDeath.fortydOrYear : "");
   const [church, setChurch] = useState(selectedRowDeath ? selectedRowDeath.church : "");
@@ -37,7 +45,8 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
   
 
 
-
+  
+  dayjs.extend(customParseFormat);
 
 
   // Create a ref for the Dialog component
@@ -73,6 +82,47 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
     setSelectedDate(date);
   };
   
+
+  const isValidBirthDate = (dateString) => {
+    // Strict parsing to ensure the format is exactly 'DD/MM/YYYY'
+    const birthDate = dayjs(dateString, "DD/MM/YYYY", true);
+  
+    // Check if the date is valid and correctly formatted
+    if (!birthDate.isValid()) {
+  
+      return false;
+    }
+  
+    const today = dayjs();
+    const minDate = today.subtract(150, 'years');
+  
+    // Check if the date is not in the future and not older than 150 years
+    if (birthDate.isAfter(today) || birthDate.isBefore(minDate)) {
+      return false;
+    }
+    
+    return true;
+  };
+
+  const handleBirthDateChange = (event) => {
+    const value = event.target.value;
+    const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+
+    if (regex.test(value) && isValidBirthDate(value)){
+      setBirthDate(value);
+      setBirthDateError("");
+    } 
+    else
+    {
+      setBirthDate(value);
+      setBirthDateError("Η ημερομηνία πρέπει νά έχει τήν μορφή DD/MM/YYYY");
+    }
+ 
+  };
+
+
+
 
   const handleTextChange = (event) => {
     const { name, value } = event.target; 
@@ -195,7 +245,40 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
       }}
     >
       {/* Dialog content goes here */}
-      <DialogTitle> <img src={logo} className={className} alt="Logo" /> ΕΝΤΥΠΟ ΜΝΗΜΟΣΥΝΟΥ</DialogTitle>
+      {/* <DialogTitle> <img src={logo} className={className} alt="Logo" /> ΕΝΤΥΠΟ ΜΝΗΜΟΣΥΝΟΥ</DialogTitle> */}
+      
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',gap:'40px',border:'2px solid black', marginTop:'30px' }}>
+      <DialogTitle id="draggable-dialog-title"> <img src={logo} className={className} alt="Logo"/> ΕΝΤΥΠΟ ΜΝΗΜΟΣΥΝΟΥ</DialogTitle>
+     
+      <Grid container spacing={3}>
+          <Grid item xs={3} >
+
+
+          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={el}>
+                  <DateTimePicker
+                    autoFocus
+                    margin="dense"
+                    id="selectedDate"
+                    name="selectedDate"
+                    label="Ημερομηνία"
+                    InputProps={{
+                      readOnly: isReadOnly,
+                    }}
+                    format="dd/MM/yyyy HH:mm"
+                    value= {selectedDate}
+                    onChange={handleDateChange}
+                    fullWidth
+                    variant="standard"
+                   />
+          </MuiPickersUtilsProvider>
+        
+          </Grid>
+     
+      </Grid>
+
+      </div>
+
+
 
       <DialogContent>
       <Grid container spacing={6}>
@@ -218,24 +301,58 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
             />
           </Grid>
           <Grid item xs={6}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={el}>
+
+
+          <InputMask
+                mask="99/99/9999"
+                value={birthDate}
+                onChange={handleBirthDateChange}
+              >
+                {() => (
+                  <TextField
+                    margin="dense"
+                    id="birthDate"
+                    name="birthDate"
+                    label="Ημερομηνία γέννησης"
+                    type="text"
+                    error={!!birthDateError}
+                    helperText={birthDateError}
+                    placeholder="dd/mm/yyyy"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton>
+                            <span role="img" aria-label="calendar-icon">📅</span>
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    fullWidth
+                    variant="standard"
+                    value={birthDate}
+                  />
+                )}
+            </InputMask>
+
+
+            {/* <MuiPickersUtilsProvider utils={DateFnsUtils} locale={el}>
                   <DateTimePicker
                     autoFocus
                     required
                     margin="dense"
                     id="date"
                     name="date"
-                    label="Ημερομηνία"
+                    label="Ημερομηνία Γέννησης"
                     InputProps={{
                       readOnly: isReadOnly,
                     }}
                     format="dd/MM/yyyy HH:mm"
-                    value= {selectedDate}
-                    onChange={handleDateChange}
+                    value= {birthDate}
+                    onChange={handleBirthDateChange}
                     fullWidth
                     variant="standard"
                    />
-            </MuiPickersUtilsProvider>
+            </MuiPickersUtilsProvider> */}
 
           </Grid>
       </Grid>
