@@ -7,6 +7,8 @@ import Grid from '@mui/material/Grid';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { FormControl,FormLabel } from '@mui/material';
+import Box from '@mui/material/Box';
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { el } from "date-fns/locale";
@@ -14,9 +16,12 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import IconButton from '@mui/material/IconButton';
 import { InputAdornment } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import InputMask from 'react-input-mask';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import Skeleton from 'react-loading-skeleton';
 
 
 
@@ -25,6 +30,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
 
 
   const [selectedRowAnouncement, setSelectedRowAnouncement] = useState(null);
+  const [isAnouncementLoading, setIsAnouncementLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.date: null);
   const [birthDate, setBirthDate] = useState(selectedRowDeath ? selectedRowDeath.birthDate : "");
   const [birthDateError, setBirthDateError] = useState("");
@@ -42,7 +48,18 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
   const [schedules, setSchedules] = useState(selectedRowDeath ? selectedRowDeath.schedules : "");
   const [price, setPrice] = useState(selectedRowDeath ? selectedRowDeath.price : "");
   const [comment, setComment] = useState(selectedRowDeath ? selectedRowDeath.comment : "");
-  
+
+
+  //aggeltiria
+  const [wreathsTextFieldValue, setWreathsTextFieldValue] = useState(selectedRowAnouncement ? selectedRowAnouncement.wreaths : "");
+  const [an_spouse, setAnSpouse] = useState(selectedRowAnouncement ? selectedRowAnouncement.spouse : "");
+  const [an_childs, setAnChilds] = useState(selectedRowAnouncement ? selectedRowAnouncement.childs : "");
+  const [an_grandchilds, setAnGrandchilds] = useState(selectedRowAnouncement ? selectedRowAnouncement.grandchilds : "");
+  const [an_brothers, setAnBrothers] = useState(selectedRowAnouncement ? selectedRowAnouncement.brothers : "");
+  const [an_nieces, setAnNieces] = useState(selectedRowAnouncement ? selectedRowAnouncement.nieces : "");
+  const [an_others, setAnOthers] = useState(selectedRowAnouncement ? selectedRowAnouncement.others : "");
+  const [an_address, setAnAddress] = useState(selectedRowAnouncement ? selectedRowAnouncement.address : "");
+  const [an_additionalinfo, setAnAdditionalInfo] = useState(selectedRowAnouncement ? selectedRowAnouncement.additionalinfo : "");
 
 
   
@@ -51,6 +68,13 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
 
   // Create a ref for the Dialog component
   const dialogRef = useRef(null);
+
+  // Example additional style
+const labelStyle = {
+  flexGrow: 1,
+  fontSize: '16px' // Example additional style
+};
+
 
   useEffect(() => {
 
@@ -68,6 +92,20 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
                 .then(existingAnouncementData => {
                   console.log('Success:', existingAnouncementData);
                   setSelectedRowAnouncement(existingAnouncementData);
+                    
+                  //all fields
+                    setWreathsTextFieldValue(existingAnouncementData.wreaths);
+                    setAnSpouse(existingAnouncementData.spouse);
+                    setAnChilds(existingAnouncementData.childs);
+                    setAnGrandchilds(existingAnouncementData.grandchilds);
+                    setAnBrothers(existingAnouncementData.brothers);
+                    setAnNieces(existingAnouncementData.nieces);
+                    setAnOthers(existingAnouncementData.others);
+                    setAnAddress(existingAnouncementData.address);
+                    setAnAdditionalInfo(existingAnouncementData.additionalinfo);
+
+
+
                  })
                 .catch(error => console.error('Error:', error));
        })
@@ -157,9 +195,33 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
       case 'schedules':
         setSchedules(convertedValue);
         break;
-        case  'comment':
+      case  'comment':
         setComment(convertedValue);
         break;
+      case 'an_spouse':
+        setAnSpouse(convertedValue);
+           break;
+      case 'an_childs':
+        setAnChilds(convertedValue);
+           break;
+      case 'an_grandchilds':
+          setAnGrandchilds(convertedValue);
+           break;
+      case 'an_brothers':
+           setAnBrothers(convertedValue);
+            break;
+      case 'an_nieces':
+            setAnNieces(convertedValue);
+            break;
+      case 'an_others':
+            setAnOthers(convertedValue);
+            break;
+      case 'an_address':
+            setAnAddress(convertedValue);
+            break;
+      case 'an_additionalinfo':
+              setAnAdditionalInfo(convertedValue);
+              break;        
    
       // Add more cases as needed for other inputs
       default:
@@ -222,6 +284,17 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
   }
 
 
+  const handleCrossButtonClick = () => {
+    // Your button click handler logic
+    const newText = "ΣΤΕΦΑΝΙ ΣΤΑΥΡΟΣ:"; // Example text to add
+    setWreathsTextFieldValue(prevValue => prevValue + newText); // Concatenate the new text to the existing value
+  };
+
+   const  handleFavoriteClick = () => {
+    // Your favorite icon click handler logic
+    const newText = "ΣΤΕΦΑΝΙ ΚΑΡΔΙΑ:"; // Example text to add
+    setWreathsTextFieldValue(prevValue => prevValue + newText); // Concatenate the new text to the existing value
+  }
 
 
   return (
@@ -335,24 +408,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
             </InputMask>
 
 
-            {/* <MuiPickersUtilsProvider utils={DateFnsUtils} locale={el}>
-                  <DateTimePicker
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="date"
-                    name="date"
-                    label="Ημερομηνία Γέννησης"
-                    InputProps={{
-                      readOnly: isReadOnly,
-                    }}
-                    format="dd/MM/yyyy HH:mm"
-                    value= {birthDate}
-                    onChange={handleBirthDateChange}
-                    fullWidth
-                    variant="standard"
-                   />
-            </MuiPickersUtilsProvider> */}
+        
 
           </Grid>
       </Grid>
@@ -585,7 +641,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
           style={{ display: 'none' }}
         />
 
-          <DialogTitle><img src={logo} className={className} alt="Logo" /> ΑΓΓΕΛΤΗΡΙΑ </DialogTitle>
+          {/* <DialogTitle><img src={logo} className={className} alt="Logo" /> ΑΓΓΕΛΤΗΡΙΑ </DialogTitle>
 
           <Grid container spacing={0}>
 
@@ -806,7 +862,310 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
 
           </Grid>
 
-          </Grid>
+          </Grid> */}
+
+            <div style={{border:'2px solid black', marginTop:'30px' }}>
+            <DialogTitle><img src={logo} className={className} alt="Logo" /> ΑΓΓΕΛΤΗΡΙΑ </DialogTitle>
+            </div>
+
+            <div style={{ marginTop:'30px' }}>
+               
+            {isAnouncementLoading ?  (
+              <>
+              <Skeleton variant="rectangular" width={1200} height={18} />
+              <Skeleton variant="text" width={1200} height={20} />
+              <Skeleton variant="text" width={1200} height={20} />
+              <Skeleton variant="text" width={1200} height={20} />
+              </>
+              ) : (
+                  <>
+                        <Grid container spacing={0}>
+
+                                <Grid item xs={6}>
+                                    
+                                {selectedRowAnouncement &&  (<TextField
+                                      autoFocus
+                                      margin="dense"
+                                      id="anouncementId"
+                                      name="anouncementId"
+                                      InputProps={{
+                                          readOnly: isReadOnly,
+                                      }}
+                                      label="anouncementId"
+                                      type="text"
+                                      defaultValue={selectedRowAnouncement ? selectedRowAnouncement._id : ""}
+                                      fullWidth
+                                      variant="standard"
+                                      style={{ display: 'none' }}
+                                    />
+                                    )}
+
+
+                                </Grid>
+
+                        
+                        </Grid>
+                          
+
+                        <Grid container spacing={6}>
+
+                              <Grid item xs={6}>
+                                
+                              {selectedRowAnouncement &&  (<TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="an_spouse"
+                                    name="an_spouse"
+                                    InputProps={{
+                                      readOnly: isReadOnly,
+                                    }}
+                                    label="Σύζυγος"
+                                    type="text"
+                                    value={an_spouse}
+                                    fullWidth
+                                    variant="standard"
+                                    onChange={handleTextChange}
+                                />
+                                )}
+
+
+                              </Grid>
+
+                              <Grid item xs={6}>
+
+                                    {selectedRowAnouncement &&  (<TextField
+                                            autoFocus
+                                            margin="dense"
+                                            id="an_brothers"
+                                            name="an_brothers"
+                                            InputProps={{
+                                                readOnly: isReadOnly,
+                                            }}
+                                            label="Αδέλφια"
+                                            type="text"
+                                            value={an_brothers}
+                                            fullWidth
+                                            variant="standard"
+                                            onChange={handleTextChange}
+                                          />
+                                          )}
+
+                              </Grid>
+
+
+                           
+                        </Grid>
+                        
+
+                        <Grid container spacing={6}>
+
+                          <Grid item xs={6}>
+                                  
+
+                                  {selectedRowAnouncement &&  (<TextField
+                                        rows={4}
+                                        maxRows={10}
+                                        multiline
+                                        autoFocus
+                                        margin="dense"
+                                        id="an_childs"
+                                        name="an_childs"
+                                        InputProps={{
+                                            readOnly: isReadOnly,
+                                        }}
+                                        label="Τέκνα"
+                                        type="text"
+                                        value={an_childs}
+                                        fullWidth
+                                        variant="standard"
+                                        onChange={handleTextChange}
+                                      />
+                                  )}
+
+                          
+                          
+                          </Grid>
+
+                          <Grid item xs={6}>
+
+                                {selectedRowAnouncement &&  (<TextField
+                                        rows={4}
+                                        maxRows={10}
+                                        multiline
+                                        autoFocus
+                                        margin="dense"
+                                        id="an_grandchilds"
+                                        name="an_grandchilds"
+                                        InputProps={{
+                                            readOnly: isReadOnly,
+                                        }}
+                                        label="Εγγόνια"
+                                        type="text"
+                                        value={an_grandchilds}
+                                        fullWidth
+                                        variant="standard"
+                                        onChange={handleTextChange}
+                                      />
+                                      )}
+                                  
+                            
+
+
+                          </Grid>
+
+                        </Grid>
+
+                        <Grid container spacing={6}>
+
+                          <Grid item xs={6}>
+                              
+                          {selectedRowAnouncement &&  (<TextField
+                                          autoFocus
+                                          margin="dense"
+                                          id="an_nieces"
+                                          name="an_nieces"
+                                          InputProps={{
+                                            readOnly: isReadOnly,
+                                          }}
+                                          label="Ανίψια"
+                                          type="text"
+                                          value={an_nieces}
+                                          fullWidth
+                                          variant="standard"
+                                          onChange={handleTextChange}
+                                      />
+                                    )}
+                          
+                          </Grid>
+
+                              <Grid item xs={6}>
+                              
+                              {selectedRowAnouncement &&  (<TextField
+                                      autoFocus
+                                      margin="dense"
+                                      id="an_others"
+                                      name="an_others"
+                                      InputProps={{
+                                          readOnly: isReadOnly,
+                                      }}
+                                      label="Λοιποί συγγενείς"
+                                      type="text"
+                                      value={an_others}
+                                      fullWidth
+                                      variant="standard"
+                                      onChange={handleTextChange}
+                                    />
+                                    )}
+
+
+                                </Grid>
+                        </Grid>
+
+                        <Grid container spacing={0}>
+
+                        <Grid item xs={12}>
+                              
+                        {selectedRowAnouncement &&  (<TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="an_address"
+                                    name="an_address"
+                                    InputProps={{
+                                      readOnly: isReadOnly,
+                                    }}
+                                    label="Διεύθυνση"
+                                    type="text"
+                                    value={an_address}
+                                    fullWidth
+                                    variant="standard"
+                                    onChange={handleTextChange}
+                                />
+                        )}
+
+
+                        </Grid>
+
+                        </Grid>
+
+                        <Grid container spacing={0}>
+                          <Grid item xs={12}>
+                              <FormControl fullWidth>
+                                <Box display="flex" alignItems="center" marginBottom={1}>
+                                    <FormLabel component="legend" style={labelStyle}>
+                                      Στεφάνια
+                                    </FormLabel>
+                                    <IconButton
+                                      aria-label="add"
+                                      onClick={handleCrossButtonClick}
+                                      edge="end"
+                                    >
+                                      <AddIcon />
+                                    </IconButton>
+                            <IconButton
+                            aria-label="favorite"
+                            onClick={handleFavoriteClick} // Define this handler for the heart icon
+                            edge="end"
+                            >
+                            <FavoriteIcon />
+                            </IconButton>
+                          </Box>
+                          <TextField
+                            rows={4}
+                            maxRows={10}
+                            multiline
+                            autoFocus
+                            margin="dense"
+                            id="an_wreaths"
+                            name="an_wreaths"
+                            InputProps={{
+                              readOnly: isReadOnly,
+                            }}
+                            type="text"
+                            value={wreathsTextFieldValue}
+                            onChange={(e) => setWreathsTextFieldValue(e.target.value)}
+                          />
+                        </FormControl>
+                      </Grid>
+                       </Grid>
+
+
+
+                       <Grid container spacing={0}>
+
+                       <Grid item xs={12}>
+                                
+
+                                {selectedRowAnouncement &&  (<TextField
+                                      rows={4}
+                                      maxRows={10}
+                                      multiline
+                                      autoFocus
+                                      margin="dense"
+                                      id="an_additionalinfo"
+                                      name="an_additionalinfo"
+                                      InputProps={{
+                                          readOnly: isReadOnly,
+                                      }}
+                                      label="Επιπλέον Πληροφορίες"
+                                      type="text"
+                                      value={an_additionalinfo}
+                                      fullWidth
+                                      variant="standard"
+                                      onChange={handleTextChange}
+                                    />
+                                )}
+
+                        
+                        
+                                </Grid>
+                           
+
+                       </Grid>
+                    </>
+            )
+            }
+
+            </div>
 
                   
     </DialogContent>

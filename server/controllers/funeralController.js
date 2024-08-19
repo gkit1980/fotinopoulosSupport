@@ -38,7 +38,9 @@ router.get('/fullname/:fullname', async (req, res) => {
     try {
         const funeralDeadFullName= req.params.fullname;
         console.log(funeralDeadFullName);
-        const funeral = await FuneralDAO.getFuneralByFullName(funeralDeadFullName);
+        const decodedString = decodeURIComponent(funeralDeadFullName);
+        console.log('Decoded string:'+decodedString);
+        const funeral = await FuneralDAO.getFuneralByFullName(decodedString);
         if (funeral) {
             res.json(funeral);
         } else {
