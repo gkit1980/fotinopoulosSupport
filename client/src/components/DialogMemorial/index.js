@@ -22,6 +22,8 @@ import InputMask from 'react-input-mask';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import Skeleton from 'react-loading-skeleton';
+import { set } from 'date-fns';
+
 
 
 
@@ -31,6 +33,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
 
   const [selectedRowAnouncement, setSelectedRowAnouncement] = useState(null);
   const [isAnouncementLoading, setIsAnouncementLoading] = useState(false);
+  const [memorialAnouncementId, setMemorialAnouncementId] = useState(null);
   const [selectedDate, setSelectedDate] = useState(selectedRowDeath ? selectedRowDeath.date: null);
   const [birthDate, setBirthDate] = useState(selectedRowDeath ? selectedRowDeath.birthDate : "");
   const [birthDateError, setBirthDateError] = useState("");
@@ -84,8 +87,53 @@ const labelStyle = {
         fetch(`https://entypafotinopoulosserver.azurewebsites.net/funeral/fullname/${selectedRowDeath.fullname}`)
         .then(response => response.json())
         .then(dataFuneral => {
+
       
-                const existingFuneralAnouncementId = dataFuneral.anouncement;
+          if (dataFuneral.hasOwnProperty('error')) 
+          {
+            
+
+            fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${selectedRowDeath.anouncement}`)
+            .then(response => response.json())
+            .then(data => {
+              console.log('Success:', data);
+
+
+              const existingAnouncementData = {
+                brothers: data.brothers,
+                childs: data.childs,
+                grandchilds: data.grandchilds,
+                nieces:data.nieces,
+                others:data.others,
+                spouse:data.spouse,
+                address:data.address,
+                additionalinfo:data.additionalinfo,
+                wreaths:data.wreaths,
+                _id:data._id
+              };
+                  
+              setSelectedRowAnouncement(existingAnouncementData);
+
+                setWreathsTextFieldValue(existingAnouncementData.wreaths);
+                setAnSpouse(existingAnouncementData.spouse);
+                setAnChilds(existingAnouncementData.childs);
+                setAnGrandchilds(existingAnouncementData.grandchilds);
+                setAnBrothers(existingAnouncementData.brothers);
+                setAnNieces(existingAnouncementData.nieces);
+                setAnOthers(existingAnouncementData.others);
+                setAnAddress(existingAnouncementData.address);
+                setAnAdditionalInfo(existingAnouncementData.additionalinfo);
+                setMemorialAnouncementId(existingAnouncementData.anouncement);
+            });
+
+            
+
+         
+               
+          }
+          else
+          {
+            const existingFuneralAnouncementId = dataFuneral.anouncement;
 
                 fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${existingFuneralAnouncementId}`)
                 .then(response => response.json())
@@ -103,12 +151,21 @@ const labelStyle = {
                     setAnOthers(existingAnouncementData.others);
                     setAnAddress(existingAnouncementData.address);
                     setAnAdditionalInfo(existingAnouncementData.additionalinfo);
+                    setMemorialAnouncementId(existingFuneralAnouncementId);
 
 
 
                  })
                 .catch(error => console.error('Error:', error));
+          }
+
+
+
        })
+      }
+      else
+      {
+        setSelectedRowAnouncement({});
       }
     
 
@@ -170,6 +227,57 @@ const labelStyle = {
     switch (name) {
       case 'fullname':
         setFullname(convertedValue);
+        //special case -fetch anouncement data
+        fetch(`https://entypafotinopoulosserver.azurewebsites.net/funeral/fullname/${convertedValue}`)
+        .then(response => response.json())
+        .then(dataFuneral => {
+
+          if (dataFuneral.hasOwnProperty('error')) 
+            {
+            console.log('Error:', dataFuneral.error);
+            setSelectedRowAnouncement({});
+            setIsAnouncementLoading(false);
+            
+            //all fields
+            setWreathsTextFieldValue("");
+            setAnSpouse("");
+            setAnChilds("");
+            setAnGrandchilds("");
+            setAnBrothers("");
+            setAnNieces("");
+            setAnOthers("");
+            setAnAddress("");
+            setAnAdditionalInfo("");  
+            setMemorialAnouncementId(null);
+          }
+          else
+          {
+                      
+                  const existingFuneralAnouncementId = dataFuneral.anouncement;
+  
+                  fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${existingFuneralAnouncementId}`)
+                  .then(response => response.json())
+                  .then(existingAnouncementData => {
+                    console.log('Success:', existingAnouncementData);
+                    setSelectedRowAnouncement(existingAnouncementData);
+                      
+                    //all fields
+                      setWreathsTextFieldValue(existingAnouncementData.wreaths);
+                      setAnSpouse(existingAnouncementData.spouse);
+                      setAnChilds(existingAnouncementData.childs);
+                      setAnGrandchilds(existingAnouncementData.grandchilds);
+                      setAnBrothers(existingAnouncementData.brothers);
+                      setAnNieces(existingAnouncementData.nieces);
+                      setAnOthers(existingAnouncementData.others);
+                      setAnAddress(existingAnouncementData.address);
+                      setAnAdditionalInfo(existingAnouncementData.additionalinfo);  
+                      setMemorialAnouncementId(existingFuneralAnouncementId);
+                      //
+
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+          })
         break;
       case 'church':
         setChurch(convertedValue);
@@ -417,7 +525,6 @@ const labelStyle = {
        <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="fortydOrYear"
               name="fortydOrYear"
@@ -434,7 +541,6 @@ const labelStyle = {
         <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="church"
               name="church"
@@ -455,7 +561,6 @@ const labelStyle = {
             <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="address"
               name="address"
@@ -474,7 +579,6 @@ const labelStyle = {
             <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="phones"
               name="phones"
@@ -496,7 +600,6 @@ const labelStyle = {
            <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="disc"
               name="disc"
@@ -514,7 +617,6 @@ const labelStyle = {
             <Grid item xs={6}>
             <TextField
               autoFocus
-              required
               margin="dense"
               id="cake"
               name="cake"
@@ -533,7 +635,6 @@ const labelStyle = {
         <Grid item xs={6}>
         <TextField
           autoFocus
-          required
           margin="dense"
           id="sakTsantKout"
           name="sakTsantKout"
@@ -552,7 +653,6 @@ const labelStyle = {
         <Grid item xs={6}>
         <TextField
           autoFocus
-          required
           margin="dense"
           id="stolismos"
           name="stolismos"
@@ -573,7 +673,6 @@ const labelStyle = {
         <Grid item xs={6}>
         <TextField
           autoFocus
-          required
           margin="dense"
           id="schedules"
           name="schedules"
@@ -589,7 +688,6 @@ const labelStyle = {
         <Grid item xs={6}>
         <TextField
           autoFocus
-          required
           margin="dense"
           id="price"
           name="price"
@@ -609,7 +707,6 @@ const labelStyle = {
         <Grid item xs={12}>
         <TextField
           autoFocus
-          required
           margin="dense"
           id="comment"
           name="comment"
@@ -641,229 +738,7 @@ const labelStyle = {
           style={{ display: 'none' }}
         />
 
-          {/* <DialogTitle><img src={logo} className={className} alt="Logo" /> ΑΓΓΕΛΤΗΡΙΑ </DialogTitle>
-
-          <Grid container spacing={0}>
-
-                <Grid item xs={6}>
-                  
-               <TextField
-                    autoFocus
-                    margin="dense"
-                    id="anouncementId"
-                    name="anouncementId"
-                    InputProps={{
-                      readOnly: isReadOnly,
-                    }}
-                    label="anouncementId"
-                    type="text"
-                    defaultValue={selectedRowAnouncement ? selectedRowAnouncement._id : ""}
-                    fullWidth
-                    variant="standard"
-                    style={{ display: 'none' }}
-                  />
-                  
-
-
-                </Grid>
-
-
-          </Grid>
-            
-
-          <Grid container spacing={6}>
-
-              <Grid item xs={6}>
-                
-              <TextField
-                  autoFocus
-                  margin="dense"
-                  id="an_spouse"
-                  name="an_spouse"
-                  InputProps={{
-                    readOnly: isReadOnly,
-                  }}
-                  label="Σύζυγος"
-                  type="text"
-                  value={selectedRowAnouncement ? selectedRowAnouncement.spouse : ""}
-                  fullWidth
-                  variant="standard"
-                />
-                
-
-
-              </Grid>
-
-                <Grid item xs={6}>
-                
-
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="an_childs"
-                    name="an_childs"
-                    InputProps={{
-                      readOnly: isReadOnly,
-                    }}
-                    label="Τέκνα"
-                    type="text"
-                    value={selectedRowAnouncement ? selectedRowAnouncement.childs : ""}
-                    fullWidth
-                    variant="standard"
-                  />
-                
-
-
-
-                </Grid>
-          </Grid>
-
-
-          <Grid container spacing={6}>
-
-              <Grid item xs={6}>
-
-              <TextField
-                    autoFocus
-                    margin="dense"
-                    id="an_grandchilds"
-                    name="an_grandchilds"
-                    InputProps={{
-                      readOnly: isReadOnly,
-                    }}
-                    label="Εγγόνια"
-                    type="text"
-                    value={selectedRowAnouncement ? selectedRowAnouncement.grandchilds : ""}
-                    fullWidth
-                    variant="standard"
-                  />
-                  
-                
-            
-
-
-              </Grid>
-
-              <Grid item xs={6}>
-
-                  <TextField
-                        autoFocus
-                        margin="dense"
-                        id="an_brothers"
-                        name="an_brothers"
-                        InputProps={{
-                          readOnly: isReadOnly,
-                        }}
-                        label="Αδέλφια"
-                        type="text"
-                        value={selectedRowAnouncement ? selectedRowAnouncement.brothers : ""}
-                        fullWidth
-                        variant="standard"
-                      />
-                      
-
-              </Grid>
-
-
-          </Grid>
-
-          <Grid container spacing={6}>
-
-            <Grid item xs={6}>
-              
-           <TextField
-                      autoFocus
-                      margin="dense"
-                      id="an_nieces"
-                      name="an_nieces"
-                      InputProps={{
-                        readOnly: isReadOnly,
-                      }}
-                      label="Ανίψια"
-                      type="text"
-                      value={selectedRowAnouncement ? selectedRowAnouncement.nieces : ""}
-                      fullWidth
-                      variant="standard"
-                    />
-                  
-            
-            </Grid>
-
-              <Grid item xs={6}>
-              
-            <TextField
-                    autoFocus
-                    margin="dense"
-                    id="an_others"
-                    name="an_others"
-                    InputProps={{
-                      readOnly: isReadOnly,
-                    }}
-                    label="Λοιποί συγγενείς"
-                    type="text"
-                    value={selectedRowAnouncement ? selectedRowAnouncement.others : ""}
-                    fullWidth
-                    variant="standard"
-                  />
-                  
-
-
-                </Grid>
-          </Grid>
-          
-          <Grid container spacing={0}>
-
-            <Grid item xs={12}>
-                
-            {selectedRowAnouncement &&  (<TextField
-                    autoFocus
-                    margin="dense"
-                    id="an_address"
-                    name="an_address"
-                    InputProps={{
-                      readOnly: isReadOnly,
-                    }}
-                    label="Διεύθυνση"
-                    type="text"
-                    defaultValue={selectedRowAnouncement ? selectedRowAnouncement.address : ""}
-                    fullWidth
-                    variant="standard"
-                  />
-            )}
-
-
-            </Grid>
-
-            </Grid>
-
-          <Grid container spacing={0}>
-
-          <Grid item xs={12}>
-              
-          {selectedRowAnouncement &&  (<TextField
-                  rows={4}
-                  maxRows={10}
-                  multiline
-                  autoFocus
-                  margin="dense"
-                  id="an_wreaths"
-                  name="an_wreaths"
-                  InputProps={{
-                    readOnly: isReadOnly,
-                  }}
-                  label="Στεφάνια"
-                  type="text"
-                  value={selectedRowAnouncement ? selectedRowAnouncement.wreaths : ""}
-                  fullWidth
-                  variant="standard"
-                />
-          )}
-
-
-          </Grid>
-
-          </Grid> */}
-
+  
             <div style={{border:'2px solid black', marginTop:'30px' }}>
             <DialogTitle><img src={logo} className={className} alt="Logo" /> ΑΓΓΕΛΤΗΡΙΑ </DialogTitle>
             </div>

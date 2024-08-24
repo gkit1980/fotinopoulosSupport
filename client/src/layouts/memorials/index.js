@@ -81,6 +81,23 @@ function Memorials() {
     setSearchValue(value);
   };
 
+  const stringToDateFormat = (dateString) => {
+
+    if(dateString==null)
+      return null;
+     /////Fetch existing anouncement data and relative data
+     const parts = dateString.split("/");
+     const year = parseInt(parts[2], 10);
+     const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed in JavaScript Date
+     const day = parseInt(parts[0], 10);
+  
+     const dateObject = new Date(year, month, day);
+  
+     return dateObject;
+  
+  }
+   
+
   const handleSubmit = (formData) => 
     {
 
@@ -89,7 +106,7 @@ function Memorials() {
     
 
 
-        const parts = formData.date.split("/");
+        const parts = formData.selectedDate.split("/");
         const year = parseInt(parts[2], 10);
         const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed in JavaScript Date
         const day = parseInt(parts[0], 10);
@@ -98,6 +115,7 @@ function Memorials() {
 
       const createdMemorialFormData = {
         date: dateObject,
+        birthDate: formData.birthDate,
         fortydOrYear: formData.fortydOrYear,
         church: formData.church,
         address: formData.address,
@@ -112,9 +130,71 @@ function Memorials() {
         comment: formData.comment,
      };
    
-  
+     createdMemorialFormData.birthDate=stringToDateFormat(createdMemorialFormData.birthDate);
 
+
+     const createdAnouncementFormData = {
+      brothers: formData.an_brothers,
+      childs: formData.an_childs,
+      grandchilds: formData.an_grandchilds,
+      nieces:formData.an_nieces,
+      others:formData.an_others,
+      spouse:formData.an_spouse,
+      address:formData.an_address,
+      additionalinfo:formData.an_additionalinfo,
+      wreaths:formData.an_wreaths
+    };
+
+
+
+      if(formData.anouncementId=="")
+       {
+
+        //create anouncement
+        fetch('https://entypafotinopoulosserver.azurewebsites.net/anouncement/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(createdAnouncementFormData),
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+
+          createdMemorialFormData.anouncement=data._id;    //take the id of the created anouncement and add it to the memorial data
+
+                fetch('https://entypafotinopoulosserver.azurewebsites.net/memorial/', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(createdMemorialFormData),
+                })  
+                .then(response => response.json())
+                .then(data => {
+                  console.log('Success:', data);
+                  setCreate(true);
+                  notifyEvent(formData);
+        
+          
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
+
+
+
+
+          setSelectedRow(null);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
   
+      }
+      else
+      {
 
         fetch('https://entypafotinopoulosserver.azurewebsites.net/memorial/', {
           method: 'POST',
@@ -122,7 +202,7 @@ function Memorials() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(createdMemorialFormData),
-        })
+        })  
         .then(response => response.json())
         .then(data => {
           console.log('Success:', data);
@@ -134,9 +214,27 @@ function Memorials() {
         .catch((error) => {
           console.error('Error:', error);
         });
-  
 
-  
+       //update anouncement
+        fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${formData.anouncementId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(createdAnouncementFormData),
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          setSelectedRow(null);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+
+
+
+      }
     }
        
 

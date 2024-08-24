@@ -15,7 +15,11 @@ const memorialSchema = new mongoose.Schema({
   fullname: String,
   schedules: String,
   price: Number,
-  comment: String
+  comment: String,
+  anouncement: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Anouncement'
+  },
   // Add more fields as necessary
 });
 
