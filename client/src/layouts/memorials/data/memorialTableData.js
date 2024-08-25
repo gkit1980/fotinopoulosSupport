@@ -22,7 +22,7 @@ import { Dialog,DialogContent,DialogTitle,DialogActions,DialogContentText,Button
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { AuthContext } from "../../../context/auth-context";
-import { set } from "date-fns";
+
 
 
 
@@ -73,7 +73,12 @@ useEffect(() => {
     .then(data => {
       console.log('Success:', data);
       setMappedData(data);
+
+      if(!create)
       setIsLoading(false);
+
+
+
     });
 }, [text,open,create]);
 
@@ -217,7 +222,7 @@ const dateObject = new Date(year, month, day);
       .then(data => {
         console.log('Success:', data);
         setSelectedRow(null);
-        setIsLoading(false);
+     
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -236,6 +241,13 @@ const dateObject = new Date(year, month, day);
         .then(data => {
           console.log('Success:', data);
           setSelectedRow(null);
+
+          setMappedData([...mappedData, createdMemorialFormData]);
+          setIsLoading(false);
+
+          //notify event
+       notifyEvent(formData);
+
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -317,6 +329,21 @@ const handleUpdate = (formData) => {
       console.log('Success:', data);
     
       notifyUpdateEvent(memorialChanges,formData.fullname,'Στοιχεία Μνημοσύνου');
+
+      //fetch the updated data
+          fetch('https://entypafotinopoulosserver.azurewebsites.net/memorial/')
+          .then(response => response.json())
+          .then(data => {
+            console.log('Success:', data);
+            setIsLoading(false);
+            setMappedData(data);
+            setSelectedRow(null);
+            setSelectedRowId(null);
+          
+          });
+      
+
+
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -338,7 +365,6 @@ const handleUpdate = (formData) => {
           .then(data => {
             console.log('Success:', data);
             notifyUpdateEvent(anouncemenChanges,formData.fullname,'Αγγελτήρια');
-            setIsLoading(false); 
             setSelectedRow(null);
             setSelectedRowId(null);
           
@@ -361,7 +387,6 @@ const handleUpdate = (formData) => {
         .then(data => {
           console.log('Success:', data);
           notifyUpdateEvent(anouncemenChanges,formData.fullname,'Αγγελτήρια');
-          setIsLoading(false); 
           setSelectedRow(null);
           setSelectedRowId(null);
         
@@ -372,7 +397,8 @@ const handleUpdate = (formData) => {
         });
       }
 
-
+     
+   
 
 
 
@@ -396,16 +422,30 @@ const handleDelete = (id) => {
     // Update the mappedData state to remove the deleted item
     setMappedData(mappedData.filter(item => item._id !== id));
     setIsLoading(false);
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
+ 
+
+    let anouncementId=data.anouncement;
+   
+
+          fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${anouncementId}`, {
+            method: 'DELETE',
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Success delete anouncement:', data);
+          })
+
+
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
 
 
 }
 
-const handleConfirmDelete = (id) => {
-  handleDelete(id);
+const handleConfirmDelete = () => {
+  handleDelete(selectedRow._id);
   handleClose();
 };
 
@@ -715,6 +755,7 @@ const mapAnouncementValuesToHeaders=(headers, obj)=> {
           {item.comment}
         </MDTypography>
       ),
+      key:item._id,
       anouncement: item.anouncement,
       more: (
         <>
@@ -794,7 +835,7 @@ const mapAnouncementValuesToHeaders=(headers, obj)=> {
               variant="outlined"
               size="small"
               color="primary"
-              onClick={() => handleClickOpenForDelete(item._id)} 
+              onClick={() => handleClickOpenForDelete(item)} 
             >
               <Icon sx={{ fontWeight: "bold" }}>delete</Icon> Διαγραφη
             </MDButton>
@@ -817,7 +858,7 @@ const mapAnouncementValuesToHeaders=(headers, obj)=> {
            <Button onClick={handleClose} color="primary">
              Ακύρωση
            </Button>
-           <Button onClick={()=> handleConfirmDelete(item._id)} color="primary">
+           <Button onClick={()=> handleConfirmDelete()} color="primary">
              Επιβεβαίωση
            </Button>
          </DialogActions>

@@ -69,7 +69,6 @@ function Memorials() {
 
   const handleClick = () => {
     setOpen(true);
-    setCreate(true)
   };
 
   const handleClose = () => {
@@ -162,6 +161,8 @@ function Memorials() {
         .then(data => {
           console.log('Success:', data);
 
+          setIsLoading(false);
+
           createdMemorialFormData.anouncement=data._id;    //take the id of the created anouncement and add it to the memorial data
 
                 fetch('https://entypafotinopoulosserver.azurewebsites.net/memorial/', {
@@ -183,10 +184,6 @@ function Memorials() {
                   console.error('Error:', error);
                 });
 
-
-
-
-          setSelectedRow(null);
         })
         .catch((error) => {
           console.error('Error:', error);

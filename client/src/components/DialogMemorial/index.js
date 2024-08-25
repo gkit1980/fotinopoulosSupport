@@ -235,20 +235,20 @@ const labelStyle = {
           if (dataFuneral.hasOwnProperty('error')) 
             {
             console.log('Error:', dataFuneral.error);
-            setSelectedRowAnouncement({});
+            // setSelectedRowAnouncement({});
             setIsAnouncementLoading(false);
             
             //all fields
-            setWreathsTextFieldValue("");
-            setAnSpouse("");
-            setAnChilds("");
-            setAnGrandchilds("");
-            setAnBrothers("");
-            setAnNieces("");
-            setAnOthers("");
-            setAnAddress("");
-            setAnAdditionalInfo("");  
-            setMemorialAnouncementId(null);
+            // setWreathsTextFieldValue("");
+            // setAnSpouse("");
+            // setAnChilds("");
+            // setAnGrandchilds("");
+            // setAnBrothers("");
+            // setAnNieces("");
+            // setAnOthers("");
+            // setAnAddress("");
+            // setAnAdditionalInfo("");  
+            // setMemorialAnouncementId(null);
           }
           else
           {

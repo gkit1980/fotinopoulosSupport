@@ -335,8 +335,8 @@ const handleCreate = (formData) => {
 
 }
 
-const handleConfirmDelete = (id) => {
-  handleDelete(id);
+const handleConfirmDelete = () => {
+  handleDelete(selectedRow._id);
   handleClose();
 };
 
@@ -984,7 +984,7 @@ const stringToDateFormat = (dateString) => {
               variant="outlined"
               size="small"
               color="primary"
-              onClick={() => handleClickOpenForDelete(item._id)} 
+              onClick={() => handleClickOpenForDelete(item)} 
             >
               <Icon sx={{ fontWeight: "bold" }}>delete</Icon> Διαγραφη
             </MDButton>
@@ -1007,7 +1007,7 @@ const stringToDateFormat = (dateString) => {
               <Button onClick={handleClose} color="primary">
                 Ακύρωση
               </Button>
-              <Button onClick={()=> handleConfirmDelete(item._id)} color="primary">
+              <Button onClick={()=> handleConfirmDelete()} color="primary">
                 Επιβεβαίωση
               </Button>
             </DialogActions>
