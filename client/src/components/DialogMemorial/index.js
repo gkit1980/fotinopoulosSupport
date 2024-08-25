@@ -138,6 +138,9 @@ const labelStyle = {
                 fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${existingFuneralAnouncementId}`)
                 .then(response => response.json())
                 .then(existingAnouncementData => {
+
+                  if(!existingAnouncementData.hasOwnProperty('error'))
+                  {
                   console.log('Success:', existingAnouncementData);
                   setSelectedRowAnouncement(existingAnouncementData);
                     
@@ -152,7 +155,39 @@ const labelStyle = {
                     setAnAddress(existingAnouncementData.address);
                     setAnAdditionalInfo(existingAnouncementData.additionalinfo);
                     setMemorialAnouncementId(existingFuneralAnouncementId);
-
+                  }
+                  else{
+                     fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${selectedRowDeath.anouncement}`)  
+                      .then(response => response.json())
+                      .then(data => {
+                        console.log('Success:', data);
+                        const existingAnouncementData = {
+                          brothers: data.brothers,
+                          childs: data.childs,
+                          grandchilds: data.grandchilds,
+                          nieces:data.nieces,
+                          others:data.others,
+                          spouse:data.spouse,
+                          address:data.address,
+                          additionalinfo:data.additionalinfo,
+                          wreaths:data.wreaths,
+                          _id:data._id
+                        };
+                            
+                        setSelectedRowAnouncement(existingAnouncementData);
+        
+                          setWreathsTextFieldValue(existingAnouncementData.wreaths);
+                          setAnSpouse(existingAnouncementData.spouse);
+                          setAnChilds(existingAnouncementData.childs);
+                          setAnGrandchilds(existingAnouncementData.grandchilds);
+                          setAnBrothers(existingAnouncementData.brothers);
+                          setAnNieces(existingAnouncementData.nieces);
+                          setAnOthers(existingAnouncementData.others);
+                          setAnAddress(existingAnouncementData.address);
+                          setAnAdditionalInfo(existingAnouncementData.additionalinfo);
+                          setMemorialAnouncementId(existingAnouncementData.anouncement);
+                      });
+                  }
 
 
                  })
@@ -235,7 +270,6 @@ const labelStyle = {
           if (dataFuneral.hasOwnProperty('error')) 
             {
             console.log('Error:', dataFuneral.error);
-            // setSelectedRowAnouncement({});
             setIsAnouncementLoading(false);
             
             //all fields
@@ -258,6 +292,10 @@ const labelStyle = {
                   fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${existingFuneralAnouncementId}`)
                   .then(response => response.json())
                   .then(existingAnouncementData => {
+                    
+                    if(!existingAnouncementData.hasOwnProperty('error'))
+                    {
+
                     console.log('Success:', existingAnouncementData);
                     setSelectedRowAnouncement(existingAnouncementData);
                       
@@ -272,7 +310,9 @@ const labelStyle = {
                       setAnAddress(existingAnouncementData.address);
                       setAnAdditionalInfo(existingAnouncementData.additionalinfo);  
                       setMemorialAnouncementId(existingFuneralAnouncementId);
-                      //
+
+                    }
+                    
 
                     })
                     .catch(error => console.error('Error:', error));

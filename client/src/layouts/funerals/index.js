@@ -70,7 +70,6 @@ const useStyles = makeStyles({
 
   const handleClick = () => {
     setOpen(true);
-    
   };
 
   const handleClose = () => {

@@ -123,6 +123,7 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
 
   dayjs.extend(customParseFormat);
 
+
   // ///english to greek map
   // const englishToGreekMap = {
   //   'A': 'Α', 'B': 'Β', 'C': 'Σ', 'D': 'Δ', 'E': 'Ε', 'F': 'Φ', 'G': 'Γ', 'H': 'Η', 'I': 'Ι', 'J': 'Ξ', 'K': 'Κ', 'L': 'Λ', 'M': 'Μ',
@@ -802,8 +803,8 @@ useEffect(() => {
             hasDocument: formJson.hasDocument === 'on' ? true : false,
             hasRequest: formJson.hasRequest === 'on' ? true : false,
           };
-
-
+        
+         
           handleSubmit(processedFormJson);
         },
       }}
