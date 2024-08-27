@@ -48,6 +48,7 @@ function DataTable({
   isSorted,
   noEndBorder,
 }) {
+
   const defaultValue = entriesPerPage.defaultValue ? entriesPerPage.defaultValue : 10;
   const entries = entriesPerPage.entries
     ? entriesPerPage.entries.map((el) => el.toString())
@@ -56,7 +57,7 @@ function DataTable({
   const data = useMemo(() => table.rows, [table]);
 
   const tableInstance = useTable(
-    { columns, data, initialState: { pageIndex: 0 } },
+    { columns, data, initialState: { pageIndex: 0 }, autoResetPage: false },
     useGlobalFilter,
     useSortBy,
     usePagination
@@ -163,7 +164,7 @@ function DataTable({
                 renderInput={(params) => <MDInput {...params} />}
               />
               <MDTypography variant="caption" color="secondary">
-                &nbsp;&nbsp;entries per page
+                &nbsp;&nbsp; εγγραφές ανα σελίδα
               </MDTypography>
             </MDBox>
           )}
@@ -232,7 +233,7 @@ function DataTable({
         {showTotalEntries && (
           <MDBox mb={{ xs: 3, sm: 0 }}>
             <MDTypography variant="button" color="secondary" fontWeight="regular">
-              Showing {entriesStart} to {entriesEnd} of {rows.length} entries
+            Δείχνει απο {entriesStart} μεχρι {entriesEnd} σέ σύνολο {rows.length} εγγραφές
             </MDTypography>
           </MDBox>
         )}
