@@ -60,9 +60,11 @@ function Memorials() {
   const [searchValue, setSearchValue] = useState('');
   const [open, setOpen] = useState(false);
   const [create, setCreate] = useState(false); 
+  const [sortField, setSortField] = useState('Date'); // Default sort field
+  const [sortOrder, setSortOrder] = useState('desc'); // Default sort order
 
   const classes = useStyles();
-  const {columns,rows} = memorialTableData(searchValue,open,create,setIsLoading);
+  const {columns,rows} = memorialTableData(searchValue,open,create,setIsLoading,sortField, sortOrder);
 
 
 
@@ -297,10 +299,17 @@ function Memorials() {
               isLoading ? <LoadingSpinner asOverlay /> : (
                     <DataTable
                       table={{ columns, rows }}
-                      isSorted={false}
+                      isSorted={true}
                       entriesPerPage={true}
                       showTotalEntries={true}
                       noEndBorder
+                      sortField={sortField}
+                      sortOrder={sortOrder}
+                      oncSortChange={(field) => {
+                        const order = sortField === field && sortOrder === 'asc' ? 'desc' : 'asc';
+                        setSortField(field);
+                        setSortOrder(order);
+                      }}
                     />
                   )
               }

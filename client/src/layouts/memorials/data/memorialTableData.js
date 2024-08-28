@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 
 
 
-export default function data(text,open,create,setIsLoading) {
+export default function data(text,open,create,setIsLoading,sortField, sortOrder) {
 
   const auth = useContext(AuthContext);
 
@@ -676,7 +676,7 @@ const mapAnouncementValuesToHeaders=(headers, obj)=> {
 }
 
 
-  
+const fetchData = () => {
   return {
     columns: [
       { Header: "Ανθρωπος", accessor: "Fullname", align: "left" },
@@ -695,7 +695,6 @@ const mapAnouncementValuesToHeaders=(headers, obj)=> {
       { Header: "", accessor: "edit", align: "center" },
       { Header: "", accessor: "delete", align: "center" }
     ],
-
     rows: mappedData.filter(item => item.fullname.includes(text)).map((item) => ({
       Fullname: item.fullname,
       Date: formatDate(item.date),
@@ -868,6 +867,24 @@ const mapAnouncementValuesToHeaders=(headers, obj)=> {
 
     })),
   };
+}
+
+
+
+let { columns, rows } = fetchData();
+
+  // Sort rows based on sortField and sortOrder
+  if (sortField) {
+    rows = rows.sort((a, b) => {
+      if (a[sortField] < b[sortField]) return sortOrder === 'asc' ? -1 : 1;
+      if (a[sortField] > b[sortField]) return sortOrder === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  return { columns, rows };
+
+ 
 }  
 
 
