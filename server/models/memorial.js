@@ -14,7 +14,7 @@ const memorialSchema = new mongoose.Schema({
   stolismos: String,
   fullname: String,
   schedules: String,
-  price: Number,
+  price: String,
   comment: String,
   anouncement: {
     type: mongoose.Schema.Types.ObjectId,
