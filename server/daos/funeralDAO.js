@@ -49,11 +49,11 @@ class FuneralDAO {
     // Update a funeral by ID
     static async updateFuneralById(id, data) {
         try {
-             console.log("Before:"+data.burialDate);
-            const dateObject = moment(data.burialDate, "DD/MM/YYYY HH:mm").toDate();
+            //  console.log("Before:"+data.burialDate);
+            // const dateObject = moment(data.burialDate, "DD/MM/YYYY HH:mm").toDate();
         
-            data.burialDate = dateObject;
-            console.log("After:"+data.burialDate);
+            // data.burialDate = dateObject;
+            // console.log("After:"+data.burialDate);
 
             const updatedFuneral = await Funeral.findByIdAndUpdate(id, data, { new: true });
             return updatedFuneral;

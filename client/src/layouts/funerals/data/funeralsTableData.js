@@ -17,6 +17,12 @@ import { makeStyles } from '@mui/styles'
 import { AuthContext } from "../../../context/auth-context";
 
 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+
 
 
 
@@ -59,6 +65,11 @@ export default function data(text,open,setIsLoading,createFuneral) {
   const [existingRelativeData, setExistingRelativeData] = useState(null);
 
 
+  dayjs.extend(customParseFormat);
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
+
+
 
 useEffect(() => {
   fetch('https://entypafotinopoulosserver.azurewebsites.net/funeral/')
@@ -73,6 +84,8 @@ useEffect(() => {
      
     });
 }, [text,open,createFuneral]);
+
+
 
 
 
@@ -461,6 +474,8 @@ setIsLoading(true);
 
 
   //convert the date string to date object--SOS!!!
+  //updatedFuneralFormData.burialDate=stringToDateFormat(updatedFuneralFormData.burialDate);
+  updatedFuneralFormData.burialDate=dayjs(updatedFuneralFormData.burialDate, "DD/MM/YYYY HH:mm", true);
   updatedFuneralFormData.idPublicationDate=stringToDateFormat(updatedFuneralFormData.idPublicationDate);
   updatedFuneralFormData.birthDate=stringToDateFormat(updatedFuneralFormData.birthDate);
   
@@ -585,7 +600,7 @@ const notifyUpdateEvent = (changes,fullname,category) => {
 {
 
   const updatedNotificationFormData = {
-    title: `Διόρθωση Κηδεία ${category} του ${fullname} από τον χρήστη ${auth.username}`,
+    title: `Διόρθωση Κηδεία ${category} του ${fullname} από τον χρήστη **${auth.username}**`,
     message: propertyStrings,
     user: `${auth.username}`,
     createdAt: Date.now(),
@@ -823,7 +838,10 @@ const formatDate = (isoString) => {
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
   const year = date.getFullYear();
 
-  return `${day}/${month}/${year}`;
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
 };
 
 //convert the date string to date object
@@ -846,21 +864,27 @@ const stringToDateFormat = (dateString) => {
  return {
     columns: [
       { Header: "Ονοματεπώνυμο", accessor: "Fullname", width: "15%", align: "left" },
+      { Header: "Ημερομηνία Ταφής", accessor: "burialDate", align: "left" },
+      { Header: "Ενορία", accessor: "church", align: "left" },
+      { Header: "Ταφή", accessor: "burialLocation", align: "left" },
       { Header: "Ηλικια", accessor: "Age", align: "left" },
       { Header: "Ονομα πατερα & μητέρας", accessor: "FatherMotherName", align: "center" },
       { Header: "ΑΦΜ", accessor: "Afm", align: "center" },
       { Header: "AMKA", accessor: "Amka", align: "center" },
       { Header: "Φορέας", accessor: "Foreas", align: "center" },
       { Header: "Ονομα/νυμο", accessor: "spouseName", align: "center" },
-      { Header: "Επάγγελμα", accessor: "profession", align: "center" },
-      { Header: "Κατοικία", accessor: "residence", align: "center" },
-      { Header: "Τόπος θανάτου", accessor: "placeOfDeath", align: "center" },
+      // { Header: "Επάγγελμα", accessor: "profession", align: "center" },
+      // { Header: "Κατοικία", accessor: "residence", align: "center" },
+      // { Header: "Τόπος θανάτου", accessor: "placeOfDeath", align: "center" },
       { Header: "Πληροφορίες", accessor: "more", align: "center" },
       { Header: "", accessor: "edit", align: "center" },
       { Header: "", accessor: "delete", align: "center" }
     ],
     rows: mappedData.filter(item => item.fullname.includes(text)).map((item) => ({
       Fullname: item.fullname,
+      burialDate: formatDate(item.burialDate),
+      church: item.church,
+      burialLocation: item.burialLocation,
       Age: item.age,
       FatherMotherName: (
         <MDBox ml={-1}>
@@ -888,21 +912,21 @@ const stringToDateFormat = (dateString) => {
           {item.spouseName}
         </MDTypography>
       ),
-      profession: (
-        <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-          {item.profession}
-        </MDTypography>
-      ),
-      residence: (
-        <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-          {item.residence}
-        </MDTypography>
-      ),
-      placeOfDeath: (
-        <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-          {item.placeOfDeath}
-        </MDTypography>
-      ),
+      // profession: (
+      //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+      //     {item.profession}
+      //   </MDTypography>
+      // ),
+      // residence: (
+      //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+      //     {item.residence}
+      //   </MDTypography>
+      // ),
+      // placeOfDeath: (
+      //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+      //     {item.placeOfDeath}
+      //   </MDTypography>
+      // ),
       announcementId: item.anouncementId,
       key:item._id,
       relativeId: item.relativeId,

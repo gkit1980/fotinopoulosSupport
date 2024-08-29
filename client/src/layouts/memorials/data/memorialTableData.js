@@ -20,6 +20,8 @@ import DialogMemorial from "components/DialogMemorial";
 import { Dialog,DialogContent,DialogTitle,DialogActions,DialogContentText,Button } from '@mui/material';
 
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { AuthContext } from "../../../context/auth-context";
 
@@ -65,6 +67,8 @@ export default function data(text,open,create,setIsLoading,sortField, sortOrder)
   
 
   dayjs.extend(customParseFormat);
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
 
 
 useEffect(() => {
@@ -292,8 +296,7 @@ const handleUpdate = (formData) => {
 
      //convert the date string to date object--SOS!!!
   
-  updatedMemorialFormData.birthDate=stringToDateFormat(updatedMemorialFormData.birthDate);
-  updatedMemorialFormData.date=dayjs(updatedMemorialFormData.date, "DD/MM/YYYY HH:mm", true);
+
 
 
   const updatedAnouncementFormData = {
@@ -309,9 +312,18 @@ const handleUpdate = (formData) => {
   };
 
 
+
+  //parse the existing data in order to compare it with the new data //SOS!!!!!!!!!
+   existingMemorialData.date = dayjs(existingMemorialData.date).tz('Europe/Athens').format('DD/MM/YYYY HH:mm');
+   existingMemorialData.birthDate =existingMemorialData.birthDate.split(' ')[0];
+
   //compare the existing data with the new data
   let memorialChanges=compareJSONForMemorial(existingMemorialData,updatedMemorialFormData);
   let anouncemenChanges=compareJSONForAnouncement(existingAnouncementData,updatedAnouncementFormData);
+
+
+  updatedMemorialFormData.birthDate=stringToDateFormat(updatedMemorialFormData.birthDate);
+  updatedMemorialFormData.date=dayjs(updatedMemorialFormData.date, "DD/MM/YYYY HH:mm", true);
 
 
 
