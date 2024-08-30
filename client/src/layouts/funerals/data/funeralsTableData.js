@@ -41,7 +41,7 @@ export default function data(text,open,setIsLoading,createFuneral) {
   const auth = useContext(AuthContext);
 
 
-  const FuneralHeaders=['Ημερομηνία Ταφής','Ενορία','Ταφή','Αριθμός Απόδειξης','Παραστατικό','Αίτηση','Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου','Λοιπές Πληροφορίες']
+  const FuneralHeaders=['Ημερομηνία Ταφής','Ενορία','Ταφή','Αριθμός Απόδειξης','Παραστατικό','Αίτηση','Ονοματεπώνυμο','Ηλικία','Ονομα πατερα & μητέρας','ΑΦΜ','ΑΔΤ','Αρχή έκδοσης ΑΔΤ','Ημερομηνία έκδοσης ΑΔΤ','AMKA','Φορέας Συντ/σης ή Ασφαλισης','Ονομ/νυμο συζύγου','Επάγγελμα','Τόπος Κατοικίας','Τόπος Θανάτου','Πληροφορίες','Λοιπές Πληροφορίες']
   const AnouncementHeaders=['Αδέλφια','Τέκνα','Εγγόνια','Ανίψια','Λοιποί συγγενείς','Σύζυγος','Διεύθυνση','Επιπλέον Πληροφορίες','Στεφάνια'];
   const RelativeHeaders=['Βαθμός συγγένειας','Ονοματεπώνυμο','Ονομα/Επώνυμο πατέρα','Ονομα/Επώνυμο μητέρας','Ημερομηνία Γέννησης','Τόπος Γέννησης','ΑΔΤ','Ημερομηνία Έκδοσης ΑΔΤ','Αρχή Έκδοσης ΑΔΤ','ΔΟΥ','ΑΜΚΑ','Τηλέφωνο Επικοινωνίας','Τηλέφωνο Επικοινωνίας 2','Email','IBAN','Κωδικός Φορολογικού Φορέα','Συνθηματικό Φορολογικού Φορέα'];
 
@@ -467,6 +467,13 @@ setIsLoading(true);
     taxisCodePassword: formData.rel_taxisCodePassword
   }
 
+
+    //parse the existing data in order to compare it with the new data //SOS!!!!!!!!!
+  existingFuneralData.burialDate = dayjs(existingFuneralData.burialDate).tz('Europe/Athens').format('DD/MM/YYYY HH:mm');
+  existingRelativeData.birthDate = dayjs(existingRelativeData.birthDate).tz('Europe/Athens').format('DD/MM/YYYY');
+  existingRelativeData.idPublicationDate = dayjs(existingRelativeData.idPublicationDate).tz('Europe/Athens').format('DD/MM/YYYY');
+
+
   //compare the existing data with the new data
   let funeralChanges=compareJSONForFuneral(existingFuneralData,updatedFuneralFormData);
   let anouncemenChanges=compareJSONForAnouncement(existingAnouncementData,updatedAnouncementFormData);
@@ -752,11 +759,11 @@ const mapFuneralValuesToHeaders=(headers, obj)=> {
     "Αρχή έκδοσης ΑΔΤ": "idAuthority",
     "ΑΦΜ": "afm",
     "AMKA": "amka",
-    "Φορέας": "foreas",
-    "Ονομα/νυμο": "spouseName",
+    "Φορέας Συντ/σης ή Ασφαλισης": "foreas",
+    "Ονομ/νυμο συζύγου": "spouseName",
     "Επάγγελμα": "profession",
-    "Κατοικία": "residence",
-    "Τόπος θανάτου": "placeOfDeath",
+    "Τόπος Κατοικίας": "residence",
+    "Τόπος Θανάτου": "placeOfDeath",
     "Πληροφορίες": "more",
     "Λοιπές Πληροφορίες": "otherInfo"
   };
@@ -804,7 +811,7 @@ const mapRelativeValuesToHeaders=(headers, obj)=> {
     "Ονοματεπώνυμο":  "fullname",
     "Ονομα/Επώνυμο πατέρα": "fatherfullname",
     "Ονομα/Επώνυμο μητέρας":"motherfullname",
-    "Ημερομηνία Γέννησης":"birthdate",
+    "Ημερομηνία Γέννησης":"birthDate",
     'Τόπος Γέννησης':"birthlocation",
     'ΑΔΤ':"idNumber",
     'Ημερομηνία Έκδοσης ΑΔΤ':"idPublicationDate",
