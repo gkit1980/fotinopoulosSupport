@@ -1089,7 +1089,7 @@ useEffect(() => {
               error={!!ADTDateError}
               helperText={ADTDateError}
               margin="dense"
-              format="dd/MM/yyyy HH:mm"
+              format="DD/MM/YYYY"
               id="idPublicationDate"
               name="idPublicationDate"
               InputProps={{
@@ -1839,7 +1839,7 @@ useEffect(() => {
                         }}
                         label="Ημερομηνία έκδοσης AΔΤ"
                         type="text"
-                        format="dd/MM/yyyy HH:mm"
+                        format="dd/MM/yyyy"
                         placeholder='DD/MM/YYYY'
                         value={rel_idPublicationDate}
                         fullWidth

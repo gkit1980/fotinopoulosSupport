@@ -111,39 +111,51 @@ const useStyles = makeStyles({
 
        
       //funeral Dates
+      const [datePart, timePart] = formData.burialDate.split(" ");
+      // Split the date into day, month, and year
+       const [day, month, year] = datePart.split("/").map(Number);
+       // Split the time into hours and minutes
+       const [hours, minutes] = timePart.split(":").map(Number);
+        // Create a new Date object
+        const dateObjectBurialDate = new Date(year, month - 1, day, hours, minutes);
 
-      const partsBurialDate = formData.burialDate.split("/");
-      const yearBurialDate = parseInt(partsBurialDate[2], 10);
-      const monthBurialDate = parseInt(partsBurialDate[1], 10) - 1; // Month is 0-indexed in JavaScript Date
-      const dayBurialDate = parseInt(partsBurialDate[0], 10);
 
-      const dateObjectBurialDate = new Date(yearBurialDate, monthBurialDate, dayBurialDate);
-
-
+      if(formData.idPublicationDate === "")
+      {
+        formData.idPublicationDate = "01/01/2000";
+      }
       const parts = formData.idPublicationDate.split("/");
-      const year = parseInt(parts[2], 10);
-      const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed in JavaScript Date
-      const day = parseInt(parts[0], 10);
+      const yearIdPublicationDate = parseInt(parts[2], 10);
+      const monthIdPublicationDate = parseInt(parts[1], 10) - 1; // Month is 0-indexed in JavaScript Date
+      const dayIdPublicationDate = parseInt(parts[0], 10);
+      const dateObject = new Date(yearIdPublicationDate, monthIdPublicationDate, dayIdPublicationDate);
 
-      const dateObject = new Date(year, month, day);
+
 
 
       ///Relative Dates
+
+      if(formData.rel_birthdate === "")
+      {
+        formData.rel_birthdate = "01/01/2000";
+      }
+   
       const partsRel = formData.rel_birthdate.split("/");
       const yearRel = parseInt(partsRel[2], 10);
       const monthRel = parseInt(partsRel[1], 10) - 1; // Month is 0-indexed in JavaScript Date
       const dayRel = parseInt(partsRel[0], 10);
-
       const dateObjectRelBirthDate = new Date(yearRel, monthRel, dayRel);
-
-
+      
+      
+      if(formData.rel_idPublicationDate === "")
+      {
+        formData.rel_idPublicationDate = "01/01/2000";
+      }
       const partsRelIdPublicationDate = formData.rel_idPublicationDate.split("/");
       const yearRelIdPublicationDate = parseInt(partsRelIdPublicationDate[2], 10);
       const monthRelIdPublicationDate = parseInt(partsRelIdPublicationDate[1], 10) - 1; // Month is 0-indexed in JavaScript Date
       const dayRelIdPublicationDate = parseInt(partsRelIdPublicationDate[0], 10);
-
       const dateObjectRelIdPublicationDate = new Date(yearRelIdPublicationDate, monthRelIdPublicationDate, dayRelIdPublicationDate);
-
       //end
      
 

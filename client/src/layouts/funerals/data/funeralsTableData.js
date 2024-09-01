@@ -91,8 +91,8 @@ useEffect(() => {
 
  const handleClickOpen = (item) => {
 
-  item.idPublicationDate=formatDate(item.idPublicationDate)
-  item.birthDate=formatDate(item.birthDate);
+  item.idPublicationDate=formatDateWithoutTime(item.idPublicationDate)
+  //item.birthDate=formatDate(item.birthDate);
    
    setSelectedRowId(item._id);
    setSelectedRow(item);
@@ -189,8 +189,8 @@ useEffect(() => {
 
  const handleClickOpenForView = (item) => { 
 
-  item.idPublicationDate=formatDate(item.idPublicationDate)
-  item.birthDate=formatDate(item.birthDate);
+  item.idPublicationDate=formatDateWithoutTime(item.idPublicationDate)
+
     
   setSelectedRowId(item._id); // Assuming `id` is the unique identifier for each row
   setSelectedRow(item);
@@ -851,6 +851,18 @@ const formatDate = (isoString) => {
   return `${day}/${month}/${year} ${hours}:${minutes}`;
 };
 
+// Format the date to a string
+const formatDateWithoutTime = (isoString) => {
+  const date = new Date(isoString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+  const year = date.getFullYear();
+
+
+  return `${day}/${month}/${year}`;
+};
+
+
 //convert the date string to date object
 const stringToDateFormat = (dateString) => {
 
@@ -879,7 +891,7 @@ const stringToDateFormat = (dateString) => {
       { Header: "ΑΦΜ", accessor: "Afm", align: "center" },
       { Header: "AMKA", accessor: "Amka", align: "center" },
       { Header: "Φορέας", accessor: "Foreas", align: "center" },
-      { Header: "Ονομα/νυμο", accessor: "spouseName", align: "center" },
+      { Header: "Ονομα/νυμο Συζύγου", accessor: "spouseName", align: "center" },
       // { Header: "Επάγγελμα", accessor: "profession", align: "center" },
       // { Header: "Κατοικία", accessor: "residence", align: "center" },
       // { Header: "Τόπος θανάτου", accessor: "placeOfDeath", align: "center" },
@@ -937,6 +949,8 @@ const stringToDateFormat = (dateString) => {
       announcementId: item.anouncementId,
       key:item._id,
       relativeId: item.relativeId,
+      idPublicationDate: formatDateWithoutTime(item.idPublicationDate),
+      // birthDate: item.birthDate,
       more: (
         <>
         <MDBox ml={-1}>
