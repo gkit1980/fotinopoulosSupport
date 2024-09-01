@@ -370,6 +370,7 @@ const handleDelete = (id) => {
 
     let anouncementId=data.anouncement;
     let relativeId=data.relative;
+    let fullname=data.fullname;
 
     fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${anouncementId}`, {
       method: 'DELETE',
@@ -385,7 +386,7 @@ const handleDelete = (id) => {
     .then(response => response.json())
     .then(data => {
       console.log('Success delete relative:', data);
-      notifyDeleteEvent(data);
+      notifyDeleteEvent(fullname);
     })
 
 
@@ -595,11 +596,11 @@ const notifyCreateEvent = (formData) => {
 }
 
 
-const notifyDeleteEvent = (formData) => {
+const notifyDeleteEvent = (name) => {
 
   const deletedNotificationFormData = {
-    title: 'Νέα Κηδεία',
-    message: `Η κηδεία του ${formData.fullname} έχει διαγραφεί`,
+    title: 'Διαγραφή Κηδείας',
+    message: `Η κηδεία του ${name} έχει διαγραφεί από τον χρήστη **${auth.username}**`,
     user: `${auth.username}`,
     createdAt: Date.now(),
   }

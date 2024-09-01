@@ -420,10 +420,13 @@ const handleUpdate = (formData) => {
 }
 
 // Add the handleDelete function
-const handleDelete = (id) => {
+const handleDelete = (row) => {
+
+  let anouncementId=row.anouncement;
+  let name=row.fullname;
   // Send a DELETE request to the server
 
-  fetch(`https://entypafotinopoulosserver.azurewebsites.net/memorial/${id}`, {
+  fetch(`https://entypafotinopoulosserver.azurewebsites.net/memorial/${row._id}`, {
     method: 'DELETE',
   })
   .then(response => response.json())
@@ -432,19 +435,19 @@ const handleDelete = (id) => {
 
     setSelectedRow(null);
     // Update the mappedData state to remove the deleted item
-    setMappedData(mappedData.filter(item => item._id !== id));
+    setMappedData(mappedData.filter(item => item._id !== row._id));
     setIsLoading(false);
  
+    //delete the anouncement
 
-    let anouncementId=data.anouncement;
-   
-
+  
           fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${anouncementId}`, {
             method: 'DELETE',
           })
           .then(response => response.json())
           .then(data => {
             console.log('Success delete anouncement:', data);
+            notifyDeleteEvent(name);
           })
 
 
@@ -457,7 +460,7 @@ const handleDelete = (id) => {
 }
 
 const handleConfirmDelete = () => {
-  handleDelete(selectedRow._id);
+  handleDelete(selectedRow);
   handleClose();
 };
 
@@ -556,6 +559,25 @@ const notifyEvent = (formData) => {
 
 }
 
+const notifyDeleteEvent = (name) => {
+
+  const deletedNotificationFormData = {
+    title: 'Διαγραφή Μνημόσυνου', 
+    message: `Το μνημόσυνο του ${name} έχει διαγραφεί από τον χρήστη **${auth.username}**`,
+    user: `${auth.username}`,
+    createdAt: Date.now(),
+  }
+
+  fetch('https://entypafotinopoulosserver.azurewebsites.net/notification/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(deletedNotificationFormData),
+  })
+
+
+}
 
 
 const compareJSONForMemorial=(existing, updated, path = '')=> {
