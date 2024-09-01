@@ -63,9 +63,12 @@ const useStyles = makeStyles({
   const [open, setOpen] = useState(false);
   const [createFuneral, setCreateFuneral] = useState(false);
 
+  const [sortField, setSortField] = useState('burialDate'); // Default sort field
+  const [sortOrder, setSortOrder] = useState('desc'); // Default sort order
+
 
   const classes = useStyles();
-  const {columns,rows} = funeralsTableData(searchValue,open,setIsLoading,createFuneral)
+  const {columns,rows} = funeralsTableData(searchValue,open,setIsLoading,createFuneral,sortField,sortOrder)
 
 
   const handleClick = () => {
@@ -334,13 +337,20 @@ const useStyles = makeStyles({
               <MDBox pt={3}>
               {
               isLoading ? <LoadingSpinner asOverlay /> : (
-                    <DataTable
-                        table={{ columns, rows }}
-                        isSorted={false}
-                        entriesPerPage={false}
-                        showTotalEntries={false}
-                        noEndBorder
-                  />
+            <DataTable
+                table={{ columns, rows }}
+                isSorted={true}
+                entriesPerPage={true}
+                showTotalEntries={true}
+                noEndBorder
+                sortField={sortField}
+                sortOrder={sortOrder}
+                oncSortChange={(field) => {
+                  const order = sortField === field && sortOrder === 'asc' ? 'desc' : 'asc';
+                  setSortField(field);
+                  setSortOrder(order);
+                }}
+              />
                   )
               }
               </MDBox>

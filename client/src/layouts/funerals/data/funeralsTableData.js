@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 
 
 
-export default function data(text,open,setIsLoading,createFuneral) {
+export default function data(text,open,setIsLoading,createFuneral,sortField, sortOrder) {
 
   const auth = useContext(AuthContext);
 
@@ -385,6 +385,7 @@ const handleDelete = (id) => {
     .then(response => response.json())
     .then(data => {
       console.log('Success delete relative:', data);
+      notifyDeleteEvent(data);
     })
 
 
@@ -588,6 +589,27 @@ const notifyCreateEvent = (formData) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(createdNotificationFormData),
+  })
+
+
+}
+
+
+const notifyDeleteEvent = (formData) => {
+
+  const deletedNotificationFormData = {
+    title: 'Νέα Κηδεία',
+    message: `Η κηδεία του ${formData.fullname} έχει διαγραφεί`,
+    user: `${auth.username}`,
+    createdAt: Date.now(),
+  }
+
+  fetch('https://entypafotinopoulosserver.azurewebsites.net/notification/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(deletedNotificationFormData),
   })
 
 
@@ -880,6 +902,8 @@ const stringToDateFormat = (dateString) => {
 
 }
  
+
+const fetchData = () => {
  return {
     columns: [
       { Header: "Ονοματεπώνυμο", accessor: "Fullname", width: "15%", align: "left" },
@@ -1062,6 +1086,34 @@ const stringToDateFormat = (dateString) => {
 
     }))
   };
+}
+
+let { columns, rows } = fetchData();
+
+
+  // Sort rows based on sortField and sortOrder
+  if (sortField) {
+    rows = rows.sort((a, b) => {
+     // Function to parse "dd/MM/yyyy HH:mm" to a Date object
+     const parseDate = (dateString) => {
+          const [datePart, timePart] = dateString.split(' ');
+          const [day, month, year] = datePart.split('/');
+          const [hours, minutes] = timePart.split(':');
+          return new Date(year, month - 1, day, hours, minutes);
+  };
+
+  const dateA = parseDate(a[sortField]);
+  const dateB = parseDate(b[sortField]);
+
+  // Compare the Date objects
+  if (dateA < dateB) return sortOrder === 'asc' ? -1 : 1;
+  if (dateA > dateB) return sortOrder === 'asc' ? 1 : -1;
+  return 0;
+    });
+  }
+
+  return { columns, rows };
+
 
 }  
 

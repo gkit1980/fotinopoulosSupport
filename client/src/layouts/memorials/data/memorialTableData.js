@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 
 
 
-export default function data(text,open,create,setIsLoading,sortField, sortOrder) {
+export default function data(text,open,create,setIsLoading,sortField,sortOrder) {
 
   const auth = useContext(AuthContext);
 
@@ -891,8 +891,20 @@ let { columns, rows } = fetchData();
   // Sort rows based on sortField and sortOrder
   if (sortField) {
     rows = rows.sort((a, b) => {
-      if (a[sortField] < b[sortField]) return sortOrder === 'asc' ? -1 : 1;
-      if (a[sortField] > b[sortField]) return sortOrder === 'asc' ? 1 : -1;
+        // Function to parse "dd/MM/yyyy HH:mm" to a Date object
+      const parseDate = (dateString) => {
+        const [datePart, timePart] = dateString.split(' ');
+        const [day, month, year] = datePart.split('/');
+        const [hours, minutes] = timePart.split(':');
+        return new Date(year, month - 1, day, hours, minutes);
+      };
+
+      const dateA = parseDate(a[sortField]);
+      const dateB = parseDate(b[sortField]);
+
+      // Compare the Date objects
+      if (dateA < dateB) return sortOrder === 'asc' ? -1 : 1;
+      if (dateA > dateB) return sortOrder === 'asc' ? 1 : -1;
       return 0;
     });
   }
