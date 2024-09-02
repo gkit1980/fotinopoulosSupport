@@ -55,6 +55,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
 
   //aggeltiria
   const [wreathsTextFieldValue, setWreathsTextFieldValue] = useState(selectedRowAnouncement ? selectedRowAnouncement.wreaths : "");
+
   const [an_spouse, setAnSpouse] = useState(selectedRowAnouncement ? selectedRowAnouncement.spouse : "");
   const [an_childs, setAnChilds] = useState(selectedRowAnouncement ? selectedRowAnouncement.childs : "");
   const [an_grandchilds, setAnGrandchilds] = useState(selectedRowAnouncement ? selectedRowAnouncement.grandchilds : "");
@@ -803,14 +804,14 @@ const labelStyle = {
                                 {selectedRowAnouncement &&  (<TextField
                                       autoFocus
                                       margin="dense"
-                                      id="anouncementId"
-                                      name="anouncementId"
+                                      id="memorialAnouncementId"
+                                      name="memorialAnouncementId"
                                       InputProps={{
                                           readOnly: isReadOnly,
                                       }}
-                                      label="anouncementId"
+                                      label="memorialAnouncementId"
                                       type="text"
-                                      defaultValue={selectedRowAnouncement ? selectedRowAnouncement._id : ""}
+                                      value={memorialAnouncementId}
                                       fullWidth
                                       variant="standard"
                                       style={{ display: 'none' }}

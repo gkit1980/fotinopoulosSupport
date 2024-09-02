@@ -148,7 +148,7 @@ function Memorials() {
 
 
 
-      if(formData.anouncementId=="")
+      if(formData.memorialAnouncementId=="")
        {
 
         //create anouncement
@@ -215,7 +215,7 @@ function Memorials() {
         });
 
        //update anouncement
-        fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${formData.anouncementId}`, {
+        fetch(`https://entypafotinopoulosserver.azurewebsites.net/anouncement/${formData.memorialAnouncementId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
