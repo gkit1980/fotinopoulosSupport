@@ -241,7 +241,7 @@ function Memorials() {
 
       const createdNotificationFormData = {
         title: 'Νέο Μνημόσυνο',
-        message: `Το Μνημόσυνο του ${formData.fullname} έχει δημιουργηθεί απο τον χρήστη ${auth.username}`,
+        message: `Το Μνημόσυνο του ${formData.fullname} έχει δημιουργηθεί απο τον χρήστη **${auth.username}**`,
         user: `${auth.username}`,
         createdAt: Date.now(),
       }

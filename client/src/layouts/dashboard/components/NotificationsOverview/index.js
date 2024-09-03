@@ -22,6 +22,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import React, { useEffect,useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
+import Button from '@mui/material/Button'; // Import Material-UI Button
 
 
 // Material Dashboard 2 React example components
@@ -31,6 +32,8 @@ import TimelineItem from "examples/Timeline/TimelineItem";
 function NotificationsOverview() {
 
   const [notifications, setNotifications] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const notificationsPerPage = 20; // Number of notifications per page
 
   useEffect(() => {
      
@@ -68,7 +71,12 @@ const formatDate = (isoString) => {
 };
 
 
-  
+  // Pagination logic
+  const indexOfLastNotification = currentPage * notificationsPerPage;
+  const indexOfFirstNotification = indexOfLastNotification - notificationsPerPage;
+  const currentNotifications = notifications ? notifications.slice(indexOfFirstNotification, indexOfLastNotification) : [];
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
   return (
@@ -83,7 +91,7 @@ const formatDate = (isoString) => {
               <Skeleton width={1000} height={20}/>
           ) : (
             <ul>
-              {notifications.map((notification, index) => (
+              {currentNotifications.map((notification, index) => (
                 <li key={index}>
                 <MDTypography variant="h6" fontWeight="regular" k>{notification.title}:{notification.message} στίς {formatDate(notification.createdAt)}</MDTypography>
                 </li>
@@ -92,42 +100,31 @@ const formatDate = (isoString) => {
             </ul>
           )}
         </div>
-
+        {notifications && (
+          <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '20px',gap: '20px' }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+                style={{ color: 'white' }}
+              >
+                Προηγούμενο
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => paginate(currentPage + 1)}
+                disabled={indexOfLastNotification >= notifications.length}
+                style={{ color: 'white' }}
+              >
+                Επόμενο
+              </Button>
+            </div>
+          )}
         </MDBox>
       </MDBox>
-      {/* <MDBox p={2}>
-        <TimelineItem
-          color="success"
-          icon="notifications"
-          title="$2400, Design changes"
-          dateTime="22 DEC 7:20 PM"
-        />
-        <TimelineItem
-          color="error"
-          icon="inventory_2"
-          title="New order #1832412"
-          dateTime="21 DEC 11 PM"
-        />
-        <TimelineItem
-          color="info"
-          icon="shopping_cart"
-          title="Server payments for April"
-          dateTime="21 DEC 9:34 PM"
-        />
-        <TimelineItem
-          color="warning"
-          icon="payment"
-          title="New card added for order #4395133"
-          dateTime="20 DEC 2:20 AM"
-        />
-        <TimelineItem
-          color="primary"
-          icon="vpn_key"
-          title="New card added for order #4395133"
-          dateTime="18 DEC 4:54 AM"
-          lastItem
-        />
-      </MDBox> */}
+ 
     </Card>
   );
 }

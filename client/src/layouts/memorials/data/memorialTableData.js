@@ -543,8 +543,8 @@ const notifyEvent = (formData) => {
 
   const createdNotificationFormData = {
     title: 'Νέο Μνημόσυνο',
-    message: `Το μνημόσυνο του ${formData.fullname} έχει δημιουργηθει`,
-    user: 'gkit1990@yahoo.com',
+    message: `Το Μνημόσυνο του ${formData.fullname} έχει δημιουργηθεί απο τον χρήστη **${auth.username}**`,
+    user: `${auth.username}`,
     createdAt: Date.now(),
   }
 

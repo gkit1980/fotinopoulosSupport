@@ -60,6 +60,9 @@ import { AuthContext } from 'context/auth-context';
 import routes from "routes";
 
 function DashboardNavbar({ absolute, light, isMini, onSearchChange }) {
+
+  const location = useLocation();
+
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
@@ -142,6 +145,9 @@ function DashboardNavbar({ absolute, light, isMini, onSearchChange }) {
     // Optionally, redirect the user to the login page or elsewhere
   };
 
+
+  const showSearchInput = location.pathname === "/funerals" || location.pathname === "/memorials";
+
   return (
     <AppBar
       position={absolute ? "absolute" : navbarType}
@@ -154,9 +160,11 @@ function DashboardNavbar({ absolute, light, isMini, onSearchChange }) {
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
+          {showSearchInput && (
             <MDBox pr={1}>
-              <MDInput label="Search here"  onChange={handleSearchChange} />
+              <MDInput label="Search here" onChange={handleSearchChange} />
             </MDBox>
+          )}
             <MDBox color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in/basic" onClick={handleLogout}>
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
