@@ -991,6 +991,8 @@ useEffect(() => {
              <InputMask
                 mask="99/99/9999"
                 value={birthDate}
+                formatChars={{ '9': '[0-9]' }}
+                maskPlaceholder={null}
                 onChange={handleAgeDateChange}
               >
                 {() => (

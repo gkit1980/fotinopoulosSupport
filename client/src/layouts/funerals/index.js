@@ -112,6 +112,18 @@ const useStyles = makeStyles({
 
       setCreateFuneral(true);
 
+
+      //birthdate
+      if(formData.birthDate === "")
+      {
+        formData.birthDate = "01/01/2000";
+      }
+      const partsBirthDate = formData.birthDate.split("/");
+      const yearBirthDate = parseInt(partsBirthDate[2], 10);
+      const monthBirthDate = parseInt(partsBirthDate[1], 10) - 1; // Month is 0-indexed in JavaScript Date
+      const dayBirthDate = parseInt(partsBirthDate[0], 10);
+      const dateObjectBirthDate = new Date(yearBirthDate, monthBirthDate, dayBirthDate);
+
        
       //funeral Dates
       const [datePart, timePart] = formData.burialDate.split(" ");
@@ -170,6 +182,7 @@ const useStyles = makeStyles({
       hasDocument: formData.hasDocument,
       hasRequest: formData.hasRequest,
       afm: formData.afm,
+      birthDate: dateObjectBirthDate,               /*bug fix birthdate*/
       age: parseInt(formData.age, 10),
       amka: formData.amka,
       anouncementId: formData.anouncementId,

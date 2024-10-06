@@ -92,7 +92,7 @@ useEffect(() => {
  const handleClickOpen = (item) => {
 
   item.idPublicationDate=formatDateWithoutTime(item.idPublicationDate)
-  //item.birthDate=formatDate(item.birthDate);
+  item.birthDate=formatDateWithoutTime(item.birthDate);
    
    setSelectedRowId(item._id);
    setSelectedRow(item);
@@ -876,6 +876,13 @@ const formatDate = (isoString) => {
 
 // Format the date to a string
 const formatDateWithoutTime = (isoString) => {
+
+  if(isoString==null)
+    return null;
+  if(isValidDateFormat(isoString))
+    return isoString;
+  else
+  {
   const date = new Date(isoString);
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
@@ -883,6 +890,15 @@ const formatDateWithoutTime = (isoString) => {
 
 
   return `${day}/${month}/${year}`;
+  }
+};
+
+
+const isValidDateFormat = (dateString) => {   //dateString format dd/mm/yyyy
+  // Regular expression to match the format dd/mm/yyyy
+  const datePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+  
+  return datePattern.test(dateString);
 };
 
 
@@ -975,7 +991,7 @@ const fetchData = () => {
       key:item._id,
       relativeId: item.relativeId,
       idPublicationDate: formatDateWithoutTime(item.idPublicationDate),
-      // birthDate: item.birthDate,
+      birthDate: formatDateWithoutTime(item.birthDate),
       more: (
         <>
         <MDBox ml={-1}>
