@@ -122,18 +122,7 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
 
 
   dayjs.extend(customParseFormat);
-
-
-  // ///english to greek map
-  // const englishToGreekMap = {
-  //   'A': 'Α', 'B': 'Β', 'C': 'Σ', 'D': 'Δ', 'E': 'Ε', 'F': 'Φ', 'G': 'Γ', 'H': 'Η', 'I': 'Ι', 'J': 'Ξ', 'K': 'Κ', 'L': 'Λ', 'M': 'Μ',
-  //   'N': 'Ν', 'O': 'Ο', 'P': 'Π', 'Q': 'Θ', 'R': 'Ρ', 'S': 'Σ', 'T': 'Τ', 'U': 'Υ', 'V': 'Β', 'W': 'Ω', 'X': 'Χ', 'Y': 'Υ', 'Z': 'Ζ',
-  //   'a': 'Α', 'b': 'Β', 'c': 'Σ', 'd': 'Δ', 'e': 'Ε', 'f': 'Φ', 'g': 'Γ', 'h': 'Η', 'i': 'Ι', 'j': 'Ξ', 'k': 'Κ', 'l': 'Λ', 'm': 'Μ',
-  //   'n': 'Ν', 'o': 'Ο', 'p': 'Π', 'q': 'Θ', 'r': 'Ρ', 's': 'Σ', 't': 'Τ', 'u': 'Υ', 'v': 'Β', 'w': 'Ω', 'x': 'Χ', 'y': 'Υ', 'z': 'Ζ',
-  // };
-
-
-
+  
   const handleTextChange = (event) => {
     const { name, value } = event.target; 
 
@@ -226,10 +215,6 @@ const DialogFuneral=forwardRef(({selectedRowDeath,logo,className,open,createMode
 
    
   };
-
-
-  //end
-
 
   // Create a ref for the Dialog component
   const dialogRef = useRef(null);
@@ -749,31 +734,53 @@ useEffect(() => {
 
     html2canvas(input).then((canvas) => {
 
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgWidth = 210; // A4 size in mm (210mm x 297mm)
-      const pageHeight = 295;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
+      // const imgData = canvas.toDataURL('image/jpeg',1.0);
+      // const pdf = new jsPDF('p', 'mm', 'a4');
+      // const imgWidth = 210; // A4 size in mm (210mm x 297mm)
+      // const pageHeight = 295;
+      // const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      // let position = 0;
+      // pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      // pdf.save('dialog-funeral.pdf');
 
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      var imgData = canvas.toDataURL("image/png");
+      var pdf = new jsPDF('p', 'pt', [canvas.width, canvas.height]);
+      var pdfWidth = pdf.internal.pageSize.getWidth();
+      var pdfHeight = pdf.internal.pageSize.getHeight();
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save("dialog-funeral.pdf");
+      
 
-      // while (heightLeft > 0) {
-      //   position = heightLeft - imgHeight;
-      //   pdf.addPage();
-      //   pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      //   heightLeft -= pageHeight;
-      // }
 
-      pdf.save('dialog-funeral.pdf');
+
     }).finally(() => {
       // Restore original overflow style
       input.style.overflow = 'auto';
       document.head.removeChild(style);
     });
   }
+
+
+
+
+  // const handleCreatePdf = () => {
+  //   const input = dialogRef.current;
+
+  //   setTimeout(() => {
+  //     if (input) {
+  //       const options = {
+  //         margin: 0,
+  //         filename: 'dialog-funeral.pdf',
+  //         image: { type: 'jpeg', quality: 0.98 },
+  //         html2canvas: { scale: 2, useCORS: true },
+  //         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  //       };
+
+  //       html2pdf().set(options).from(input).save();
+  //     }
+  //   }, 500); // Delay to ensure content is fully rendered
+  // };
+
 
 
 

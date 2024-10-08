@@ -70,7 +70,7 @@ const DialogMemorial=forwardRef(({selectedRowDeath,logo,className,open,handleClo
   dayjs.extend(customParseFormat);
 
 
-
+  const showSection = false; // Replace this with your actual condition...stefania
 
   // Create a ref for the Dialog component
   const dialogRef = useRef(null);
@@ -415,18 +415,24 @@ const labelStyle = {
 
     html2canvas(input).then((canvas) => {
 
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgWidth = 210; // A4 size in mm (210mm x 297mm)
-      const pageHeight = 295;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
+      // const imgData = canvas.toDataURL('image/png');
+      // const pdf = new jsPDF('p', 'mm', 'a4');
+      // const imgWidth = 210; // A4 size in mm (210mm x 297mm)
+      // const pageHeight = 295;
+      // const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      // let heightLeft = imgHeight;
+      // let position = 0;
 
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      // pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      // heightLeft -= pageHeight;
+
+      var imgData = canvas.toDataURL("image/png");
+      var pdf = new jsPDF('p', 'pt', [canvas.width, canvas.height]);
+      var pdfWidth = pdf.internal.pageSize.getWidth();
+      var pdfHeight = pdf.internal.pageSize.getHeight();
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save("dialog-memorial.pdf");
       
-      pdf.save('dialog-funeral.pdf');
     }).finally(() => {
       // Restore original overflow style
       input.style.overflow = 'auto';
@@ -983,7 +989,7 @@ const labelStyle = {
 
                         <Grid item xs={12}>
                               
-                        {selectedRowAnouncement &&  (<TextField
+                        {(selectedRowAnouncement && showSection)  &&  (<TextField
                                     autoFocus
                                     margin="dense"
                                     id="an_address"
@@ -997,6 +1003,7 @@ const labelStyle = {
                                     fullWidth
                                     variant="standard"
                                     onChange={handleTextChange}
+                                   
                                 />
                         )}
 
@@ -1007,44 +1014,46 @@ const labelStyle = {
 
                         <Grid container spacing={0}>
                           <Grid item xs={12}>
+                            {showSection ? (
                               <FormControl fullWidth>
                                 <Box display="flex" alignItems="center" marginBottom={1}>
-                                    <FormLabel component="legend" style={labelStyle}>
-                                      Στεφάνια
-                                    </FormLabel>
-                                    <IconButton
-                                      aria-label="add"
-                                      onClick={handleCrossButtonClick}
-                                      edge="end"
-                                    >
-                                      <AddIcon />
-                                    </IconButton>
-                            <IconButton
-                            aria-label="favorite"
-                            onClick={handleFavoriteClick} // Define this handler for the heart icon
-                            edge="end"
-                            >
-                            <FavoriteIcon />
-                            </IconButton>
-                          </Box>
-                          <TextField
-                            rows={4}
-                            maxRows={10}
-                            multiline
-                            autoFocus
-                            margin="dense"
-                            id="an_wreaths"
-                            name="an_wreaths"
-                            InputProps={{
-                              readOnly: isReadOnly,
-                            }}
-                            type="text"
-                            value={wreathsTextFieldValue}
-                            onChange={(e) => setWreathsTextFieldValue(e.target.value)}
-                          />
-                        </FormControl>
-                      </Grid>
-                       </Grid>
+                                  <FormLabel component="legend" style={labelStyle}>
+                                    Στεφάνια
+                                  </FormLabel>
+                                  <IconButton
+                                    aria-label="add"
+                                    onClick={handleCrossButtonClick}
+                                    edge="end"
+                                  >
+                                    <AddIcon />
+                                  </IconButton>
+                                  <IconButton
+                                    aria-label="favorite"
+                                    onClick={handleFavoriteClick} // Define this handler for the heart icon
+                                    edge="end"
+                                  >
+                                    <FavoriteIcon />
+                                  </IconButton>
+                                </Box>
+                                <TextField
+                                  rows={4}
+                                  maxRows={10}
+                                  multiline
+                                  autoFocus
+                                  margin="dense"
+                                  id="an_wreaths"
+                                  name="an_wreaths"
+                                  InputProps={{
+                                    readOnly: isReadOnly,
+                                  }}
+                                  type="text"
+                                  value={wreathsTextFieldValue}
+                                  onChange={(e) => setWreathsTextFieldValue(e.target.value)}
+                                />
+                              </FormControl>
+                            ) : null}
+                          </Grid>
+                         </Grid>
 
 
 
