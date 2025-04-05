@@ -104,18 +104,25 @@ function Memorials() {
 
       setIsLoading(true);
       setOpen(false);
-    
+  
 
+        // const parts = formData.selectedDate.split("/");
+        // const year = parseInt(parts[2], 10);
+        // const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed in JavaScript Date
+        // const day = parseInt(parts[0], 10);
+       // const dateObject = new Date(year, month, day);
 
-        const parts = formData.selectedDate.split("/");
-        const year = parseInt(parts[2], 10);
-        const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed in JavaScript Date
-        const day = parseInt(parts[0], 10);
-
-        const dateObject = new Date(year, month, day);
+          //memorial Dates
+        const [datePart, timePart] = formData.selectedDate.split(" ");
+        // Split the date into day, month, and year
+        const [day, month, year] = datePart.split("/").map(Number);
+         // Split the time into hours and minutes
+         const [hours, minutes] = timePart.split(":").map(Number);
+        // Create a new Date object
+        const dateObjectSelectedDate = new Date(year, month - 1, day, hours, minutes);
 
       const createdMemorialFormData = {
-        date: dateObject,
+        date: dateObjectSelectedDate,
         birthDate: formData.birthDate,
         fortydOrYear: formData.fortydOrYear,
         church: formData.church,

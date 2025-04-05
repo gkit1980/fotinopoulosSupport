@@ -415,16 +415,7 @@ const labelStyle = {
 
     html2canvas(input).then((canvas) => {
 
-      // const imgData = canvas.toDataURL('image/png');
-      // const pdf = new jsPDF('p', 'mm', 'a4');
-      // const imgWidth = 210; // A4 size in mm (210mm x 297mm)
-      // const pageHeight = 295;
-      // const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      // let heightLeft = imgHeight;
-      // let position = 0;
 
-      // pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      // heightLeft -= pageHeight;
 
       var imgData = canvas.toDataURL("image/png");
       var pdf = new jsPDF('p', 'pt', [canvas.width, canvas.height]);
